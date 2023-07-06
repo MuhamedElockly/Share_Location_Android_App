@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navHome"
+            android:icon="@drawable/home_icon"
+            android:title="Home" />
+        <item
+            android:id="@+id/navHome2"
+            android:icon="@drawable/home_icon"
+            android:title="My Rooms" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/home_icon"
+            android:title="Log Out" />
+        <item
+            android:id="@+id/navHome4"
+            android:icon="@drawable/home_icon"
+            android:title="About" />
+        <item
+            android:id="@+id/navHome5"
+            android:icon="@drawable/home_icon"
+            android:title="Home" />
+    </group>
+    <group android:checkableBehavior="single">
+
+        <item android:title=" Profile ">
+            <menu>
+                <item
+                    android:id="@+id/logIn"
+                    android:icon="@drawable/home_icon"
+                    android:title="LogIn" />
+                <item
+                    android:id="@+id/Profile"
+                    android:icon="@drawable/home_icon"
+                    android:title="Profile" />
+                <item
+                    android:id="@+id/logOut"
+                    android:icon="@drawable/home_icon"
+                    android:title="Log Out" />
+            </menu>
+        </item>
+    </group>
+
+    <item android:title=" Coummunicate">
+        <menu>
+            <item
+                android:id="@+id/share"
+                android:icon="@drawable/home_icon"
+                android:title="Share" />
+            <item
+                android:id="@+id/rateUs"
+                android:icon="@drawable/home_icon"
+                android:title="Rate Us" />
+        </menu>
+
+    </item>
+</menu>
