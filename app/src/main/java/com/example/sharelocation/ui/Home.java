@@ -52,6 +52,8 @@ import java.util.ArrayList;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final static int REQUSTE_CODE = 100;
+
+
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -73,6 +75,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Button cancel;
     private FirebaseAuth fAuth;
     private FirebaseUser user;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -84,6 +87,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -132,17 +136,29 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             }
         });
+
+
         swipeRefreshLayout.setEnabled(false);
+
+
+   /*
         swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+            private static final String TAG = "scroll";
             @Override
             public boolean canChildScrollUp(SwipeRefreshLayout parent, View child) {
-                return recyclerView.getScrollY() > 0;
+                if (recyclerView != null) {
+                    Log.e(TAG, "Scroll : nottttt " );
+                    return recyclerView.canScrollVertically(-1);
+                } return false;
             }
         });
 
+         */
 
+        //
+        //  Toast.makeText(this, scroll+"", Toast.LENGTH_SHORT).show();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-       getLastLocation();
+        getLastLocation();
     }
 
     @Override
@@ -351,7 +367,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void getLastLocation() {
-       // Toast.makeText(Home.this, "firist", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(Home.this, "firist", Toast.LENGTH_SHORT).show();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -359,18 +375,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 public void onSuccess(Location location) {
                     if (location != null) {
 
-                        Toast.makeText(Home.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(Home.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } else {
-askLoscationPermesstion();
+            askLoscationPermesstion();
         }
     }
 
     private void askLoscationPermesstion() {
-        ActivityCompat.requestPermissions(Home.this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUSTE_CODE);
+        ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUSTE_CODE);
 
     }
 

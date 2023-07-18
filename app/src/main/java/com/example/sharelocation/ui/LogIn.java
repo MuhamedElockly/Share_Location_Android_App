@@ -72,8 +72,8 @@ public class LogIn extends AppCompatActivity {
                             String userName = user.getDisplayName();
                             String userTokenId = String.valueOf(user.getIdToken(false));
                             String userId = user.getUid();
-                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId,userId);
-
+                            String profilePhoto = String.valueOf(user.getPhotoUrl());
+                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
 
 
                             String id = database.push().getKey();

@@ -1,6 +1,8 @@
 package com.example.sharelocation.ui;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -8,22 +10,33 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.sharelocation.pojo.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class SingUpViewModel extends ViewModel {
     MutableLiveData<String> mutableLiveData = new MutableLiveData<>();
+    MutableLiveData<String> imageMutableLiveData = new MutableLiveData<>();
+
     String feedback = " ";
+    StorageReference imageRef;
+    Context context;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private UserProfileChangeRequest profile;
+    private String fireBaseImageUri;
 
     private String addUserToFireBase(UserModel userModel, Context resourceActivity) {
-
+        this.context = resourceActivity;
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.createUserWithEmailAndPassword(userModel.getEmail(), userModel.getPassward()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -34,7 +47,7 @@ public class SingUpViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     user = mAuth.getCurrentUser();
 
-                    profile = new UserProfileChangeRequest.Builder().setDisplayName(userModel.getName()).build();
+                    profile = new UserProfileChangeRequest.Builder().setDisplayName(userModel.getName()).setPhotoUri(Uri.parse(userModel.getImageUri())).build();
                     user.updateProfile(profile);
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -59,9 +72,57 @@ public class SingUpViewModel extends ViewModel {
                     mutableLiveData.setValue(feedback);
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + userModel.getEmail() + ".jpg");
+                imageRef.delete();
+            }
         });
         //   Toast.makeText(resourceActivity, feedback, Toast.LENGTH_SHORT).show();
         return feedback;
+    }
+
+    public void uploadProfileImage(String email, Uri uriProfileImage) {
+        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + email + ".jpg");
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("imageName", "Existtt");
+
+                imageMutableLiveData.setValue(null);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof StorageException) {
+                    Log.d("imageName", String.valueOf(e));
+
+                    imageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    fireBaseImageUri = uri.toString();
+                                    //   Log.d("name", fireBaseImageUri);
+                                    // feedback = "Image Successfly Uploaded";
+                                    imageMutableLiveData.setValue(fireBaseImageUri);
+
+                                }
+                            });
+
+
+                        }
+                    });
+
+                }
+            }
+        });
+
+
     }
 
     public void getRegestrationFeedback(UserModel userModel, Context resourceActivity) {

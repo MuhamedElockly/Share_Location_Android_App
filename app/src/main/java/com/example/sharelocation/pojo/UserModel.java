@@ -5,14 +5,22 @@ public class UserModel {
     private String email;
     private String passward;
     private String tokenId;
+    private String imageUri;
 
-
-
-    public UserModel(String name, String email, String passward) {
+    public UserModel(String name, String email, String passward, String imageUri) {
         this.name = name;
         this.email = email;
         this.passward = passward;
+        this.imageUri = imageUri;
 
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public String getTokenId() {
