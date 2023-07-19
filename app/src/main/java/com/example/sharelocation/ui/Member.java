@@ -29,6 +29,7 @@ public class Member extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     boolean isImageFitToScreen = false;
     private String userId;
+    private String profileImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,8 @@ public class Member extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), FullscreenActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("imageUri", profileImageUri);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 // finish();
                 startActivity(intent);
 
@@ -144,6 +146,7 @@ public class Member extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("name").getValue(String.class);
                 String photoUri = snapshot.child("profilePhoto").getValue(String.class);
+                profileImageUri = photoUri;
                 Glide.with(getApplicationContext()).load(photoUri).into(binding.memberProfileImage);
                 binding.profileName.setText(name);
             }

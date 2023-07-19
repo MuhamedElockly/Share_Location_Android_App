@@ -16,9 +16,9 @@
         android:theme="@style/Theme.ShareLocation"
         tools:targetApi="31" >
         <activity
-            android:name=".FullscreenActivity"
+            android:name=".ui.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_fullscreen"
             android:theme="@style/Theme.ShareLocation.Fullscreen" />
         <activity
