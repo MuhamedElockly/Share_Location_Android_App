@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityHomeBinding;
 import com.example.sharelocation.pojo.RoomModel;
@@ -61,6 +64,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     RecyclerView recyclerView;
     ArrayList<RoomModel> rooms;
     DatabaseReference userRoomsRef;
+    DatabaseReference userRef;
     DatabaseReference roomsRef;
     RoomAdapter roomAdapter;
     ArrayList<String> userRooms;
@@ -76,6 +80,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private FirebaseAuth fAuth;
     private FirebaseUser user;
     private LinearLayoutManager mLayoutManager;
+    private ImageView headerImage;
+    private TextView headerText;
+    private String profileImageUri;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -97,6 +104,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
 
@@ -109,8 +117,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         roomAdapter = new RoomAdapter(this, rooms);
         recyclerView.setAdapter(roomAdapter);
 
-        refresh();
 
+        refresh();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -119,6 +127,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
+
+
+        // refresh();
         binding.addRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +170,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //  Toast.makeText(this, scroll+"", Toast.LENGTH_SHORT).show();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
+        // updateNavHeader();
     }
 
     @Override
@@ -170,6 +183,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -316,7 +330,38 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+
+    public void updateNavHeader() {
+
+        View headerView = navigationView.getHeaderView(0);
+
+        headerImage = headerView.findViewById(R.id.headerProfilImage);
+        headerText = headerView.findViewById(R.id.headerProfileName);
+
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // The data has been retrieved successfully
+                    DataSnapshot snapshot = task.getResult();
+                    String name = snapshot.child("name").getValue(String.class);
+                    String email = snapshot.child("email").getValue(String.class);
+                    String photoUri = snapshot.child("profilePhoto").getValue(String.class);
+
+                    //profileImageUri = photoUri;
+                    Glide.with(getApplicationContext()).load(photoUri).into(headerImage);
+                    headerText.setText(name);
+                }
+            }
+        });
+
+    }
+
     public void refresh() {
+        // updateNavHeader();
         binding.homePBar.setVisibility(View.VISIBLE);
         rooms.clear();
         userRooms.clear();
@@ -327,8 +372,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if (task.isSuccessful()) {
                     // The data has been retrieved successfully
                     DataSnapshot snapshot = task.getResult();
-                    String name = snapshot.child("2").getValue(String.class);
+                    String name = snapshot.child("name").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
+                    String photoUri = snapshot.child("profilePhoto").getValue(String.class);
+
+                    profileImageUri = photoUri;
+                    //  Glide.with(getApplicationContext()).load(photoUri).into(headerImage);
+                    // headerText.setText("");
                     //  Toast.makeText(getApplicationContext(),name, Toast.LENGTH_SHORT).show();
                     int i = 0;
                     for (int j = 0; j < snapshot.getChildrenCount(); j++) {
@@ -343,7 +393,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             }
         });
-
+        updateNavHeader();
     }
 
 
@@ -355,7 +405,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (id == R.id.logout) {
             logOut();
             // drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+         //   finish();
+            startActivity(intent);
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);

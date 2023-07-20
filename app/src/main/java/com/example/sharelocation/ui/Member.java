@@ -3,9 +3,8 @@ package com.example.sharelocation.ui;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,21 +29,25 @@ public class Member extends AppCompatActivity {
     boolean isImageFitToScreen = false;
     private String userId;
     private String profileImageUri;
+    private String memberName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_member);
+
+        toolbar = findViewById(R.id.memberToolbar);
+        setSupportActionBar(toolbar);
+        //  getSupportActionBar().setTitle("Member");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setTitle("Mohamed");
 
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
-        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
+        memberName = intent.getStringExtra("memberName");
+        getSupportActionBar().setTitle(memberName);
         refresh();
 
         swipeRefreshLayout = binding.swipeToRefresh;
@@ -61,38 +64,22 @@ public class Member extends AppCompatActivity {
                 // finish();
                 startActivity(intent);
 
- /*
 
-                if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH ){
-                    binding.memberProfileImage.setSystemUiVisibility( View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
-
-                }
-                else if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB )
-                    binding.memberProfileImage.setSystemUiVisibility( View.STATUS_BAR_HIDDEN );
-                else{}
-
-                // binding.memberProfileImage.setScaleType(ImageView.ScaleType.FIT_START);
-
-                if (isImageFitToScreen) {
-                    isImageFitToScreen = false;
-                    binding.memberProfileImage.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    binding.memberProfileImage.setAdjustViewBounds(true);
-                } else {
-                    isImageFitToScreen = true;
-                    // binding.memberProfileImage.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    //binding.memberProfileImage.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
-
-                 */
             }
         });
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.room_menu, menu);
 
-        return super.onCreateOptionsMenu(menu);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void fullScreen() {
@@ -146,6 +133,8 @@ public class Member extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("name").getValue(String.class);
                 String photoUri = snapshot.child("profilePhoto").getValue(String.class);
+
+
                 profileImageUri = photoUri;
                 Glide.with(getApplicationContext()).load(photoUri).into(binding.memberProfileImage);
                 binding.profileName.setText(name);

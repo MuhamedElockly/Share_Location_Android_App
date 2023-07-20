@@ -15,9 +15,9 @@
             android:icon="@drawable/home_icon"
             android:title="Log Out" />
         <item
-            android:id="@+id/navHome4"
-            android:icon="@drawable/home_icon"
-            android:title="About" />
+            android:id="@+id/settings"
+            android:icon="@drawable/senttings"
+            android:title="Settings" />
         <item
             android:id="@+id/navHome5"
             android:icon="@drawable/home_icon"

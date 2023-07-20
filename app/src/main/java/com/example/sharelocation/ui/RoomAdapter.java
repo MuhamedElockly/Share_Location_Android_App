@@ -64,6 +64,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> 
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     //     ((Home) context).finish();
                     intent.putExtra("roomId", (String) name.getTag());
+                    intent.putExtra("roomName", name.getText());
                     ((Home) context).startActivity(intent);
 
                 }

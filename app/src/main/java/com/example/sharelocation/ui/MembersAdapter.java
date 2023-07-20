@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +61,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     //     ((Home) context).finish();
                     intent.putExtra("userId", (String) memberName.getTag());
-                 //   Toast.makeText((Context) context, (CharSequence) memberName.getTag(), Toast.LENGTH_SHORT).show();
+                    intent.putExtra("memberName",memberName.getText());
+                    //   Toast.makeText((Context) context, (CharSequence) memberName.getTag(), Toast.LENGTH_SHORT).show();
                     ((Room) context).startActivity(intent);
 
                 }

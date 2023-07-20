@@ -54,6 +54,7 @@ public class Room extends AppCompatActivity {
     private Button invite;
     private Button cancel;
     private EditText memberEmailText;
+    private String roomName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class Room extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
 
@@ -80,6 +82,8 @@ public class Room extends AppCompatActivity {
 
         Intent intent = getIntent();
         roomId = intent.getStringExtra("roomId");
+        roomName = intent.getStringExtra("roomName");
+        getSupportActionBar().setTitle(roomName);
         refresh();
 
         binding.addMember.setOnClickListener(new View.OnClickListener() {
