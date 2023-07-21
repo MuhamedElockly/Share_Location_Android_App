@@ -22,6 +22,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityRoomBinding;
@@ -55,7 +56,7 @@ public class Room extends AppCompatActivity {
     private Button cancel;
     private EditText memberEmailText;
     private String roomName = "";
-
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +94,21 @@ public class Room extends AppCompatActivity {
                 addMember();
             }
         });
+
+        swipeRefreshLayout = findViewById(R.id.swipeToRefresh);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+
+
+        swipeRefreshLayout.setEnabled(false);
+
     }
 
     @Override
@@ -132,6 +148,8 @@ public class Room extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     private void getUsers() {

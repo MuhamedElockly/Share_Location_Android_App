@@ -370,6 +370,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    if (snapshot.hasChildren()) {
+                        Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
                     // The data has been retrieved successfully
                     DataSnapshot snapshot = task.getResult();
                     String name = snapshot.child("name").getValue(String.class);
@@ -393,6 +405,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             }
         });
+
         updateNavHeader();
     }
 
@@ -407,8 +420,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             // drawerLayout.closeDrawer(GravityCompat.START);
         } else if (id == R.id.settings) {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-         //   finish();
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //   finish();
             startActivity(intent);
 
         }
