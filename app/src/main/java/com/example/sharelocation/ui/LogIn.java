@@ -40,6 +40,16 @@ public class LogIn extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), Welcome.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
+
+
+    }
+
     public void logIn() {
 
         //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
