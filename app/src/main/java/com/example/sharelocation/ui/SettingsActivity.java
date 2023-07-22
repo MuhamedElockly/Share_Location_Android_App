@@ -1,10 +1,13 @@
 package com.example.sharelocation.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +18,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -33,12 +38,13 @@ public class SettingsActivity extends AppCompatActivity {
     Button deleteButton;
     ArrayList<String> deletedRooms;
     int roomdeleted = 0;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-
+        progressBar = findViewById(R.id.settingPBar);
         toolbar = findViewById(R.id.settingToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Settings");
@@ -50,9 +56,11 @@ public class SettingsActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 deletImage();
 
                 deletAccount();
+                //  printValues();
             }
         });
     }
@@ -68,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void deletAccount() {
+        deletedRooms.clear();
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
         userRoomsRef.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -83,7 +92,8 @@ public class SettingsActivity extends AppCompatActivity {
                         deletedRooms.add(id);
 
                     }
-                    deleteMemberFromRoom();
+                    //  deleteMemberFromRoom();
+                    deleteUserRooms();
                 }
             }
         });
@@ -101,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity {
                         DataSnapshot snapshot = task.getResult();
                         for (int j = 0; j < snapshot.getChildrenCount(); j++) {
                             String id = snapshot.child(String.valueOf(j + 1)).getValue(String.class);
-                            String key = snapshot.getKey();
+                            //  String key = snapshot.getKey();
                             if (user.getUid().equals(id)) {
                                 // Log.e("deletedRoom", id);
                                 int finalJ = j;
@@ -116,8 +126,11 @@ public class SettingsActivity extends AppCompatActivity {
                                                 String nextItem = snapshot.child(String.valueOf(n + 2)).getValue(String.class);
                                                 roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((n + 1))).setValue(nextItem);
                                             }
+
+
                                             Log.e("deletedRoom", id + "      :      " + (snapshot.getChildrenCount()));
-                                            roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((snapshot.getChildrenCount()-1))).removeValue();
+                                            roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((snapshot.getChildrenCount() - 1))).removeValue();
+
 
                                         }
                                     }
@@ -129,8 +142,26 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
-        deleteUserRooms();
+        //  deleteUserRooms();
 
+    }
+
+    public void printValues() {
+        userRoomsRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        userRoomsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String id = dataSnapshot.getValue(String.class);
+                    // Toast.makeText(getApplicationContext(),roomModel.getId() , Toast.LENGTH_SHORT).show();
+                    Log.e("deletedRoom", id);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     public void deleteUserRooms() {
@@ -144,17 +175,29 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                /*
+                                //  Log.e("deletedRoom", "On Fire");
                                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+
                                             Toast.makeText(SettingsActivity.this, "User Deleted Successfly", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            Intent intent = new Intent(getApplicationContext(), Welcome.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            finish();
+                                            startActivity(intent);
+
+                                        } else {
+                                            //   Log.e("deletedRoom", "Fail");
+
+                                            Toast.makeText(SettingsActivity.this, "Please Try Again !", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.INVISIBLE);
                                         }
                                     }
                                 });
 
-                                 */
+
                             }
                         }
                     });

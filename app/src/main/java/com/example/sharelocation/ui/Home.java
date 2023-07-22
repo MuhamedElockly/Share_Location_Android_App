@@ -7,11 +7,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -118,7 +121,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView.setAdapter(roomAdapter);
 
 
-        refresh();
+        // refresh();
+        checkRooms();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -172,6 +176,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         getLastLocation();
 
         // updateNavHeader();
+        // WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+
     }
 
     @Override
@@ -208,6 +214,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
         return true;
+    }
+
+    public void printValues() {
+        userRoomsRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        userRoomsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    String id;
+                    id = dataSnapshot.child("1").getValue(String.class);
+                    // Toast.makeText(getApplicationContext(),roomModel.getId() , Toast.LENGTH_SHORT).show();
+                    Log.e("deletedRoom", id);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     private void pushToFireBase(String roomName, String roomCapacity) {
@@ -360,11 +386,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    public void refresh() {
-        // updateNavHeader();
-        binding.homePBar.setVisibility(View.VISIBLE);
-        rooms.clear();
-        userRooms.clear();
+    public void checkRooms() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -373,10 +395,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     DataSnapshot snapshot = task.getResult();
                     if (snapshot.hasChildren()) {
                         Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
+                        refresh();
                     }
                 }
             }
         });
+
+    }
+
+    public void refresh() {
+        // updateNavHeader();
+        binding.homePBar.setVisibility(View.VISIBLE);
+        rooms.clear();
+        userRooms.clear();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -414,6 +447,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
+        printValues();
         int id = item.getItemId();
         if (id == R.id.logout) {
             logOut();

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.ShareLocation" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -10,8 +10,12 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">#00000000</item>
         <!-- Customize your theme here. -->
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+
     </style>
 
     <style name="ThemeOverlay.ShareLocation.FullscreenContainer" parent="">

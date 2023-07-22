@@ -61,6 +61,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <ProgressBar
+                    android:id="@+id/settingPBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
                 <Button
                     android:id="@+id/deletAccount"
                     android:layout_width="match_parent"
