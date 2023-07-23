@@ -1,8 +1,11 @@
 package com.example.sharelocation.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sharelocation.R;
@@ -39,6 +43,8 @@ public class SettingsActivity extends AppCompatActivity {
     ArrayList<String> deletedRooms;
     int roomdeleted = 0;
     ProgressBar progressBar;
+    Button dialogeCancel;
+    Button dialogeSure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
         progressBar = findViewById(R.id.settingPBar);
         toolbar = findViewById(R.id.settingToolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Settings");
         fAuth = FirebaseAuth.getInstance();
@@ -56,11 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                deletImage();
-
-                deletAccount();
-                //  printValues();
+                showConfirmationDialoge();
             }
         });
     }
@@ -176,6 +179,7 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 //  Log.e("deletedRoom", "On Fire");
+
                                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -202,6 +206,35 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+    }
+
+    public void showConfirmationDialoge() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
+        dialogeCancel = view.findViewById(R.id.deleteCancelButton);
+        dialogeSure = view.findViewById(R.id.deletSureButton);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialogeSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                progressBar.setVisibility(View.VISIBLE);
+                deletImage();
+
+                deletAccount();
+                //  printValues();
+
             }
         });
     }
