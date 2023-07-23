@@ -20,4 +20,9 @@
     <color name="transparent">#00000000 </color>.
     <color name="half_black">#999292</color>.
     <color name="red">#FF0000</color>.
+    <color name="heavy_red">#A11212</color>
+    <color name="majesty">#593761</color>
+    <color name="yellow_sea">#FEA904</color>
+    <color name="delicate_lace">#F3E6D4</color>
+
 </resources>
