@@ -7,7 +7,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/delete_confirmation_dialoge"
         android:orientation="vertical">
 
         <LinearLayout
@@ -29,6 +31,7 @@
                     android:padding="10dp"
                     android:text="Room Name :"
                     android:textSize="28sp"
+
                     android:textStyle="bold" />
 
                 <TextView
@@ -52,27 +55,29 @@
                 <EditText
                     android:id="@+id/dialogeRoomName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="60sp"
+                    android:layout_margin="20dp"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="Name Of Room"
                     android:inputType="textPersonName"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:textSize="24sp"
+                    android:background="@drawable/input_text"
                     android:textStyle="normal|bold" />
 
                 <EditText
                     android:id="@+id/roomCapacity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="60sp"
+                    android:layout_margin="20dp"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="Room Capacity"
                     android:inputType="number"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:textSize="24sp"
+                    android:background="@drawable/input_text"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -95,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:padding="10dp"
+                    android:background="@drawable/cancel_button"
                     android:text="Cancel" />
             </LinearLayout>
 
@@ -110,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:padding="10dp"
+                    android:background="@drawable/confirm_button"
                     android:text="Apply" />
             </LinearLayout>
         </LinearLayout>

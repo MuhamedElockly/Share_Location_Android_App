@@ -50,13 +50,14 @@ public class Room extends AppCompatActivity {
     MembersAdapter membersAdapter;
     ArrayList<String> usersId;
     ArrayList<MemebrsModel> members;
+    SwipeRefreshLayout swipeRefreshLayout;
     private FirebaseAuth fAuth;
     private String roomId;
     private Button invite;
     private Button cancel;
     private EditText memberEmailText;
     private String roomName = "";
-    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +199,7 @@ public class Room extends AppCompatActivity {
 
         builder[0].setView(view);
         final AlertDialog dialog = builder[0].create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

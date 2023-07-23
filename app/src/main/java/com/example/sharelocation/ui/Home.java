@@ -7,14 +7,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -329,7 +327,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         roomCapacityText = view.findViewById(R.id.roomCapacity);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,6 +365,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference("users");
+
         userRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -396,6 +395,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     if (snapshot.hasChildren()) {
                         Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
                         refresh();
+                    } else {
+                        updateNavHeader();
                     }
                 }
             }

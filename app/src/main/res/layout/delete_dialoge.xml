@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/background_btn_delete"
+                android:background="@drawable/cancel_button"
                 android:text="Cancel" />
 
             <Button
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/background_btn_welcome2"
+                android:background="@drawable/confirm_button"
                 android:text="Sure" />
         </LinearLayout>
     </LinearLayout>
