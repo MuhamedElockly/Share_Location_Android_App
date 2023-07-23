@@ -33,6 +33,7 @@
                     android:text="Welcome"
                     android:textColor="@color/white"
                     android:textSize="55dp"
+
                     android:textStyle="bold" />
             </LinearLayout>
 

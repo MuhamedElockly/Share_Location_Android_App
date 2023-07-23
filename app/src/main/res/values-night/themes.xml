@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.ShareLocation" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#8BC34A</item>
-        <item name="colorPrimaryVariant">#DCEDC8</item>
-        <item name="colorOnPrimary">#689F38</item>
+        <item name="colorPrimary">@color/delicate_lace</item>
+        <item name="colorPrimaryVariant">@color/yellow_sea</item>
+        <item name="colorOnPrimary">@color/heavy_red</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/majesty</item>
+        <item name="colorSecondaryVariant">@color/heavy_red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:statusBarColor">@color/delicate_lace</item>
         <!-- Customize your theme here. -->
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowTranslucentStatus">true</item>

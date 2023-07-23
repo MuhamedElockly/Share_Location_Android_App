@@ -69,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/cancel_button"
+                    android:textColor="@color/white"
                     android:text="Cancel" />
 
                 <Button
@@ -77,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/confirm_button"
+
                     android:text="Sure" />
             </LinearLayout>
         </LinearLayout>

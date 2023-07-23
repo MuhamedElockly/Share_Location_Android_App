@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
                     android:layout_margin="20dp"
+                    android:backgroundTint="@color/majesty"
                     android:src="@drawable/add_icon" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.drawerlayout.widget.DrawerLayout>

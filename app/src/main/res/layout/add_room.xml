@@ -99,7 +99,8 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/cancel_button"
                     android:padding="10dp"
-                    android:text="Cancel" />
+                    android:text="Cancel"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
