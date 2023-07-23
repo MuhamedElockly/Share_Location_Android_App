@@ -18,7 +18,7 @@
             <menu>
                 <item
                     android:id="@+id/Profile"
-                    android:icon="@drawable/home_icon"
+                    android:icon="@drawable/profile"
                     android:title="Profile" />
                 <item
                     android:id="@+id/settings"
@@ -26,7 +26,7 @@
                     android:title="Settings" />
                 <item
                     android:id="@+id/logout"
-                    android:icon="@drawable/home_icon"
+                    android:icon="@drawable/log_out"
                     android:title="Log Out" />
 
             </menu>
@@ -37,12 +37,13 @@
         <menu>
             <item
                 android:id="@+id/share"
-                android:icon="@drawable/home_icon"
+                android:icon="@drawable/share"
                 android:title="Share" />
             <item
                 android:id="@+id/rateUs"
-                android:icon="@drawable/home_icon"
-                android:title="Rate Us" />
+                android:icon="@drawable/contact"
+
+                android:title="Contact" />
         </menu>
 
     </item>
