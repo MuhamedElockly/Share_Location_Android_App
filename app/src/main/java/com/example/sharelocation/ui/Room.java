@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,12 +21,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityRoomBinding;
 import com.example.sharelocation.pojo.MemebrsModel;
@@ -39,7 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Room extends AppCompatActivity {
+public class Room extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -57,6 +62,20 @@ public class Room extends AppCompatActivity {
     private Button cancel;
     private EditText memberEmailText;
     private String roomName = "";
+    private DatabaseReference userRef;
+    private ActionBarDrawerToggle drawerToggle;
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +88,16 @@ public class Room extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
 
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
 
         usersId = new ArrayList<>();
         members = new ArrayList<>();
@@ -353,6 +379,71 @@ public class Room extends AppCompatActivity {
                 }
             }
         });
+        updateNavHeader();
+    }
+
+    public void updateNavHeader() {
+
+        View headerView = navigationView.getHeaderView(0);
+
+        ImageView headerImage = headerView.findViewById(R.id.headerProfilImage);
+        TextView headerText = headerView.findViewById(R.id.headerProfileName);
+
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+
+        userRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // The data has been retrieved successfully
+                    DataSnapshot snapshot = task.getResult();
+                    String name = snapshot.child("name").getValue(String.class);
+                    String email = snapshot.child("email").getValue(String.class);
+                    String photoUri = snapshot.child("profilePhoto").getValue(String.class);
+
+                    //profileImageUri = photoUri;
+                    Glide.with(getApplicationContext()).load(photoUri).into(headerImage);
+                    headerText.setText(name);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
+        // printValues();
+        int id = item.getItemId();
+        if (id == R.id.logout) {
+            logOut();
+            // drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //   finish();
+            startActivity(intent);
+
+        } else if (id == R.id.navHome) {
+            Intent intent = new Intent(getApplicationContext(), Home.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void logOut() {
+        fAuth = FirebaseAuth.getInstance();
+        fAuth.signOut();
+        Intent intent = new Intent(getApplicationContext(), Welcome.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
     }
 }
 

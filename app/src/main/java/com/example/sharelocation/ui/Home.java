@@ -447,7 +447,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
         printValues();
         int id = item.getItemId();
         if (id == R.id.logout) {
