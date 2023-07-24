@@ -8,16 +8,25 @@ public class MemebrsModel {
     private String id;
     private String tokenId;
     private String email;
+    private String photoUri;
 
     public MemebrsModel() {
     }
 
-    public MemebrsModel(String name, String userId, String tokenId, String email) {
+    public MemebrsModel(String name, String userId, String tokenId, String email, String photoUri) {
         this.name = name;
         this.id = userId;
         this.tokenId = tokenId;
         this.email = email;
+        this.photoUri = photoUri;
+    }
 
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 
     public String getTokenId() {

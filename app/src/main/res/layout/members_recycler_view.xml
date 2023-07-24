@@ -41,7 +41,7 @@
                     app:cardCornerRadius="60dp">
 
                     <ImageView
-                        android:id="@+id/headerProfilImage"
+                        android:id="@+id/memberImageView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/locationicon" />
@@ -59,6 +59,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
+                    android:textColor="@color/majesty"
                     android:textSize="20sp" />
 
 

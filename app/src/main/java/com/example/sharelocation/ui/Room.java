@@ -166,7 +166,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private void pushToFireBase() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
-        MemebrsModel memebrsModel = new MemebrsModel("Mohamed", id, " ", " ");
+        MemebrsModel memebrsModel = new MemebrsModel("Mohamed", id, " ", " ","");
         database.child("members").child(id).setValue(memebrsModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -193,7 +193,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     String email = dataSnapshot.child("email").getValue(String.class);
                     String tokenId = dataSnapshot.child("tokenId").getValue(String.class);
                     String name = dataSnapshot.child("name").getValue(String.class);
-                    MemebrsModel memebrsModel = new MemebrsModel(name, userId, tokenId, email);
+                    String photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
+                    MemebrsModel memebrsModel = new MemebrsModel(name, userId, tokenId, email,photoUri);
 
                     for (int i = 0; i < usersId.size(); i++) {
 
