@@ -64,6 +64,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private String roomName = "";
     private DatabaseReference userRef;
     private ActionBarDrawerToggle drawerToggle;
+    private DatabaseReference roomRef;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -199,6 +200,22 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private void increseRoomCapacity(String roomId) {
+        roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int newRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    newRoomCapacity++;
+                    roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(newRoomCapacity));
+                }
+            }
+        });
+    }
+
     private void addMember() {
 
 
@@ -284,6 +301,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                 database.child("roomMembers").child(roomId).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        increseRoomCapacity(roomId);
                         refresh();
                         Toast.makeText(Room.this, "Invitation was sent succesfly", Toast.LENGTH_SHORT).show();
                     }

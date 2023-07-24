@@ -99,7 +99,9 @@ public class SettingsActivity extends AppCompatActivity {
 
 
                     deleteMemberFromRoom();
+
                     deleteUserRooms();
+
                 }
             }
         });
@@ -110,12 +112,8 @@ public class SettingsActivity extends AppCompatActivity {
         for (int i = 0; i < deletedRooms.size(); i++) {
 
 
-            roomMembers.child(deletedRooms.get(i)).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-
-                }
-            });
+            roomMembers.child(deletedRooms.get(i)).child(userId).removeValue();
+            decreaseRoomCapacity(deletedRooms.get(i));
         }
         //  deleteUserRooms();
 
@@ -207,6 +205,27 @@ public class SettingsActivity extends AppCompatActivity {
                 deletAccount();
                 //  printValues();
 
+            }
+        });
+    }
+
+    private void decreaseRoomCapacity(String roomId) {
+        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int intRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    if (intRoomCapacity == 1) {
+                        roomRef.child(roomId).removeValue();
+                    } else {
+                        intRoomCapacity--;
+                        roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(intRoomCapacity));
+
+                    }
+                }
             }
         });
     }

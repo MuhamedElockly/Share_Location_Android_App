@@ -119,8 +119,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView.setAdapter(roomAdapter);
 
 
-        // refresh();
-        checkRooms();
+        refresh();
+        // checkRooms();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -237,7 +237,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private void pushToFireBase2(String roomName, String roomCapacity) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
+        String roomMembers = "1";
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers);
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -253,8 +254,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                 //   refresh();
-                                    refresh2();
+                                    //   refresh();
+                                    refresh();
                                     Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -269,7 +270,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private void pushToFireBase(String roomName, String roomCapacity) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
+        String roomMembers = "1";
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers);
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -303,7 +305,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                                 public void onComplete(@NonNull Task<Void> task) {
 
                                                     //refresh();
-                                                    refresh2();
+                                                    refresh();
                                                     Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
@@ -450,9 +452,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
                     if (snapshot.hasChildren()) {
-                        Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
                         // refresh();
-                        refresh2();
+                        refresh();
                     } else {
                         updateNavHeader();
                     }
@@ -462,7 +464,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    public void refresh2() {
+    public void refresh() {
         // updateNavHeader();
         binding.homePBar.setVisibility(View.VISIBLE);
         rooms.clear();
@@ -491,52 +493,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         updateNavHeader();
     }
 
-    public void refresh() {
-        // updateNavHeader();
-        binding.homePBar.setVisibility(View.VISIBLE);
-        rooms.clear();
-        userRooms.clear();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-
-        userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    // The data has been retrieved successfully
-                    DataSnapshot snapshot = task.getResult();
-                    String name = snapshot.child("name").getValue(String.class);
-                    String email = snapshot.child("email").getValue(String.class);
-                    String photoUri = snapshot.child("profilePhoto").getValue(String.class);
-
-                    profileImageUri = photoUri;
-                    //  Glide.with(getApplicationContext()).load(photoUri).into(headerImage);
-                    // headerText.setText("");
-                    //  Toast.makeText(getApplicationContext(),name, Toast.LENGTH_SHORT).show();
-                    int i = 0;
-                    for (int j = 0; j < snapshot.getChildrenCount(); j++) {
-                        i++;
-                        String id = snapshot.child(String.valueOf(i)).getValue(String.class);
-                        //  Toast.makeText(getApplicationContext(),id , Toast.LENGTH_SHORT).show();
-                        userRooms.add(id);
-                    }
-                    getRooms();
-                    binding.homePBar.setVisibility(View.GONE);
-                    //   Toast.makeText(getApplicationContext(),userRooms.size(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        updateNavHeader();
-    }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
-        //printValues();
-        refresh2();
         int id = item.getItemId();
         if (id == R.id.logout) {
             logOut();

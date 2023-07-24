@@ -37,7 +37,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> 
         RoomModel room = rooms.get(position);
         holder.name.setText(room.getName());
         String temp = " Member";
-        holder.numberOfRooms.setText(room.getNumberOfRooms() + temp);
+        holder.numberOfRooms.setText(room.getRoomCapacity() + temp);
         holder.name.setTag(room.getId());
     }
 
