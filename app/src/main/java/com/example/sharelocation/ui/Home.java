@@ -234,6 +234,44 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private void pushToFireBase2(String roomName, String roomCapacity) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String id = database.push().getKey();
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
+        String userId = fAuth.getCurrentUser().getUid();
+        database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+
+                    // to add a new roomId for userRooms tree after getting the size
+                    database.child("userRooms").child(userId).child(id).child("id").setValue(id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            // to add a new userId for roomMembers tree after getting the size
+                            database.child("roomMembers").child(id).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                 //   refresh();
+                                    refresh2();
+                                    Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+                        }
+                    });
+                }
+
+                //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
     private void pushToFireBase(String roomName, String roomCapacity) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
@@ -270,7 +308,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                                    refresh();
+                                                    //refresh();
+                                                    refresh2();
                                                     Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
@@ -282,6 +321,29 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     });
                     //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    private void getRooms2() {
+        roomsRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    RoomModel roomModel = dataSnapshot.getValue(RoomModel.class);
+                    // Toast.makeText(getApplicationContext(),roomModel.getId() , Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < userRooms.size(); i++) {
+                        if (roomModel.getId().equals(userRooms.get(i))) {
+                            rooms.add(roomModel);
+                        }
+                    }
+                }
+                roomAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -347,7 +409,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     roomCapacityText.setError("This Field Is Required");
                     roomCapacityText.requestFocus();
                 } else {
-                    pushToFireBase(roomName, roomCapacity);
+                    //  pushToFireBase(roomName, roomCapacity);
+                    pushToFireBase2(roomName, roomCapacity);
                     dialog.cancel();
                 }
             }
@@ -394,7 +457,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     DataSnapshot snapshot = task.getResult();
                     if (snapshot.hasChildren()) {
                         Toast.makeText(Home.this, "Yeeeeeess", Toast.LENGTH_SHORT).show();
-                        refresh();
+                        // refresh();
+                        refresh2();
                     } else {
                         updateNavHeader();
                     }
@@ -402,6 +466,35 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+    }
+
+    public void refresh2() {
+        // updateNavHeader();
+        binding.homePBar.setVisibility(View.VISIBLE);
+        rooms.clear();
+        userRooms.clear();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
+        userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // The data has been retrieved successfully
+                    DataSnapshot snapshot = task.getResult();
+                    //   String name = ((DataSnapshot) (snapshot.getChildren())).child("id").getValue(String.class);
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String roomId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                        //  Log.d("children", roomId);
+                        userRooms.add(roomId);
+                    }
+                    getRooms();
+                    binding.homePBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        updateNavHeader();
     }
 
     public void refresh() {
@@ -447,8 +540,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-     //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
-        printValues();
+        //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
+        //printValues();
+        refresh2();
         int id = item.getItemId();
         if (id == R.id.logout) {
             logOut();
