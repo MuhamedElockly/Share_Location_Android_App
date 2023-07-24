@@ -163,21 +163,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
-    private void pushToFireBase() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String id = database.push().getKey();
-        MemebrsModel memebrsModel = new MemebrsModel("Mohamed", id, " ", " ","");
-        database.child("members").child(id).setValue(memebrsModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-    }
 
     private void getUsers() {
         usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -194,7 +179,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     String tokenId = dataSnapshot.child("tokenId").getValue(String.class);
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
-                    MemebrsModel memebrsModel = new MemebrsModel(name, userId, tokenId, email,photoUri);
+                    MemebrsModel memebrsModel = new MemebrsModel(name, userId, tokenId, email, photoUri);
 
                     for (int i = 0; i < usersId.size(); i++) {
 
@@ -290,42 +275,23 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         //  RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
 
 
-        database.child("userRooms").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        // to add the current roomId for userRooms tree after getting the size
+        database.child("userRooms").child(userId).child(roomId).child("id").setValue(roomId).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot snapshot = task.getResult();
-                // To get the size of rooms for a specefic user in userRooms tree
-                int i = 1;
-                for (int j = 0; j < snapshot.getChildrenCount(); j++) {
-                    i++;
-                }
-                // to add the current roomId for userRooms tree after getting the size
-                database.child("userRooms").child(userId).child(String.valueOf(i)).setValue(roomId).addOnCompleteListener(new OnCompleteListener<Void>() {
+            public void onComplete(@NonNull Task<Void> task) {
+
+                // to add a new userId for roomMembers tree after getting the size
+                database.child("roomMembers").child(roomId).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        database.child("roomMembers").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                DataSnapshot snapshot = task.getResult();
-                                // To get the size of member for a specefic room in roomMembers tree
-                                int i = 1;
-                                for (int j = 0; j < snapshot.getChildrenCount(); j++) {
-                                    i++;
-                                }
-                                // to add a new userId for roomMembers tree after getting the size
-                                database.child("roomMembers").child(roomId).child(String.valueOf(i)).setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        refresh();
-                                        Toast.makeText(Room.this, "Invitation was sent succesfly", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
+                        refresh();
+                        Toast.makeText(Room.this, "Invitation was sent succesfly", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
+
         //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
     }
 
@@ -336,6 +302,19 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot snapshot = task.getResult();
                 boolean userExist = false;
+
+
+                //   String name = ((DataSnapshot) (snapshot.getChildren())).child("id").getValue(String.class);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String id = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                    //  Log.d("children", roomId);
+                    if (userId.equals(id)) {
+                        userExist = true;
+                        break;
+                    }
+                }
+
+/*
                 for (int j = 1; j <= snapshot.getChildrenCount(); j++) {
                     String id = snapshot.child(String.valueOf(j)).getValue(String.class);
                     if (userId.equals(id)) {
@@ -344,6 +323,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     }
 
                 }
+
+ */
                 if (userExist) {
                     Toast.makeText(Room.this, "User already exist !", Toast.LENGTH_SHORT).show();
                 } else {
@@ -356,6 +337,31 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void refresh() {
+        binding.roomPBar.setVisibility(View.VISIBLE);
+        usersId.clear();
+        members.clear();
+        roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // The data has been retrieved successfully
+                    DataSnapshot snapshot = task.getResult();
+                    //   String name = ((DataSnapshot) (snapshot.getChildren())).child("id").getValue(String.class);
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String userId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                        //  Log.d("children", userId);
+                        usersId.add(userId);
+                    }
+                    getUsers();
+                    binding.roomPBar.setVisibility(View.GONE);
+                }
+            }
+        });
+        updateNavHeader();
+    }
+
+    private void refreshlast() {
         binding.roomPBar.setVisibility(View.VISIBLE);
         usersId.clear();
         members.clear();

@@ -243,8 +243,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-
-
                     // to add a new roomId for userRooms tree after getting the size
                     database.child("userRooms").child(userId).child(id).child("id").setValue(id).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -260,13 +258,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                     Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                         }
                     });
                 }
-
-                //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
             }
 
         });
