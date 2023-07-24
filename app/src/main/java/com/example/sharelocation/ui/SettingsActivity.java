@@ -45,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Button dialogeCancel;
     Button dialogeSure;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Settings");
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+        userId = user.getUid();
         deletedRooms = new ArrayList<>();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         deleteButton = findViewById(R.id.deletAccount);
@@ -80,22 +82,23 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void deletAccount() {
         deletedRooms.clear();
+
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
-        userRoomsRef.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        userRoomsRef.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
 
-                    int i = 0;
-                    for (int j = 0; j < snapshot.getChildrenCount(); j++) {
-                        i++;
-                        String id = snapshot.child(String.valueOf(i)).getValue(String.class);
-                        //  Toast.makeText(getApplicationContext(),id , Toast.LENGTH_SHORT).show();
-                        deletedRooms.add(id);
 
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String id = dataSnapshot.child("id").getValue(String.class);
+
+                        deletedRooms.add(id);
                     }
-                    //  deleteMemberFromRoom();
+
+
+                    deleteMemberFromRoom();
                     deleteUserRooms();
                 }
             }
@@ -105,43 +108,12 @@ public class SettingsActivity extends AppCompatActivity {
     public void deleteMemberFromRoom() {
         roomMembers = FirebaseDatabase.getInstance().getReference("roomMembers");
         for (int i = 0; i < deletedRooms.size(); i++) {
-            int finalI = i;
 
-            roomMembers.child(deletedRooms.get(i)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+            roomMembers.child(deletedRooms.get(i)).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DataSnapshot snapshot = task.getResult();
-                        for (int j = 0; j < snapshot.getChildrenCount(); j++) {
-                            String id = snapshot.child(String.valueOf(j + 1)).getValue(String.class);
-                            //  String key = snapshot.getKey();
-                            if (user.getUid().equals(id)) {
-                                // Log.e("deletedRoom", id);
-                                int finalJ = j;
-                                int finalJ1 = j;
-                                roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((j + 1))).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            roomdeleted++;
+                public void onComplete(@NonNull Task<Void> task) {
 
-                                            for (int n = finalJ1; n < snapshot.getChildrenCount(); n++) {
-                                                String nextItem = snapshot.child(String.valueOf(n + 2)).getValue(String.class);
-                                                roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((n + 1))).setValue(nextItem);
-                                            }
-
-
-                                            Log.e("deletedRoom", id + "      :      " + (snapshot.getChildrenCount()));
-                                            roomMembers.child(deletedRooms.get(finalI)).child(String.valueOf((snapshot.getChildrenCount() - 1))).removeValue();
-
-
-                                        }
-                                    }
-                                });
-                                break;
-                            }
-                        }
-                    }
                 }
             });
         }
