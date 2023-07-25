@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,7 +62,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final static int REQUSTE_CODE = 100;
-    RoomModel deltedData;
+    RoomModel deletedRoom;
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -78,42 +79,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     SwipeRefreshLayout swipeRefreshLayout;
     ActionBarDrawerToggle drawerToggle;
     FusedLocationProviderClient fusedLocationProviderClient;
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int posation = viewHolder.getAdapterPosition();
-            deltedData = rooms.get(posation);
-            rooms.remove(posation);
-            roomAdapter.notifyDataSetChanged();
-
-            Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rooms.add(posation, deltedData);
-                    roomAdapter.notifyDataSetChanged();
-                }
-            }).show();
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Home.this, R.color.red))
-                    .addSwipeRightActionIcon(R.drawable.delete_icon)
-                    .addSwipeRightLabel("Delete")
-                    .setSwipeRightLabelColor(ContextCompat.getColor(Home.this,R.color.white))
-                    .create()
-                    .decorate();
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
     private EditText roomNameText;
     private EditText roomCapacityText;
     private Button apply;
@@ -124,6 +89,43 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView headerImage;
     private TextView headerText;
     private String profileImageUri;
+    private DatabaseReference roomMembersRef;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int posation = viewHolder.getAdapterPosition();
+            deletedRoom = rooms.get(posation);
+            rooms.remove(posation);
+            roomAdapter.notifyDataSetChanged();
+            deleteUserFromRoom(deletedRoom.getId());
+
+            Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //  rooms.add(posation, deletedRoom);
+                    //  roomAdapter.notifyDataSetChanged();
+                }
+            }).show();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Home.this, R.color.red)).addSwipeRightActionIcon(R.drawable.delete_icon).addSwipeRightLabel("Delete")
+                    .setSwipeRightLabelTextSize(TypedValue.COMPLEX_UNIT_SP,15)
+                    .addSwipeRightCornerRadius(TypedValue.DENSITY_DEFAULT,20)
+                    .setSwipeRightLabelColor(ContextCompat.getColor(Home.this, R.color.white)).create().decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -149,6 +151,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.navView);
 
         fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
         recyclerView = binding.roomRecyclerView;
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
         rooms = new ArrayList<>();
@@ -590,5 +593,44 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void deleteUserFromRoom(String roomId) {
+
+        String userId = user.getUid();
+        roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
+        userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        decreaseRoomCapacity(roomId);
+                    }
+                });
+            }
+        });
+    }
+
+    private void decreaseRoomCapacity(String roomId) {
+        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int intRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    if (intRoomCapacity == 1) {
+                        roomRef.child(roomId).removeValue();
+                    } else {
+                        intRoomCapacity--;
+                        roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(intRoomCapacity));
+                    }
+                }
+                refresh();
+            }
+        });
     }
 }
