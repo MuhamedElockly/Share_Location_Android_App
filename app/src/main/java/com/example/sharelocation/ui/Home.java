@@ -256,7 +256,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-
+                searchArryList.clear();
                 roomAdapter = new RoomAdapter(Home.this, rooms);
                 // roomAdapter.notifyDataSetChanged();
 
@@ -446,11 +446,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void getRooms() {
+
         roomsRef = FirebaseDatabase.getInstance().getReference("rooms");
         roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                rooms.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
                     RoomModel roomModel = dataSnapshot.getValue(RoomModel.class);
                     // Toast.makeText(getApplicationContext(),roomModel.getId() , Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < userRooms.size(); i++) {
@@ -660,6 +663,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         String userId = user.getUid();
         roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
+
         userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

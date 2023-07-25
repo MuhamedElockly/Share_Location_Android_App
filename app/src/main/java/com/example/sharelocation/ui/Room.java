@@ -68,6 +68,14 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     MemebrsModel deletedMember;
     private FirebaseAuth fAuth;
     private String roomId;
+    private Button invite;
+    private Button cancel;
+    private EditText memberEmailText;
+    private String roomName = "";
+    private DatabaseReference userRef;
+    private ActionBarDrawerToggle drawerToggle;
+    private DatabaseReference roomRef;
+    private ArrayList<MemebrsModel> searchArryList;
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -106,13 +114,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-    private Button invite;
-    private Button cancel;
-    private EditText memberEmailText;
-    private String roomName = "";
-    private DatabaseReference userRef;
-    private ActionBarDrawerToggle drawerToggle;
-    private DatabaseReference roomRef;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -149,7 +150,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         usersId = new ArrayList<>();
         members = new ArrayList<>();
-
+        searchArryList = new ArrayList<>();
         recyclerView = binding.memberRecyclerView;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -194,21 +195,50 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                search(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                search(newText);
+
                 return false;
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+
+
+                membersAdapter = new MembersAdapter(Room.this, members);
+                // roomAdapter.notifyDataSetChanged();
+
+                recyclerView.setAdapter(membersAdapter);
+                refresh();
                 return false;
             }
         });
         return true;
+    }
+
+
+    private void search(String token) {
+        searchArryList.clear();
+
+        for (int i = 0; i < members.size(); i++) {
+            if (members.get(i).getName().contains(token)) {
+                searchArryList.add(members.get(i));
+                Log.d("searchElement", token);
+            }
+
+
+        }
+        membersAdapter = new MembersAdapter(this, searchArryList);
+        // roomAdapter.notifyDataSetChanged();
+
+        recyclerView.setAdapter(membersAdapter);
     }
 
 
@@ -541,7 +571,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 dialog.cancel();
                 deleteUserFromRoom(userId);
-                //  searchArryList.clear();
+                searchArryList.clear();
             }
         });
 
@@ -577,6 +607,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     int intRoomCapacity = Integer.parseInt(lastRoomCapcity);
                     if (intRoomCapacity == 1) {
                         roomRef.child(roomId).removeValue();
+                        Intent intent = new Intent(getApplicationContext(), Home.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        finish();
+                        startActivity(intent);
                     } else {
                         intRoomCapacity--;
                         roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(intRoomCapacity));
