@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -30,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -44,6 +46,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,10 +57,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final static int REQUSTE_CODE = 100;
-
-
+    RoomModel deltedData;
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -74,6 +78,42 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     SwipeRefreshLayout swipeRefreshLayout;
     ActionBarDrawerToggle drawerToggle;
     FusedLocationProviderClient fusedLocationProviderClient;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int posation = viewHolder.getAdapterPosition();
+            deltedData = rooms.get(posation);
+            rooms.remove(posation);
+            roomAdapter.notifyDataSetChanged();
+
+            Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rooms.add(posation, deltedData);
+                    roomAdapter.notifyDataSetChanged();
+                }
+            }).show();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Home.this, R.color.red))
+                    .addSwipeRightActionIcon(R.drawable.delete_icon)
+                    .addSwipeRightLabel("Delete")
+                    .setSwipeRightLabelColor(ContextCompat.getColor(Home.this,R.color.white))
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
     private EditText roomNameText;
     private EditText roomCapacityText;
     private Button apply;
@@ -95,7 +135,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -172,9 +211,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //  Toast.makeText(this, scroll+"", Toast.LENGTH_SHORT).show();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.roomRecyclerView);
 
-        // updateNavHeader();
-        // WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
 
     }
 
