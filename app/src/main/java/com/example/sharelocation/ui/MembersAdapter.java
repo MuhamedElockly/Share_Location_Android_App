@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,16 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.pojo.MemebrsModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHolder> {
     Context context;
     ArrayList<MemebrsModel> members;
+    FirebaseAuth fAuth;
+    FirebaseUser user;
 
     public MembersAdapter(Context context, ArrayList<MemebrsModel> rooms) {
         this.context = context;
         this.members = rooms;
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
     }
 
     @NonNull
@@ -40,7 +45,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MembersAdapter.MyViewHolder holder, int position) {
         MemebrsModel member = members.get(position);
-        holder.memberName.setText(member.getName());
+        String currentUser = " (You)";
+        if (member.getId().equals(user.getUid())) {
+            holder.memberName.setText(member.getName() + currentUser);
+        } else {
+            holder.memberName.setText(member.getName());
+          //  holder.admin.setVisibility(View.VISIBLE);
+        }
+
         Glide.with(context).load(member.getPhotoUri()).into(holder.memberPhoto);
         holder.memberName.setTag(member.getId());
         holder.memberPhoto.setTag(member.getPhotoUri());
@@ -53,16 +65,18 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView memberName;
+        TextView admin;
         ImageView memberPhoto;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             memberName = itemView.findViewById(R.id.memberName);
+            admin = itemView.findViewById(R.id.admin);
             memberPhoto = itemView.findViewById(R.id.memberImageView);
             memberPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  Toast.makeText((Context) context, "Mohamed Elockly", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText((Context) context, "Mohamed Elockly", Toast.LENGTH_SHORT).show();
                     showAlertDialoge((String) memberPhoto.getTag());
                 }
             });

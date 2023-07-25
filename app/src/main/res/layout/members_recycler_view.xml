@@ -32,13 +32,13 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    app:cardElevation="5dp"
-
                     android:layout_marginLeft="30dp"
+
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginRight="10dp"
-                    app:cardCornerRadius="60dp">
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="5dp">
 
                     <ImageView
                         android:id="@+id/memberImageView"
@@ -47,20 +47,46 @@
                         android:src="@drawable/locationicon" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/memberName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/archivo_black"
-                    android:padding="15dp"
-                    android:text="Family"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/majesty"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/memberName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+
+                        android:layout_weight="1"
+                        android:fontFamily="@font/archivo_black"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="5dp"
+
+                        android:text="Family"
+                        android:textColor="@color/majesty"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/admin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginRight="10dp"
+
+                        android:layout_weight="2"
+                        android:fontFamily="@font/archivo_black"
+                        android:gravity="top"
+                        android:paddingLeft="15dp"
+                        android:paddingBottom="10dp"
+                        android:text="Admin"
+                        android:textColor="@color/heavy_red"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+                </LinearLayout>
 
 
             </LinearLayout>
