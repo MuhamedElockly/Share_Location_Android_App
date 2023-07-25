@@ -41,12 +41,26 @@
 
             <TextView
                 android:layout_width="match_parent"
+                android:id="@+id/bodyMessage1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Are You Sure For Deleting Account ?"
+                android:text="You w'll not be able to find this account again !"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/bodyMessage2"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Are you sure for deleting ?"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:layout_margin="5dp"
 
                 />
 

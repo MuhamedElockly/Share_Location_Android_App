@@ -102,7 +102,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             deletedRoom = rooms.get(posation);
             //    rooms.remove(posation);
             //  roomAdapter.notifyDataSetChanged();
-            deleteUserFromRoom(deletedRoom.getId());
+            // deleteUserFromRoom(deletedRoom.getId());
+            String alertMessage = "You w'll not be able to find this room again !";
+            showConfirmationDialoge(alertMessage, deletedRoom.getId());
 
             Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
                 @Override
@@ -631,5 +633,33 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 refresh();
             }
         });
+    }
+
+    private void showConfirmationDialoge(String message, String roomId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
+        TextView bodyMessage = view.findViewById(R.id.bodyMessage1);
+        bodyMessage.setText(message);
+        Button dialogeCancel = view.findViewById(R.id.deleteCancelButton);
+        Button dialogeSure = view.findViewById(R.id.deletSureButton);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                roomAdapter.notifyDataSetChanged();
+            }
+        });
+        dialogeSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                deleteUserFromRoom(deletedRoom.getId());
+            }
+        });
+
     }
 }
