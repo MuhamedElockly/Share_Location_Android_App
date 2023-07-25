@@ -1,10 +1,13 @@
 package com.example.sharelocation.ui;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +24,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,7 +40,9 @@ import com.example.sharelocation.pojo.MemebrsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +50,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class Room extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
@@ -56,8 +65,47 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     ArrayList<String> usersId;
     ArrayList<MemebrsModel> members;
     SwipeRefreshLayout swipeRefreshLayout;
+    MemebrsModel deletedMember;
     private FirebaseAuth fAuth;
     private String roomId;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int posation = viewHolder.getAdapterPosition();
+            deletedMember = members.get(posation);
+            //    rooms.remove(posation);
+            //  roomAdapter.notifyDataSetChanged();
+            // deleteUserFromRoom(deletedRoom.getId());
+            String alertMessage = "This user w'll not find this room again !";
+            showConfirmationDialoge(alertMessage, deletedMember.getId());
+            Log.d("searchElement", deletedMember.getId());
+
+            Snackbar.make((View) binding.memberRecyclerView, "Deleted", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //  rooms.add(posation, deletedRoom);
+                    //  roomAdapter.notifyDataSetChanged();
+                }
+            }).show();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Room.this, R.color.red)).addSwipeRightActionIcon(R.drawable.delete_icon).addSwipeRightLabel("Delete").setSwipeRightLabelTextSize(TypedValue.COMPLEX_UNIT_SP, 15)
+
+                    .setSwipeRightLabelColor(ContextCompat.getColor(Room.this, R.color.white)).create().decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
     private Button invite;
     private Button cancel;
     private EditText memberEmailText;
@@ -76,7 +124,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +183,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         swipeRefreshLayout.setEnabled(false);
-
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
     }
 
     @Override
@@ -469,6 +516,75 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
         startActivity(intent);
+    }
+
+    private void showConfirmationDialoge(String message, String userId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
+        TextView bodyMessage = view.findViewById(R.id.bodyMessage1);
+        bodyMessage.setText(message);
+        Button dialogeCancel = view.findViewById(R.id.deleteCancelButton);
+        Button dialogeSure = view.findViewById(R.id.deletSureButton);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                membersAdapter.notifyDataSetChanged();
+            }
+        });
+        dialogeSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                deleteUserFromRoom(userId);
+                //  searchArryList.clear();
+            }
+        });
+
+    }
+
+    private void deleteUserFromRoom(String userId) {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = fAuth.getCurrentUser();
+        // String userId = user.getUid();
+        roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        DatabaseReference userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
+        userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        decreaseRoomCapacity(roomId);
+                    }
+                });
+            }
+        });
+    }
+
+    private void decreaseRoomCapacity(String roomId) {
+        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int intRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    if (intRoomCapacity == 1) {
+                        roomRef.child(roomId).removeValue();
+                    } else {
+                        intRoomCapacity--;
+                        roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(intRoomCapacity));
+                    }
+                }
+                refresh();
+            }
+        });
     }
 }
 

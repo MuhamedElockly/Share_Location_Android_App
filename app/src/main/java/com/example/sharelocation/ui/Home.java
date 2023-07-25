@@ -108,7 +108,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             showConfirmationDialoge(alertMessage, deletedRoom.getId());
 
 
-            Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
+            Snackbar.make((View) binding.roomRecyclerView, "Deleted", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //  rooms.add(posation, deletedRoom);
