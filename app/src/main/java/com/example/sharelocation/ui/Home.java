@@ -79,6 +79,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     SwipeRefreshLayout swipeRefreshLayout;
     ActionBarDrawerToggle drawerToggle;
     FusedLocationProviderClient fusedLocationProviderClient;
+    ArrayList<RoomModel> searchArryList;
     private EditText roomNameText;
     private EditText roomCapacityText;
     private Button apply;
@@ -105,6 +106,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             // deleteUserFromRoom(deletedRoom.getId());
             String alertMessage = "You w'll not be able to find this room again !";
             showConfirmationDialoge(alertMessage, deletedRoom.getId());
+
 
             Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
                 @Override
@@ -230,7 +232,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
@@ -239,21 +240,79 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                search(query);
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                search(newText);
+
                 return false;
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+
+                roomAdapter = new RoomAdapter(Home.this, rooms);
+                // roomAdapter.notifyDataSetChanged();
+
+                recyclerView.setAdapter(roomAdapter);
+                refresh();
                 return false;
             }
         });
         return true;
+    }
+
+    private void search(String token) {
+
+        searchArryList = new ArrayList<>();
+        for (int i = 0; i < rooms.size(); i++) {
+            if (rooms.get(i).getName().contains(token)) {
+                searchArryList.add(rooms.get(i));
+                Log.d("searchElement", token);
+            }
+
+
+        }
+        roomAdapter = new RoomAdapter(this, searchArryList);
+        // roomAdapter.notifyDataSetChanged();
+
+        recyclerView.setAdapter(roomAdapter);
+        /*
+        FirebaseRecyclerOptions<RoomModel> options = new FirebaseRecyclerOptions.Builder<RoomModel>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("rooms").orderByKey()
+                        .orderByChild("name").startAt(token).endAt(token + "\uf8ff"), RoomModel.class).build();
+
+
+
+        // Convert the FirebaseRecyclerOptions object to an Object array.
+        Object[] objects = options.getSnapshots().toArray();
+
+
+        // Add the objects from the Object array to the ArrayList object.
+        for (Object object : objects) {
+            RoomModel room = (RoomModel) object;
+            firebaseArrayList.add(room);
+        }
+
+        Log.d("searchElement", String.valueOf(options.getSnapshots().size()));
+
+
+        roomAdapter = new RoomAdapter(this, firebaseArrayList);
+        roomAdapter.notifyDataSetChanged();
+
+
+         */
+        //   rooms.clear();
+        // rooms.addAll(options);
+        //  roomAdapter.notifyDataSetChanged();
+        // firebaseList.addAll(options);
+        //   roomAdapter=new RoomAdapter(this,options);
     }
 
     public void printValues() {
@@ -658,6 +717,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 dialog.cancel();
                 deleteUserFromRoom(deletedRoom.getId());
+                searchArryList.clear();
             }
         });
 
