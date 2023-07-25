@@ -100,8 +100,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int posation = viewHolder.getAdapterPosition();
             deletedRoom = rooms.get(posation);
-            rooms.remove(posation);
-            roomAdapter.notifyDataSetChanged();
+            //    rooms.remove(posation);
+            //  roomAdapter.notifyDataSetChanged();
             deleteUserFromRoom(deletedRoom.getId());
 
             Snackbar.make((View) binding.roomRecyclerView, "HHHH", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
@@ -118,9 +118,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Home.this, R.color.red)).addSwipeRightActionIcon(R.drawable.delete_icon).addSwipeRightLabel("Delete")
-                    .setSwipeRightLabelTextSize(TypedValue.COMPLEX_UNIT_SP,15)
-                    .addSwipeRightCornerRadius(TypedValue.DENSITY_DEFAULT,20)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(Home.this, R.color.red)).addSwipeRightActionIcon(R.drawable.delete_icon).addSwipeRightLabel("Delete").setSwipeRightLabelTextSize(TypedValue.COMPLEX_UNIT_SP, 15)
+
                     .setSwipeRightLabelColor(ContextCompat.getColor(Home.this, R.color.white)).create().decorate();
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
