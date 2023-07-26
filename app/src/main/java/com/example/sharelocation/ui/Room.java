@@ -76,23 +76,40 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private ActionBarDrawerToggle drawerToggle;
     private DatabaseReference roomRef;
     private ArrayList<MemebrsModel> searchArryList;
+    private FirebaseUser user;
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             int posation = viewHolder.getAdapterPosition();
             if (searchArryList.size() != 0) {
                 deletedMember = searchArryList.get(posation);
             } else {
                 deletedMember = members.get(posation);
             }
-            //    rooms.remove(posation);
-            //  roomAdapter.notifyDataSetChanged();
-            // deleteUserFromRoom(deletedRoom.getId());
+            if (deletedMember.getId().equals(user.getUid())) {
+                return 0;
+            }
+            return super.getSwipeDirs(recyclerView, viewHolder);
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int posation = viewHolder.getAdapterPosition();
+
+            if (searchArryList.size() != 0) {
+                deletedMember = searchArryList.get(posation);
+            } else {
+                deletedMember = members.get(posation);
+            }
+            if (deletedMember.getId().equals(user.getUid())) {
+                return;
+            }
             String alertMessage = "This user w'll not find this room again !";
             showConfirmationDialoge(alertMessage, deletedMember.getId());
             Log.d("searchElement", deletedMember.getId());
@@ -104,6 +121,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     //  roomAdapter.notifyDataSetChanged();
                 }
             }).show();
+
         }
 
         @Override
@@ -117,6 +135,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
+
     };
 
     @Override
@@ -194,6 +213,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         swipeRefreshLayout.setEnabled(false);
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
     }
 
