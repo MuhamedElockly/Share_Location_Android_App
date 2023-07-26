@@ -1,6 +1,8 @@
 <resources>
     <!-- Base application theme. -->
+
     <style name="Theme.ShareLocation" parent="Theme.AppCompat.Light.NoActionBar">
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/delicate_lace</item>
         <item name="colorPrimaryVariant">@color/yellow_sea</item>
@@ -14,9 +16,25 @@
         <!-- Customize your theme here. -->
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+          <item name="android:itemTextAppearance">@style/chengeTextPopMenu</item>
+        <!--   <item name="android:itemBackground">@drawable/delete_confirmation_dialoge</item> -->
+        <item name="android:popupMenuStyle">@style/PopupMenutemp</item>
+    </style>
+
+    <style name="PopupMenutemp" parent="Widget.MaterialComponents.PopupMenu">
+        <item name="android:popupBackground">@drawable/delete_confirmation_dialoge</item>
 
 
     </style>
+
+    <style name="chengeTextPopMenu" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/majesty</item>
+        <item name="android:popupMenuStyle">@drawable/delete_confirmation_dialoge</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:textSize">20dp</item>
+    </style>
+
 
     <style name="ThemeOverlay.ShareLocation.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">@color/light_blue_900</item>

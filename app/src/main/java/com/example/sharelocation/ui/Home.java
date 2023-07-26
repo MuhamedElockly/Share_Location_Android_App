@@ -100,7 +100,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int posation = viewHolder.getAdapterPosition();
-            deletedRoom = rooms.get(posation);
+
+            if (searchArryList.size() != 0) {
+                deletedRoom = searchArryList.get(posation);
+            } else {
+                deletedRoom = rooms.get(posation);
+            }
+
+            //  deletedRoom = rooms.get(posation);
             //    rooms.remove(posation);
             //  roomAdapter.notifyDataSetChanged();
             // deleteUserFromRoom(deletedRoom.getId());
@@ -159,6 +166,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
         rooms = new ArrayList<>();
         userRooms = new ArrayList<>();
+        searchArryList = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         roomAdapter = new RoomAdapter(this, rooms);
         recyclerView.setAdapter(roomAdapter);
@@ -257,6 +265,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public boolean onClose() {
                 searchArryList.clear();
+
                 roomAdapter = new RoomAdapter(Home.this, rooms);
                 // roomAdapter.notifyDataSetChanged();
 
@@ -270,7 +279,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void search(String token) {
 
-        searchArryList = new ArrayList<>();
+
         for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getName().contains(token)) {
                 searchArryList.add(rooms.get(i));

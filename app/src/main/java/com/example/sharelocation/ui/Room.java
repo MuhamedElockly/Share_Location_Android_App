@@ -85,7 +85,11 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int posation = viewHolder.getAdapterPosition();
-            deletedMember = members.get(posation);
+            if (searchArryList.size() != 0) {
+                deletedMember = searchArryList.get(posation);
+            } else {
+                deletedMember = members.get(posation);
+            }
             //    rooms.remove(posation);
             //  roomAdapter.notifyDataSetChanged();
             // deleteUserFromRoom(deletedRoom.getId());
@@ -120,6 +124,12 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
+        } else if (item.getItemId() == R.id.logOutPop) {
+            FirebaseAuth fAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = fAuth.getCurrentUser();
+            String alertMessage = "You w'll not find this room again !";
+            showConfirmationDialoge(alertMessage, user.getUid());
+
         }
 
 
@@ -220,6 +230,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                 return false;
             }
         });
+
+
         return true;
     }
 
@@ -247,7 +259,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                members.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     //   MemebrsModel memebrsModel = dataSnapshot.getValue(MemebrsModel.class);
