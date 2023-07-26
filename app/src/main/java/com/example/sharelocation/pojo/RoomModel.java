@@ -8,16 +8,26 @@ public class RoomModel {
     private String numberOfRooms;
     private String roomCapacity;
     private String id;
+    private String admin;
 
     public RoomModel() {
 
     }
 
-    public RoomModel(String name, String numberOfRooms, String id, String roomCapacity) {
+    public RoomModel(String name, String numberOfRooms, String id, String roomCapacity, String admin) {
         this.name = name;
         this.numberOfRooms = numberOfRooms;
         this.id = id;
         this.roomCapacity = roomCapacity;
+        this.admin = admin;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 
     public String getId() {

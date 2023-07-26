@@ -66,6 +66,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     ArrayList<MemebrsModel> members;
     SwipeRefreshLayout swipeRefreshLayout;
     MemebrsModel deletedMember;
+    private String roomAdmin = "";
     private FirebaseAuth fAuth;
     private String roomId;
     private Button invite;
@@ -137,6 +138,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     };
+    private DatabaseReference rooms;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -166,6 +168,12 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
 
+        Intent intent = getIntent();
+        roomId = intent.getStringExtra("roomId");
+        roomName = intent.getStringExtra("roomName");
+        getSupportActionBar().setTitle(roomName);
+
+
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -183,13 +191,11 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView = binding.memberRecyclerView;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        membersAdapter = new MembersAdapter(this, members);
-        recyclerView.setAdapter(membersAdapter);
+        getRoomAdmin();
+        //   membersAdapter = new MembersAdapter(this, members);
+        // recyclerView.setAdapter(membersAdapter);
 
-        Intent intent = getIntent();
-        roomId = intent.getStringExtra("roomId");
-        roomName = intent.getStringExtra("roomName");
-        getSupportActionBar().setTitle(roomName);
+
         refresh();
 
         binding.addMember.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +249,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             public boolean onClose() {
 
 
-                membersAdapter = new MembersAdapter(Room.this, members);
+                membersAdapter = new MembersAdapter(Room.this, members, roomAdmin);
                 // roomAdapter.notifyDataSetChanged();
 
                 recyclerView.setAdapter(membersAdapter);
@@ -256,7 +262,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
-
     private void search(String token) {
         searchArryList.clear();
 
@@ -268,12 +273,11 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         }
-        membersAdapter = new MembersAdapter(this, searchArryList);
+        membersAdapter = new MembersAdapter(this, searchArryList, roomAdmin);
         // roomAdapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(membersAdapter);
     }
-
 
     private void getUsers() {
         usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -441,18 +445,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
                     }
                 }
-
-/*
-                for (int j = 1; j <= snapshot.getChildrenCount(); j++) {
-                    String id = snapshot.child(String.valueOf(j)).getValue(String.class);
-                    if (userId.equals(id)) {
-                        userExist = true;
-                        break;
-                    }
-
-                }
-
- */
                 if (userExist) {
                     Toast.makeText(Room.this, "User already exist !", Toast.LENGTH_SHORT).show();
                 } else {
@@ -464,10 +456,26 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void getRoomAdmin() {
+        rooms = FirebaseDatabase.getInstance().getReference("rooms");
+        rooms.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    roomAdmin = snapshot.child("admin").getValue(String.class);
+                    membersAdapter = new MembersAdapter(Room.this, members, roomAdmin);
+                    recyclerView.setAdapter(membersAdapter);
+                }
+            }
+        });
+    }
+
     private void refresh() {
         binding.roomPBar.setVisibility(View.VISIBLE);
         usersId.clear();
         members.clear();
+        // getRoomAdmin();
         roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
         roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

@@ -27,12 +27,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
     ArrayList<MemebrsModel> members;
     FirebaseAuth fAuth;
     FirebaseUser user;
+    String roomAdmin = "";
 
-    public MembersAdapter(Context context, ArrayList<MemebrsModel> rooms) {
+    public MembersAdapter(Context context, ArrayList<MemebrsModel> members, String roomAdmin) {
         this.context = context;
-        this.members = rooms;
+        this.members = members;
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+        this.roomAdmin = roomAdmin;
     }
 
     @NonNull
@@ -50,7 +52,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
             holder.memberName.setText(member.getName() + currentUser);
         } else {
             holder.memberName.setText(member.getName());
-          //  holder.admin.setVisibility(View.VISIBLE);
+            //  holder.admin.setVisibility(View.VISIBLE);
+        }
+        if (member.getId().equals(roomAdmin)) {
+            holder.admin.setVisibility(View.VISIBLE);
         }
 
         Glide.with(context).load(member.getPhotoUri()).into(holder.memberPhoto);

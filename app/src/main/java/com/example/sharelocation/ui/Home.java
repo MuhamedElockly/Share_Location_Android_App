@@ -348,7 +348,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers);
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid());
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -381,7 +381,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers);
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid());
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
