@@ -279,7 +279,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void search(String token) {
 
-
+        searchArryList.clear();
         for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getName().contains(token)) {
                 searchArryList.add(rooms.get(i));

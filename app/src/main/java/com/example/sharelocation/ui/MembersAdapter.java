@@ -63,6 +63,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
         Glide.with(context).load(member.getPhotoUri()).into(holder.memberPhoto);
         holder.memberName.setTag(member.getId());
         holder.memberPhoto.setTag(member.getPhotoUri());
+        holder.admin.setTag(member.getName());
     }
 
     @Override
@@ -99,7 +100,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     //     ((Home) context).finish();
                     intent.putExtra("userId", (String) memberName.getTag());
-                    intent.putExtra("memberName", memberName.getText());
+                    intent.putExtra("memberName", (String) admin.getTag());
                     //   Toast.makeText((Context) context, (CharSequence) memberName.getTag(), Toast.LENGTH_SHORT).show();
                     ((Room) context).startActivity(intent);
 

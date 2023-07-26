@@ -195,6 +195,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView = binding.memberRecyclerView;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+
         getRoomAdmin();
         //   membersAdapter = new MembersAdapter(this, members);
         // recyclerView.setAdapter(membersAdapter);
@@ -223,8 +227,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         swipeRefreshLayout.setEnabled(false);
-        fAuth = FirebaseAuth.getInstance();
-        user = fAuth.getCurrentUser();
+
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
     }
 
@@ -251,7 +254,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-
+                searchArryList.clear();
 
                 membersAdapter = new MembersAdapter(Room.this, members, roomAdmin);
                 // roomAdapter.notifyDataSetChanged();
@@ -470,6 +473,11 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     roomAdmin = snapshot.child("admin").getValue(String.class);
                     membersAdapter = new MembersAdapter(Room.this, members, roomAdmin);
                     recyclerView.setAdapter(membersAdapter);
+                    if (user.getUid().equals(roomAdmin)) {
+                        binding.addMember.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.addMember.setVisibility(View.GONE);
+                    }
                 }
             }
         });
