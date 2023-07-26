@@ -56,6 +56,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
         }
         if (member.getId().equals(roomAdmin)) {
             holder.admin.setVisibility(View.VISIBLE);
+        } else {
+            holder.admin.setVisibility(View.GONE);
         }
 
         Glide.with(context).load(member.getPhotoUri()).into(holder.memberPhoto);

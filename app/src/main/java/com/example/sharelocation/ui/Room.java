@@ -93,9 +93,13 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             } else {
                 deletedMember = members.get(posation);
             }
-            if (deletedMember.getId().equals(user.getUid())) {
+
+            if (!user.getUid().equals(roomAdmin)) {
+                return 0;
+            } else if (deletedMember.getId().equals(user.getUid())) {
                 return 0;
             }
+
             return super.getSwipeDirs(recyclerView, viewHolder);
         }
 
