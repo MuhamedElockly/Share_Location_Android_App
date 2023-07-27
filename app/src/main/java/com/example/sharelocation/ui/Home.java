@@ -683,15 +683,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 DataSnapshot snapshot = task.getResult();
-                                String newAdminId = null;
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                    newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
-                                    break;
-                                }
-                                if (newAdminId != null) {
-                                    DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
-                                    roomRef.child(roomId).child("admin").setValue(newAdminId);
-                                }
+                                DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+
+                                roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        String roomAdmin = "";
+                                        DataSnapshot roomSnapshot = task.getResult();
+                                        roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+
+                                        if (user.getUid().equals(roomAdmin)) {
+                                            String newAdminId = null;
+                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                                break;
+                                            }
+                                            if (newAdminId != null) {
+
+                                                roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                            }
+                                        }
+                                    }
+                                });
+
+
                             }
                         });
                         decreaseRoomCapacity(roomId);
