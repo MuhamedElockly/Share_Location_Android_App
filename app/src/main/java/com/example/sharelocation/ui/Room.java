@@ -585,6 +585,12 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
+        } else if (id == R.id.navProfile) {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //   finish();
+            startActivity(intent);
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -678,9 +684,9 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                         roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                             //   String roomAdmin = "";
-                              DataSnapshot roomSnapshot = task.getResult();
-                              //  roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+                                //   String roomAdmin = "";
+                                DataSnapshot roomSnapshot = task.getResult();
+                                //  roomAdmin = roomSnapshot.child("admin").getValue(String.class);
 
                                 if (user.getUid().equals(roomAdmin)) {
                                     String newAdminId = null;

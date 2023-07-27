@@ -19,7 +19,7 @@
         <item android:title=" Profile ">
             <menu>
                 <item
-                    android:id="@+id/Profile"
+                    android:id="@+id/navProfile"
                     android:icon="@drawable/profile"
                     android:title="Profile" />
                 <item

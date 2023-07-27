@@ -620,6 +620,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             //   finish();
             startActivity(intent);
 
+        } else if (id == R.id.navProfile) {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //   finish();
+            startActivity(intent);
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -96,6 +96,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
+
+
                     Intent intent = new Intent(context.getApplicationContext(), Member.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     //     ((Home) context).finish();
