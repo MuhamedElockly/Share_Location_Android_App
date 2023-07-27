@@ -154,7 +154,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             FirebaseAuth fAuth = FirebaseAuth.getInstance();
             FirebaseUser user = fAuth.getCurrentUser();
             String alertMessage = "You w'll not find this room again !";
-            String confirmMessage = "Are You Sure For exite ?";
+            String confirmMessage = "Are you sure for exite ?";
             showConfirmationLogOut(alertMessage, confirmMessage, user.getUid());
 
         }
@@ -678,15 +678,20 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                         roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                DataSnapshot snapshot = task.getResult();
-                                String newAdminId = null;
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                    newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
-                                    break;
-                                }
-                                if (newAdminId != null) {
-                                    roomRef = FirebaseDatabase.getInstance().getReference("rooms");
-                                    roomRef.child(roomId).child("admin").setValue(newAdminId);
+                             //   String roomAdmin = "";
+                              DataSnapshot roomSnapshot = task.getResult();
+                              //  roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+
+                                if (user.getUid().equals(roomAdmin)) {
+                                    String newAdminId = null;
+                                    for (DataSnapshot dataSnapshot : roomSnapshot.getChildren()) {
+                                        newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                        break;
+                                    }
+                                    if (newAdminId != null) {
+
+                                        roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                    }
                                 }
                             }
                         });
