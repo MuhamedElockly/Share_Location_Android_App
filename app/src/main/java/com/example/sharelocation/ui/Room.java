@@ -153,7 +153,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             FirebaseAuth fAuth = FirebaseAuth.getInstance();
             FirebaseUser user = fAuth.getCurrentUser();
             String alertMessage = "You w'll not find this room again !";
-            showConfirmationDialoge(alertMessage, user.getUid());
+            showConfirmationLogOut(alertMessage, user.getUid());
 
         }
 
@@ -630,6 +630,71 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+
+    private void showConfirmationLogOut(String message, String userId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
+        TextView bodyMessage = view.findViewById(R.id.bodyMessage1);
+        bodyMessage.setText(message);
+        Button dialogeCancel = view.findViewById(R.id.deleteCancelButton);
+        Button dialogeSure = view.findViewById(R.id.deletSureButton);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                membersAdapter.notifyDataSetChanged();
+            }
+        });
+        dialogeSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                logOutFromRoom(userId);
+                searchArryList.clear();
+            }
+        });
+
+    }
+
+    private void logOutFromRoom(String userId) {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = fAuth.getCurrentUser();
+        // String userId = user.getUid();
+        roomMembersRef = FirebaseDatabase.getInstance().getReference("roomMembers");
+        DatabaseReference userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
+        userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                DataSnapshot snapshot = task.getResult();
+                                String newAdminId = null;
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                    break;
+                                }
+                                if (newAdminId != null) {
+                                    roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+                                    roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                }
+                            }
+                        });
+                        decreaseRoomCapacityforLogOut(roomId);
+                    }
+                });
+            }
+        });
+    }
+
+
     private void deleteUserFromRoom(String userId) {
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         FirebaseUser user = fAuth.getCurrentUser();
@@ -645,6 +710,32 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                         decreaseRoomCapacity(roomId);
                     }
                 });
+            }
+        });
+    }
+
+    private void decreaseRoomCapacityforLogOut(String roomId) {
+        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int intRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    if (intRoomCapacity == 1) {
+                        roomRef.child(roomId).removeValue();
+
+                    } else {
+                        intRoomCapacity--;
+                        roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(intRoomCapacity));
+                    }
+                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
+                }
+                //  refresh();
             }
         });
     }
