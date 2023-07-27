@@ -172,8 +172,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView.setAdapter(roomAdapter);
 
 
-     //   refresh();
-         checkRooms();
+        //   refresh();
+        checkRooms();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -679,6 +679,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                DataSnapshot snapshot = task.getResult();
+                                String newAdminId = null;
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                    break;
+                                }
+                                if (newAdminId != null) {
+                                    DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+                                    roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                }
+                            }
+                        });
                         decreaseRoomCapacity(roomId);
                     }
                 });

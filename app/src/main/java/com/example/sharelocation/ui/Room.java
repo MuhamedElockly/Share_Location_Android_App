@@ -116,7 +116,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                 return;
             }
             String alertMessage = "This user w'll not find this room again !";
-            showConfirmationDialoge(alertMessage, deletedMember.getId());
+            String alertConfirmMessage = "Are you sure for deleting ?";
+            showConfirmationDialoge(alertMessage, alertConfirmMessage, deletedMember.getId());
             Log.d("searchElement", deletedMember.getId());
 
             Snackbar.make((View) binding.memberRecyclerView, "Deleted", Snackbar.LENGTH_LONG).setAction("Undo Changes", new View.OnClickListener() {
@@ -153,7 +154,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             FirebaseAuth fAuth = FirebaseAuth.getInstance();
             FirebaseUser user = fAuth.getCurrentUser();
             String alertMessage = "You w'll not find this room again !";
-            showConfirmationLogOut(alertMessage, user.getUid());
+            String confirmMessage = "Are You Sure For exite ?";
+            showConfirmationLogOut(alertMessage, confirmMessage, user.getUid());
 
         }
 
@@ -597,11 +599,13 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         startActivity(intent);
     }
 
-    private void showConfirmationDialoge(String message, String userId) {
+    private void showConfirmationDialoge(String alertStringMessage, String confirmStringMessage, String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
-        TextView bodyMessage = view.findViewById(R.id.bodyMessage1);
-        bodyMessage.setText(message);
+        TextView alertMessage = view.findViewById(R.id.bodyMessage1);
+        TextView confirmMessage = view.findViewById(R.id.bodyMessage2);
+        alertMessage.setText(alertStringMessage);
+        confirmMessage.setText(confirmStringMessage);
         Button dialogeCancel = view.findViewById(R.id.deleteCancelButton);
         Button dialogeSure = view.findViewById(R.id.deletSureButton);
         builder.setView(view);
@@ -612,6 +616,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+
                 membersAdapter.notifyDataSetChanged();
             }
         });
@@ -627,11 +632,13 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
 
-    private void showConfirmationLogOut(String message, String userId) {
+    private void showConfirmationLogOut(String alertStringMessage, String confirmStringMessage, String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
-        TextView bodyMessage = view.findViewById(R.id.bodyMessage1);
-        bodyMessage.setText(message);
+        TextView alertMessage = view.findViewById(R.id.bodyMessage1);
+        TextView confirmMessage = view.findViewById(R.id.bodyMessage2);
+        alertMessage.setText(alertStringMessage);
+        confirmMessage.setText(confirmStringMessage);
         Button dialogeCancel = view.findViewById(R.id.deleteCancelButton);
         Button dialogeSure = view.findViewById(R.id.deletSureButton);
         builder.setView(view);
