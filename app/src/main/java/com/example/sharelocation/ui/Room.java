@@ -371,9 +371,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     // pushToFireBase(roomName, roomCapacity);
 
                     usersRef = FirebaseDatabase.getInstance().getReference("users");
-                    usersRef.addValueEventListener(new ValueEventListener() {
+                    usersRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            DataSnapshot snapshot = task.getResult();
                             boolean emailExist = false;
                             String userId = null;
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -392,11 +393,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                                 memberEmailText.setError("Email Is Not Found");
                                 memberEmailText.requestFocus();
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
 
