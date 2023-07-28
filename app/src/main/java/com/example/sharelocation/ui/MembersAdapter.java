@@ -93,14 +93,19 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
 
         public void setMemberProfile(View itemView) {
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent;
+                    if (memberName.getTag().equals(user.getUid())) {
+                        //    Toast.makeText((Context) context, (CharSequence) memberName.getTag(), Toast.LENGTH_SHORT).show();
+                        intent = new Intent(context.getApplicationContext(), ProfileActivity.class);
+                    } else {
+                        intent = new Intent(context.getApplicationContext(), Member.class);
+                    }
 
 
-
-
-                    Intent intent = new Intent(context.getApplicationContext(), Member.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     //     ((Home) context).finish();
                     intent.putExtra("userId", (String) memberName.getTag());

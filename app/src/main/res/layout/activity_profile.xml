@@ -120,10 +120,10 @@
                                     android:id="@+id/profileName"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-
-
                                     android:layout_margin="10dp"
+
                                     android:background="@color/transparent"
+                                    android:editable="false"
                                     android:fontFamily="@font/baloo"
                                     android:gravity="center"
                                     android:padding="2dp"
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit"
-
+                            android:visibility="gone"
                             />
 
                         <ImageButton
@@ -147,14 +147,14 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="7dp"
                             android:background="@drawable/submit"
-                            android:visibility="gone" />
+                         />
 
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="7dp"
                             android:background="@drawable/close"
-                            android:visibility="gone" />
+                           />
 
                     </LinearLayout>
 
@@ -187,11 +187,11 @@
                                     android:id="@+id/email"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-
                                     android:layout_margin="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
                                     android:background="@color/transparent"
+                                    android:editable="false"
                                     android:fontFamily="@font/baloo"
                                     android:gravity="center"
                                     android:padding="2dp"
@@ -259,6 +259,7 @@
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
                                     android:background="@color/transparent"
+                                    android:editable="false"
                                     android:fontFamily="@font/baloo"
                                     android:gravity="center"
                                     android:padding="2dp"
@@ -326,6 +327,7 @@
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
                                     android:background="@color/transparent"
+                                    android:editable="false"
                                     android:fontFamily="@font/baloo"
                                     android:gravity="center"
                                     android:padding="2dp"

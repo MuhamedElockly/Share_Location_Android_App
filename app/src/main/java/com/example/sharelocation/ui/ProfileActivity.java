@@ -1,8 +1,8 @@
 package com.example.sharelocation.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +22,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.profileToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        String memberName = intent.getStringExtra("memberName");
+        getSupportActionBar().setTitle(memberName);
+
         binding.swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -179,7 +179,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         roomName = intent.getStringExtra("roomName");
         getSupportActionBar().setTitle(roomName);
 
-
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -587,6 +588,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(intent);
         } else if (id == R.id.navProfile) {
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            intent.putExtra("memberName", (String) user.getDisplayName());
             // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             //   finish();
             startActivity(intent);
@@ -678,32 +680,41 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                //   String roomAdmin = "";
-                                DataSnapshot roomSnapshot = task.getResult();
-                                //  roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+                if (task.isSuccessful()) {
+                    roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            //   String roomAdmin = "";
+                                            DataSnapshot roomSnapshot = task.getResult();
+                                            //  roomAdmin = roomSnapshot.child("admin").getValue(String.class);
 
-                                if (user.getUid().equals(roomAdmin)) {
-                                    String newAdminId = null;
-                                    for (DataSnapshot dataSnapshot : roomSnapshot.getChildren()) {
-                                        newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
-                                        break;
+                                            if (user.getUid().equals(roomAdmin)) {
+                                                String newAdminId = "empty";
+                                                if (roomSnapshot.hasChildren()) {
+                                                    for (DataSnapshot dataSnapshot : roomSnapshot.getChildren()) {
+                                                        newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                                        if (!newAdminId.equals("empty")) {
+                                                            Log.e("newAdmin",newAdminId);
+                                                            roomRef=FirebaseDatabase.getInstance().getReference("rooms");
+                                                            roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                    if (newAdminId != null) {
-
-                                        roomRef.child(roomId).child("admin").setValue(newAdminId);
-                                    }
-                                }
+                                });
+                                decreaseRoomCapacityforLogOut(roomId);
                             }
-                        });
-                        decreaseRoomCapacityforLogOut(roomId);
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
     }

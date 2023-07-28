@@ -622,6 +622,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         } else if (id == R.id.navProfile) {
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            intent.putExtra("memberName", (String) user.getDisplayName());
             // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             //   finish();
             startActivity(intent);
