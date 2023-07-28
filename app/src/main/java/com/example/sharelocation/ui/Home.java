@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -227,7 +228,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         getLastLocation();
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.roomRecyclerView);
 
-
+        Fragment fragment = new MapsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mapView, fragment).commit();
     }
 
     @Override
