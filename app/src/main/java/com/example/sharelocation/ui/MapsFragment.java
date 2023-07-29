@@ -1,6 +1,7 @@
 package com.example.sharelocation.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,13 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(@NonNull LatLng latLng) {
+                        Log.e("mapFragment", "mapClicked");
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
                         markerOptions.title(latLng.latitude + "+" + latLng.longitude);
+                        Log.e("mapFragment", String.valueOf(latLng.latitude));
                         googleMap.clear();
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,20));
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                         googleMap.addMarker(markerOptions);
                     }
                 });

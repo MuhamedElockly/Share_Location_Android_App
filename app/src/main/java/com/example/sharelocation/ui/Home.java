@@ -647,7 +647,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 public void onSuccess(Location location) {
                     if (location != null) {
 
-                        //    Toast.makeText(Home.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        //     Toast.makeText((Context) Home.this, String.valueOf(location.getLatitude()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
