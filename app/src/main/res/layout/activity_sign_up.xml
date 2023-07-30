@@ -42,16 +42,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ProgressBar
                     android:id="@+id/pBar"
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"
                     android:layout_below="@+id/btnShow"
                     android:layout_centerHorizontal="true"
-                    android:visibility="gone"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone" />
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
@@ -61,9 +63,9 @@
 
                     <ImageView
                         android:id="@+id/profilePhoto"
-                        android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:src="@drawable/insert_photo" />
                 </androidx.cardview.widget.CardView>
 
@@ -76,6 +78,7 @@
                 android:layout_margin="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
 
                 <EditText
                     android:id="@+id/userName"
@@ -92,6 +95,7 @@
                     android:paddingStart="20dp"
                     android:paddingLeft="30dp"
                     android:textColor="@color/white" />
+
 
                 <EditText
                     android:id="@+id/email"
@@ -123,6 +127,7 @@
                     android:inputType="textPassword"
                     android:paddingStart="20dp"
                     android:paddingLeft="30dp"
+
                     android:textColor="@color/white" />
 
                 <EditText

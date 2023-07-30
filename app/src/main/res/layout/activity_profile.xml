@@ -122,7 +122,7 @@
                                         android:layout_height="wrap_content"
                                         android:elevation="10dp"
 
-                                        app:cardCornerRadius="22dp"
+                                        app:cardCornerRadius="15dp"
                                         app:cardElevation="5dp"
                                         app:cardUseCompatPadding="true">>
 
@@ -157,19 +157,20 @@
                                     <ImageButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/edit"
+                                        android:background="@drawable/edit" />
+
+                                    <ImageButton
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+
+                                        android:background="@drawable/submit"
                                         android:visibility="gone" />
 
                                     <ImageButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-
-                                        android:background="@drawable/submit" />
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/close" />
+                                        android:background="@drawable/close"
+                                        android:visibility="gone" />
 
                                 </LinearLayout>
                             </LinearLayout>
@@ -200,7 +201,7 @@
                             app:cardElevation="10dp">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
@@ -208,19 +209,21 @@
 
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
+                                    android:layout_weight="2"
                                     android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:orientation="horizontal">
 
                                     <androidx.cardview.widget.CardView
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginLeft="10dp"
                                         android:layout_marginRight="5dp"
                                         app:cardCornerRadius="15dp"
+
                                         app:cardElevation="5dp">
 
                                         <TextView
@@ -246,13 +249,13 @@
 
 
                                     android:layout_weight="1"
-                                    android:gravity="left|center_vertical"
+
                                     android:orientation="horizontal">
 
                                     <androidx.cardview.widget.CardView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        app:cardCornerRadius="22dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        app:cardCornerRadius="15dp"
 
 
                                         app:cardElevation="5dp"
@@ -264,7 +267,7 @@
                                             android:gravity="center"
                                             android:orientation="horizontal"
 
-                                            android:weightSum="1">
+                                            >
 
 
                                             <EditText
@@ -331,10 +334,11 @@
                             android:layout_height="match_parent"
                             android:layout_margin="15dp"
                             app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
+                            app:cardElevation="10dp"
+                            >
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:gravity="center"
@@ -342,19 +346,21 @@
 
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
-                                    android:gravity="center"
+                                    android:layout_weight="2"
+                                    android:gravity="center_vertical|center_horizontal"
                                     android:orientation="vertical">
 
                                     <androidx.cardview.widget.CardView
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginLeft="10dp"
                                         android:layout_marginRight="5dp"
                                         app:cardCornerRadius="15dp"
+
                                         app:cardElevation="5dp">
 
                                         <TextView
@@ -380,25 +386,18 @@
 
 
                                     android:layout_weight="1"
-                                    android:gravity="left|center_vertical"
+                                    android:gravity="center_vertical|center_horizontal"
                                     android:orientation="horizontal">
 
                                     <androidx.cardview.widget.CardView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:cardCornerRadius="22dp"
+                                        app:cardCornerRadius="15dp"
 
 
                                         app:cardElevation="5dp"
                                         app:cardUseCompatPadding="true">>
 
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-
-                                            android:weightSum="1">
 
 
                                             <EditText
@@ -420,7 +419,7 @@
                                                 android:textSize="18dp" />
 
 
-                                        </LinearLayout>
+
                                     </androidx.cardview.widget.CardView>
 
                                     <ImageButton
@@ -460,8 +459,7 @@
                         android:layout_margin="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
@@ -506,28 +504,38 @@
 
                                             <LinearLayout
                                                 android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
+                                                android:layout_height="wrap_content"
                                                 android:gravity="center"
                                                 android:orientation="horizontal"
 
                                                 android:weightSum="1">
 
-
-                                                <EditText
-                                                    android:id="@+id/passward6"
+                                                <com.google.android.material.textfield.TextInputLayout
+                                                    android:id="@+id/currentPasswardLayout"
+                                                    style="@style/ThemeOverlay.Material3.AutoCompleteTextView"
                                                     android:layout_width="match_parent"
-                                                    android:layout_height="match_parent"
-                                                    android:layout_margin="5dp"
-                                                    android:background="@color/transparent"
+                                                    android:layout_height="wrap_content"
 
-                                                    android:fontFamily="@font/baloo"
-                                                    android:gravity="center"
-                                                    android:hint="Current Passward "
-                                                    android:inputType="textPassword"
-                                                    android:padding="2dp"
-                                                    android:textColor="@color/majesty"
-                                                    android:textSize="12sp" />
+                                                    app:endIconMode="password_toggle"
+                                                    app:errorEnabled="true"
 
+                                                    app:errorIconDrawable="@drawable/error">
+
+                                                    <com.google.android.material.textfield.TextInputEditText
+                                                        android:id="@+id/currentPassward"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_margin="5dp"
+                                                        android:background="@color/transparent"
+
+                                                        android:fontFamily="@font/baloo"
+                                                        android:gravity="center"
+                                                        android:hint="Current Passward "
+                                                        android:inputType="textPassword"
+                                                        android:padding="2dp"
+                                                        android:textColor="@color/majesty"
+                                                        android:textSize="12sp" />
+                                                </com.google.android.material.textfield.TextInputLayout>
 
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
@@ -795,7 +803,8 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
