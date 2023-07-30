@@ -534,7 +534,7 @@
                                                         android:inputType="textPassword"
                                                         android:padding="2dp"
                                                         android:textColor="@color/majesty"
-                                                        android:textSize="12sp" />
+                                                        android:textSize="14sp" />
                                                 </com.google.android.material.textfield.TextInputLayout>
 
                                             </LinearLayout>
@@ -618,7 +618,7 @@
                                                     android:inputType="textPassword"
                                                     android:padding="2dp"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="12sp" />
+                                                    android:textSize="14sp" />
 
 
                                             </LinearLayout>
@@ -701,7 +701,7 @@
                                                     android:inputType="textPassword"
                                                     android:padding="2dp"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="12sp" />
+                                                    android:textSize="14sp" />
 
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
