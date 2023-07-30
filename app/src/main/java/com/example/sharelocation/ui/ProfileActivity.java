@@ -3,6 +3,7 @@ package com.example.sharelocation.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,8 +37,28 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         binding.swipeToRefresh.setEnabled(false);
+        updatePasswardView();
 
     }
+
+    private void updatePasswardView() {
+        binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.changePassward.setVisibility(View.GONE);
+                binding.passwardDialoge.setVisibility(View.VISIBLE);
+            }
+        });
+        binding.cancelPassward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                binding.passwardDialoge.setVisibility(View.GONE);
+                binding.changePassward.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
