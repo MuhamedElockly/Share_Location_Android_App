@@ -63,78 +63,82 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:gravity="center"
+
                                 android:orientation="horizontal">
-
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_marginTop="10dp"
-                                        app:cardCornerRadius="30dp"
-
-                                        app:cardElevation="5dp">
-
-
-                                        <com.google.android.material.imageview.ShapeableImageView
-                                            android:id="@+id/profilePhoto"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:src="@drawable/locationicon"
-
-                                            app:shapeAppearanceOverlay="@style/circular"
-                                            app:strokeColor="@color/heavy_red"
-                                            app:strokeWidth="5dp" />
-
-
-                                    </androidx.cardview.widget.CardView>
-
-                                    <ImageButton
-                                        android:id="@+id/editProfilePhoto"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="bottom|center"
-                                        android:layout_marginBottom="10dp"
-
-                                        android:background="@drawable/photo_edit" />
-
-
-                                </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-
-                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
                                     android:layout_weight="1"
-                                    android:gravity="center"
+
+
                                     android:orientation="horizontal">
 
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:elevation="10dp"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
 
-                                        app:cardCornerRadius="15dp"
-                                        app:cardElevation="5dp"
-                                        app:cardUseCompatPadding="true">>
+                                        android:orientation="vertical">
 
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="60dp"
+                                            android:layout_height="60dp"
+                                            android:layout_marginTop="10dp"
+                                            app:cardCornerRadius="30dp"
 
-                                            android:gravity="center"
-                                            android:orientation="horizontal">
+                                            app:cardElevation="5dp">
+
+
+                                            <com.google.android.material.imageview.ShapeableImageView
+                                                android:id="@+id/profilePhoto"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:src="@drawable/locationicon"
+
+                                                app:shapeAppearanceOverlay="@style/circular"
+                                                app:strokeColor="@color/heavy_red"
+                                                app:strokeWidth="5dp" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+                                        <ImageButton
+                                            android:id="@+id/editProfilePhoto"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="bottom|center"
+                                            android:layout_marginBottom="10dp"
+
+                                            android:background="@drawable/photo_edit" />
+
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:elevation="10dp"
+
+                                            app:cardCornerRadius="15dp"
+                                            app:cardElevation="5dp"
+                                            app:cardUseCompatPadding="true">>
 
 
                                             <EditText
+
                                                 android:id="@+id/name"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
@@ -142,7 +146,9 @@
                                                 android:layout_marginLeft="10dp"
                                                 android:layout_marginRight="10dp"
                                                 android:background="@color/transparent"
-                                                android:editable="false"
+                                                android:enabled="false"
+
+
                                                 android:fontFamily="@font/baloo"
                                                 android:gravity="center"
                                                 android:padding="2dp"
@@ -151,28 +157,42 @@
                                                 android:textSize="24dp" />
 
 
-                                        </LinearLayout>
-                                    </androidx.cardview.widget.CardView>
+                                        </androidx.cardview.widget.CardView>
+                                    </LinearLayout>
 
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/edit" />
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="5"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
 
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        <ImageButton
+                                            android:id="@+id/editName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/edit"
+                                            />
 
-                                        android:background="@drawable/submit"
-                                        android:visibility="gone" />
+                                        <ImageButton
+                                            android:id="@+id/confirmName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:visibility="gone"
+                                            android:background="@drawable/submit" />
 
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/close"
-                                        android:visibility="gone" />
+                                        <ImageButton
+                                            android:id="@+id/closeName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/close"
 
-                                </LinearLayout>
+                                            android:visibility="gone"  />
+                                    </LinearLayout>
+
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
@@ -334,8 +354,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="15dp"
                             app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp"
-                            >
+                            app:cardElevation="10dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -399,25 +418,23 @@
                                         app:cardUseCompatPadding="true">>
 
 
+                                        <EditText
+                                            android:id="@+id/phoneNumber"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="6dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_marginRight="6dp"
+                                            android:layout_marginBottom="10dp"
 
-                                            <EditText
-                                                android:id="@+id/phoneNumber"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_marginLeft="6dp"
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginRight="6dp"
-                                                android:layout_marginBottom="10dp"
-
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:fontFamily="@font/baloo"
-                                                android:gravity="center"
-                                                android:padding="2dp"
-                                                android:text="Muhamed Elockly"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp" />
-
+                                            android:background="@color/transparent"
+                                            android:editable="false"
+                                            android:fontFamily="@font/baloo"
+                                            android:gravity="center"
+                                            android:padding="2dp"
+                                            android:text="Muhamed Elockly"
+                                            android:textColor="@color/majesty"
+                                            android:textSize="18dp" />
 
 
                                     </androidx.cardview.widget.CardView>
@@ -511,21 +528,20 @@
                                                 android:weightSum="1">
 
 
+                                                <EditText
+                                                    android:id="@+id/currentPassward"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_margin="5dp"
+                                                    android:background="@color/transparent"
 
-                                                    <EditText
-                                                        android:id="@+id/currentPassward"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_margin="5dp"
-                                                        android:background="@color/transparent"
-
-                                                        android:fontFamily="@font/baloo"
-                                                        android:gravity="center"
-                                                        android:hint="Current Passward "
-                                                        android:inputType="textPassword"
-                                                        android:padding="2dp"
-                                                        android:textColor="@color/majesty"
-                                                        android:textSize="14sp" />
+                                                    android:fontFamily="@font/baloo"
+                                                    android:gravity="center"
+                                                    android:hint="Current Passward "
+                                                    android:inputType="textPassword"
+                                                    android:padding="2dp"
+                                                    android:textColor="@color/majesty"
+                                                    android:textSize="14sp" />
 
 
                                             </LinearLayout>

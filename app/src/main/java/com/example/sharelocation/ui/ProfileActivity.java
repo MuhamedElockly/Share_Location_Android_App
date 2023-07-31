@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String memberName = intent.getStringExtra("memberName");
         getSupportActionBar().setTitle(memberName);
-
+        userRef = FirebaseDatabase.getInstance().getReference("users");
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
         userId = user.getUid();
@@ -56,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         //   binding.swipeToRefresh.setEnabled(false);
         updatePasswardView();
-
+        updateProfileName();
 
     }
 
@@ -78,8 +78,52 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void updateProfileName() {
+        String lastName = String.valueOf(binding.name.getText());
+        binding.editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.editName.setVisibility(View.GONE);
+                binding.confirmName.setVisibility(View.VISIBLE);
+                binding.closeName.setVisibility(View.VISIBLE);
+                binding.name.setEnabled(true);
+                binding.name.requestFocus();
+
+                binding.closeName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        binding.editName.setVisibility(View.VISIBLE);
+                        binding.confirmName.setVisibility(View.GONE);
+                        binding.closeName.setVisibility(View.GONE);
+                        binding.name.setEnabled(false);
+                        refresh();
+                    }
+                });
+                binding.confirmName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String newName = String.valueOf(binding.name.getText());
+                        if (!lastName.equals(newName)) {
+                            userRef.child(userId).child("name").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    binding.name.setEnabled(false);
+                                    binding.editName.setVisibility(View.VISIBLE);
+                                    binding.confirmName.setVisibility(View.GONE);
+                                    binding.closeName.setVisibility(View.GONE);
+                                    getSupportActionBar().setTitle(newName);
+                                    refresh();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     private void refresh() {
-        userRef = FirebaseDatabase.getInstance().getReference("users");
+
         userRef.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -92,6 +136,16 @@ public class ProfileActivity extends AppCompatActivity {
                     //  Log.e("profileName", String.valueOf(snapshot.getValue()));
                     binding.phoneNumber.setText("01000594861");
                     Glide.with(getApplicationContext()).load(profilePhotoUri).into(binding.profilePhoto);
+                    binding.profilePhoto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), FullscreenActivity.class);
+                            intent.putExtra("imageUri", profilePhotoUri);
+                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            // finish();
+                            startActivity(intent);
+                        }
+                    });
 
                 }
             }
