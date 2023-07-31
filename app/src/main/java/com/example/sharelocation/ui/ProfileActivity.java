@@ -10,10 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityProfileBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseUser user;
     private DatabaseReference userRef;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +43,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
-        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userId = user.getUid();
 
 
-
+        refresh();
         binding.swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //   refresh();
+                refresh();
                 binding.swipeToRefresh.setRefreshing(false);
             }
         });
-        binding.swipeToRefresh.setEnabled(false);
+        //   binding.swipeToRefresh.setEnabled(false);
         updatePasswardView();
 
 
@@ -74,7 +79,23 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void refresh() {
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
 
+                    DataSnapshot snapshot = task.getResult();
+                    String profilePhotoUri = snapshot.child("profilePhoto").getValue(String.class);
+                    binding.name.setText(snapshot.child("name").getValue(String.class));
+                    binding.email.setText(snapshot.child("email").getValue(String.class));
+                    //  Log.e("profileName", String.valueOf(snapshot.getValue()));
+                    binding.phoneNumber.setText("01000594861");
+                    Glide.with(getApplicationContext()).load(profilePhotoUri).into(binding.profilePhoto);
+
+                }
+            }
+        });
     }
 
     @Override
