@@ -88,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.closeName.setVisibility(View.VISIBLE);
                 binding.name.setEnabled(true);
                 binding.name.requestFocus();
+                binding.name.setSelection(binding.name.getText().length());
+                binding.name.setShowSoftInputOnFocus(true);
 
                 binding.closeName.setOnClickListener(new View.OnClickListener() {
                     @Override
