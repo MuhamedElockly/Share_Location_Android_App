@@ -38,13 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         binding.swipeToRefresh.setEnabled(false);
         updatePasswardView();
-        binding.currentPasswardLayout.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.currentPasswardLayout.setErrorEnabled(true);
-                binding.currentPasswardLayout.setError("No More");
-            }
-        });
+
 
     }
 
