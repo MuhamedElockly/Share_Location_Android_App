@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,6 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference userRef;
     private String userId;
+    private UserProfileChangeRequest profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +111,19 @@ public class ProfileActivity extends AppCompatActivity {
                             userRef.child(userId).child("name").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    binding.name.setEnabled(false);
-                                    binding.editName.setVisibility(View.VISIBLE);
-                                    binding.confirmName.setVisibility(View.GONE);
-                                    binding.closeName.setVisibility(View.GONE);
-                                    getSupportActionBar().setTitle(newName);
-                                    refresh();
+                                    profile = new UserProfileChangeRequest.Builder().setDisplayName(newName).build();
+                                    user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            binding.name.setEnabled(false);
+                                            binding.editName.setVisibility(View.VISIBLE);
+                                            binding.confirmName.setVisibility(View.GONE);
+                                            binding.closeName.setVisibility(View.GONE);
+                                            getSupportActionBar().setTitle(newName);
+                                            refresh();
+                                        }
+                                    });
+
                                 }
                             });
                         }
