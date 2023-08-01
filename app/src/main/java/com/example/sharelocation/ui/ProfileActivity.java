@@ -59,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         //   binding.swipeToRefresh.setEnabled(false);
         updatePasswardView();
         updateProfileName();
+        updateProfilePhone();
 
     }
 
@@ -132,6 +133,55 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void updateProfilePhone() {
+        String lasetPhoneNumber = String.valueOf(binding.phoneNumber.getText());
+        binding.editPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.editPhone.setVisibility(View.GONE);
+                binding.confirmPhone.setVisibility(View.VISIBLE);
+                binding.closePhone.setVisibility(View.VISIBLE);
+                binding.phoneNumber.setEnabled(true);
+                binding.phoneNumber.requestFocus();
+                binding.phoneNumber.setSelection(binding.phoneNumber.getText().length());
+                binding.phoneNumber.setShowSoftInputOnFocus(true);
+
+                binding.closePhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        binding.editPhone.setVisibility(View.VISIBLE);
+                        binding.confirmPhone.setVisibility(View.GONE);
+                        binding.closePhone.setVisibility(View.GONE);
+                        binding.phoneNumber.setEnabled(false);
+                        refresh();
+                    }
+                });
+                binding.confirmPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String newPhoneNumber = String.valueOf(binding.phoneNumber.getText());
+                        if (!lasetPhoneNumber.equals(newPhoneNumber)) {
+                            userRef.child(userId).child("phoneNumber").setValue(newPhoneNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    binding.phoneNumber.setEnabled(false);
+                                    binding.editPhone.setVisibility(View.VISIBLE);
+                                    binding.confirmPhone.setVisibility(View.GONE);
+                                    binding.closePhone.setVisibility(View.GONE);
+                                    refresh();
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
     private void refresh() {
 
