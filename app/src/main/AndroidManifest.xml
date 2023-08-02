@@ -35,6 +35,8 @@
             android:name="com.google.android.geo.API_KEYt"
             android:value="AIzaSYASjjxYZnBUKZVpcmJ1UGHISXphDrTeA0" />
 
+
+
         <activity
             android:name=".ui.ProfileActivity"
             android:exported="false">
@@ -108,6 +110,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".ui.LocationService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

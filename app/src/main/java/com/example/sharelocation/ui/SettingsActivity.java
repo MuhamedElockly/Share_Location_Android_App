@@ -1,8 +1,12 @@
 package com.example.sharelocation.ui;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
     Button dialogeCancel;
     Button dialogeSure;
     String userId;
+    Switch locationSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,8 @@ public class SettingsActivity extends AppCompatActivity {
                 showConfirmationDialoge();
             }
         });
+        locationSwitch = findViewById(R.id.shareLocationSwitch);
+        shareLocation();
     }
 
     @Override
@@ -78,6 +86,35 @@ public class SettingsActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareLocation() {
+        locationSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (locationSwitch.isChecked()) {
+                    //    Toast.makeText(SettingsActivity.this, "Share Location Switch Onnnn", Toast.LENGTH_SHORT).show();
+                    ComponentName componentName = new ComponentName(getBaseContext(), LocationService.class);
+                    JobInfo jobInfo;
+                    if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.N) {
+                        jobInfo = new JobInfo.Builder(10, componentName)
+                                .setPeriodic(500)
+                                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                                .build();
+                    }else{
+                        jobInfo = new JobInfo.Builder(10, componentName)
+                                .setMinimumLatency(500)
+                                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                                .build();
+                    }
+                    JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+                    jobScheduler.schedule(jobInfo);
+
+                } else {
+                    //     Toast.makeText(SettingsActivity.this, "Share Location Switch offf", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void deletAccount() {
