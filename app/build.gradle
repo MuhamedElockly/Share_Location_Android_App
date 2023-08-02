@@ -69,4 +69,9 @@ dependencies {
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03'
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'com.droidninja:filepicker:2.2.5'
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
+
 }

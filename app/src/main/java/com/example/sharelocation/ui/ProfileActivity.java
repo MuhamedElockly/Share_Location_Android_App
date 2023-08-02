@@ -1,27 +1,30 @@
 package com.example.sharelocation.ui;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityProfileBinding;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,10 +32,12 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.IOException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class ProfileActivity extends AppCompatActivity {
+    AlertDialog dialog;
     private ActivityProfileBinding binding;
     private FirebaseAuth fAuth;
     private FirebaseUser user;
@@ -40,6 +45,9 @@ public class ProfileActivity extends AppCompatActivity {
     private String userId;
     private UserProfileChangeRequest profile;
     private Bitmap bitmap;
+    private StorageReference imageRef;
+    private String profileEmail;
+    private String fireBaseImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         updatePasswardView();
         updateProfileName();
         updateProfilePhone();
+        imagePicker();
 
     }
 
@@ -145,7 +154,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-
     private void updateProfilePhone() {
         String lasetPhoneNumber = String.valueOf(binding.phoneNumber.getText());
         binding.editPhone.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +201,18 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void imagePicker() {
+        binding.editProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImagePicker.with(ProfileActivity.this).crop()                    //Crop image(Optional), Check Customization for more option
+                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
+
+            }
+        });
+    }
 
     private void refresh() {
 
@@ -202,9 +222,11 @@ public class ProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     DataSnapshot snapshot = task.getResult();
+                    ProfileActivity.this.profileEmail = snapshot.child("email").getValue(String.class);
                     String profilePhotoUri = snapshot.child("profilePhoto").getValue(String.class);
                     binding.name.setText(snapshot.child("name").getValue(String.class));
                     binding.email.setText(snapshot.child("email").getValue(String.class));
+
                     //  Log.e("profileName", String.valueOf(snapshot.getValue()));
                     binding.phoneNumber.setText("01000594861");
                     Glide.with(getApplicationContext()).load(profilePhotoUri).into(binding.profilePhoto);
@@ -224,6 +246,43 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void uploadImage(Uri uri) {
+        showProgreesBar();
+        binding.profilePhoto.setImageURI(uri);
+        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + profileEmail + ".jpg");
+
+        imageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        fireBaseImageUri = uri.toString();
+                        userRef.child(userId).child("profilePhoto").setValue(fireBaseImageUri).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                profile = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
+                                user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(ProfileActivity.this, "Photo Updated Successfly", Toast.LENGTH_SHORT).show();
+                                            dialog.cancel();
+                                            refresh();
+
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -234,63 +293,33 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
 
-    public void loadImage(View view) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, 10);
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
 
-    }
 
-    public void camera(View view) {
-        getPermession();
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 12);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 10) {
-            if (data != null) {
-                Uri uri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    binding.profilePhoto.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (requestCode == 12) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            binding.profilePhoto.setImageBitmap(bitmap);
-        }
 
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
+        if (data != null) {
 
-    void getPermession() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.CAMERA}, 11);
-
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (requestCode == 11) {
-            if (grantResults.length > 0) {
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    getPermession();
-                }
+            Uri uri = data.getData();
+            if (uri != null) {
+                uploadImage(uri);
             }
         }
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
 }
