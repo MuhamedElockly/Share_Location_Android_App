@@ -266,8 +266,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(ProfileActivity.this, "Photo Updated Successfly", Toast.LENGTH_SHORT).show();
                                             dialog.cancel();
+                                            Toast.makeText(ProfileActivity.this, "Photo Updated Successfly", Toast.LENGTH_SHORT).show();
+
                                             refresh();
 
                                         }
