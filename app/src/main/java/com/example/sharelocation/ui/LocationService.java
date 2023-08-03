@@ -14,6 +14,7 @@ public class LocationService extends JobService {
     FirebaseUser user;
     FirebaseAuth fAuth;
     DatabaseReference userRef;
+    private boolean jobCanceled = false;
 
     @Override
     public void onCreate() {
@@ -22,12 +23,32 @@ public class LocationService extends JobService {
         user = fAuth.getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference("users");
     }
+int n=3000;
+    private void doBackground(JobParameters parameters) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 20; i++) {
+                    if (jobCanceled) {
+                        return;
+                    }
+                    Log.e("startService", "started");
+                    // Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+                    userRef.child(user.getUid()).child("name").setValue("Mohamed" + i);
+                    try {
+                        Thread.sleep(n);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                jobFinished(parameters, false);
+            }
+        }).start();
+    }
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        Log.e("startService", "started");
-        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
-        userRef.child(user.getUid()).child("name").setValue("Mohamed");
+        doBackground(params);
         return true;
     }
 
@@ -35,6 +56,7 @@ public class LocationService extends JobService {
     public boolean onStopJob(JobParameters params) {
         Log.e("startService", "stoped");
         Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
-        return false;
+        jobCanceled = true;
+        return true;
     }
 }
