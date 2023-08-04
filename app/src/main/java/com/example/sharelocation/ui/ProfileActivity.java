@@ -259,13 +259,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void confirmPasswordToFirebase() {
+        showProgreesBar();
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String email = user.getEmail();
         String oldpass = String.valueOf(binding.currentPassward.getText());
         AuthCredential credential = EmailAuthProvider.getCredential(email, oldpass);
-        if (binding.currentPassward.getText().equals(null)) {
+        if (String.valueOf(binding.currentPassward.getText()).equals(null)) {
+            dialog.cancel();
             Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
-        } else if (!binding.newPassward.getText().equals(binding.reNewPassward.getText())) {
+        } else if (!String.valueOf(binding.newPassward.getText()).equals(String.valueOf(binding.reNewPassward.getText()))) {
+            dialog.cancel();
             Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -277,6 +280,7 @@ public class ProfileActivity extends AppCompatActivity {
                         user.updatePassword(String.valueOf(binding.reNewPassward.getText())).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                dialog.cancel();
                                 if (!task.isSuccessful()) {
                                     Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
                                     snackbar_fail.show();
