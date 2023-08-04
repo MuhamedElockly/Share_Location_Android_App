@@ -276,7 +276,6 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
         } else {
 
-
             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
