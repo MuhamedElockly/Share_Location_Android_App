@@ -291,6 +291,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        dialog.cancel();
                         Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
                         snackbar_su.show();
                     }

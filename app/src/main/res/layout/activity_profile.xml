@@ -508,7 +508,8 @@
                         android:layout_margin="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
@@ -843,7 +844,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
