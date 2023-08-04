@@ -26,6 +26,9 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -244,6 +247,48 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updatPassward(){
+
+    }
+
+    private void confirmPasswordToFirebase() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        final String email = user.getEmail();
+        String oldpass = String.valueOf(binding.currentPassward.getText());
+        AuthCredential credential = EmailAuthProvider.getCredential(email, oldpass);
+        if (binding.currentPassward.getText().equals(null)) {
+            Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+        } else if (!binding.newPassward.getText().equals(binding.reNewPassward.getText())) {
+            Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
+        } else {
+
+
+            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(String.valueOf(binding.reNewPassward.getText())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                    snackbar_fail.show();
+                                } else {
+                                    Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Password Successfully Modified", Snackbar.LENGTH_LONG);
+                                    snackbar_su.show();
+                                }
+                            }
+                        });
+                    } else {
+                        Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
+                        snackbar_su.show();
+                    }
+                }
+            });
+
+        }
     }
 
     private void uploadImage(Uri uri) {
