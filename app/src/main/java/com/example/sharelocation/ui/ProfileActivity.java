@@ -83,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateProfileName();
         updateProfilePhone();
         imagePicker();
-
+        updatPassward();
     }
 
     private void updatePasswardView() {
@@ -249,8 +249,13 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void updatPassward(){
-
+    private void updatPassward() {
+        binding.confirmPassward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmPasswordToFirebase();
+            }
+        });
     }
 
     private void confirmPasswordToFirebase() {
