@@ -90,6 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
         binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 binding.changePassward.setVisibility(View.GONE);
                 binding.passwardDialoge.setVisibility(View.VISIBLE);
             }
@@ -97,7 +98,8 @@ public class ProfileActivity extends AppCompatActivity {
         binding.cancelPassward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                binding.newPassward.getText().clear();
+                binding.reNewPassward.getText().clear();
                 binding.passwardDialoge.setVisibility(View.GONE);
                 binding.changePassward.setVisibility(View.VISIBLE);
             }
