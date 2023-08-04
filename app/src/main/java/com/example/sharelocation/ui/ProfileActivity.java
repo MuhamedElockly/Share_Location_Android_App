@@ -98,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
         binding.cancelPassward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.currentPassward.getText().clear();
                 binding.newPassward.getText().clear();
                 binding.reNewPassward.getText().clear();
                 binding.passwardDialoge.setVisibility(View.GONE);
@@ -266,9 +267,10 @@ public class ProfileActivity extends AppCompatActivity {
         final String email = user.getEmail();
         String oldpass = String.valueOf(binding.currentPassward.getText());
         AuthCredential credential = EmailAuthProvider.getCredential(email, oldpass);
-        if (String.valueOf(binding.currentPassward.getText()).equals(null)) {
+        if (binding.currentPassward.getText().toString().isEmpty()) {
             dialog.cancel();
             Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+            binding.currentPassward.requestFocus();
         } else if (!String.valueOf(binding.newPassward.getText()).equals(String.valueOf(binding.reNewPassward.getText()))) {
             dialog.cancel();
             Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
@@ -283,6 +285,7 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.cancel();
+                                updatePasswardView();
                                 if (!task.isSuccessful()) {
                                     Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
                                     snackbar_fail.show();
