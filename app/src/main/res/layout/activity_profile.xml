@@ -554,8 +554,8 @@
                                                 android:layout_gravity="top"
 
                                                 app:cardCornerRadius="22dp"
-
-                                              >
+                                                app:cardElevation="5dp"
+                                                app:cardUseCompatPadding="true">>
 
                                                 <LinearLayout
                                                     android:layout_width="match_parent"
@@ -590,7 +590,7 @@
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_weight="3"
+                                            android:layout_weight="2"
                                             android:gravity="left|top"
                                             android:orientation="horizontal">
 
@@ -599,7 +599,7 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_marginLeft="10dp"
-                                                android:layout_marginBottom="10dp"
+
                                                 android:background="@color/transparent"
                                                 android:gravity="left"
                                                 android:text="forget Passward ?"
@@ -620,18 +620,10 @@
                                     android:orientation="horizontal">
 
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-
-                                        android:layout_weight="1"
-                                        android:gravity="left|center_vertical"
-                                        android:orientation="horizontal">
 
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="match_parent"
                                             app:cardCornerRadius="22dp"
 
 
@@ -644,14 +636,14 @@
                                                 android:gravity="center"
                                                 android:orientation="horizontal"
 
-                                                android:weightSum="1">
+                                             >
 
 
                                                 <EditText
                                                     android:id="@+id/newPassward"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:layout_margin="5dp"
+
                                                     android:background="@color/transparent"
 
                                                     android:fontFamily="@font/baloo"
@@ -666,32 +658,9 @@
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
 
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="3dp"
-                                            android:background="@drawable/edit"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="3dp"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/close"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="5dp"
-
-                                            android:layout_weight="1"
-                                            android:background="@drawable/submit"
-                                            android:visibility="gone" />
 
 
-                                    </LinearLayout>
+
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -703,14 +672,7 @@
                                     android:orientation="horizontal">
 
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
 
-
-                                        android:layout_weight="1"
-                                        android:gravity="left|center_vertical"
-                                        android:orientation="horizontal">
 
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
@@ -726,7 +688,6 @@
                                                 android:layout_height="match_parent"
                                                 android:gravity="center"
                                                 android:orientation="horizontal"
-
                                                 android:weightSum="1">
 
 
@@ -734,7 +695,7 @@
                                                     android:id="@+id/reNewPassward"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:layout_margin="5dp"
+
                                                     android:background="@color/transparent"
 
                                                     android:fontFamily="@font/baloo"
@@ -748,32 +709,10 @@
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
 
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="3dp"
-                                            android:background="@drawable/edit"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="3dp"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/close"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="5dp"
-
-                                            android:layout_weight="1"
-                                            android:background="@drawable/submit"
-                                            android:visibility="gone" />
 
 
-                                    </LinearLayout>
+
+
                                 </LinearLayout>
 
                                 <LinearLayout
