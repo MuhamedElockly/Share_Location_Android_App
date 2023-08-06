@@ -84,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateProfilePhone();
         imagePicker();
         updatPassward();
+        forgetPassward();
     }
 
     private void updatePasswardView() {
@@ -257,6 +258,22 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmPasswordToFirebase();
+            }
+        });
+    }
+
+    private void forgetPassward() {
+        binding.forgetPassward1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ProfileActivity.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
