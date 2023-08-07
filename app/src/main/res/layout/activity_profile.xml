@@ -602,7 +602,7 @@
 
                                                 android:background="@color/transparent"
                                                 android:gravity="left"
-                                                android:text="forget Passward ?"
+                                                android:text="forgot Passward ?"
                                                 android:textSize="12sp" />
                                         </LinearLayout>
 
