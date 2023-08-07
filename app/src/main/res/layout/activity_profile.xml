@@ -17,6 +17,7 @@
         android:orientation="vertical"
         tools:context=".ui.Home">
 
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/profileToolbar"
             android:layout_width="match_parent"
