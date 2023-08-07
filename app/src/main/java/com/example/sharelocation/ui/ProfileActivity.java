@@ -265,8 +265,6 @@ public class ProfileActivity extends AppCompatActivity {
     private void forgetPassward() {
 
 
-
-
         binding.forgetPassward1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
