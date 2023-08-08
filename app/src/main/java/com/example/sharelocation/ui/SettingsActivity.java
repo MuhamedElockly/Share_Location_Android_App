@@ -112,6 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
                     jobScheduler.schedule(jobInfo);
 
                 } else {
+
                     //     Toast.makeText(SettingsActivity.this, "Share Location Switch offf", Toast.LENGTH_SHORT).show();
                 }
             }
