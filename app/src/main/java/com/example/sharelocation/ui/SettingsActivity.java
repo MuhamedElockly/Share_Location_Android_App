@@ -96,17 +96,10 @@ public class SettingsActivity extends AppCompatActivity {
                     //    Toast.makeText(SettingsActivity.this, "Share Location Switch Onnnn", Toast.LENGTH_SHORT).show();
                     ComponentName componentName = new ComponentName(getBaseContext(), LocationService.class);
                     JobInfo jobInfo;
-                    if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.N) {
-                        jobInfo = new JobInfo.Builder(10, componentName)
-                                .setPeriodic(500)
-                                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                                .build();
-                    }else{
-                        jobInfo = new JobInfo.Builder(10, componentName)
-                                .setMinimumLatency(500)
-                                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                                .setPersisted(true)
-                                .build();
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                        jobInfo = new JobInfo.Builder(10, componentName).setPeriodic(500).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY).build();
+                    } else {
+                        jobInfo = new JobInfo.Builder(10, componentName).setMinimumLatency(500).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY).setPersisted(true).build();
 
                     }
                     JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
