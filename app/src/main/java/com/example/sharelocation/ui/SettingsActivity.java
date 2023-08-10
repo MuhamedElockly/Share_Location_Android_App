@@ -107,6 +107,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                                 .setPersisted(true)
                                 .build();
+
                     }
                     JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
                     jobScheduler.schedule(jobInfo);
