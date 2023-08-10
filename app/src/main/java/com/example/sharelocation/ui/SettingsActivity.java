@@ -107,6 +107,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 } else {
 
+
                     //     Toast.makeText(SettingsActivity.this, "Share Location Switch offf", Toast.LENGTH_SHORT).show();
                 }
             }
