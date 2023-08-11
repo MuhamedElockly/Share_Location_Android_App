@@ -7,12 +7,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityLoginBinding;
 import com.example.sharelocation.pojo.LogInModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class LogIn extends AppCompatActivity {
     ActivityLoginBinding binding;
     DatabaseReference databaseReference;
+    GoogleSignInOptions googleSignInOptions;
+    GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore firestore;
@@ -48,6 +56,34 @@ public class LogIn extends AppCompatActivity {
         startActivity(intent);
 
 
+    }
+
+    public void googleSignIn() {
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        Intent intent = googleSignInClient.getSignInIntent();
+        startActivityForResult(intent, 100);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                task.getResult(ApiException.class);
+
+                Intent intent = new Intent(getApplicationContext(), Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
+                startActivity(intent);
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public void logIn() {
