@@ -42,6 +42,8 @@ import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityHomeBinding;
 import com.example.sharelocation.pojo.RoomModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -485,6 +487,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void logOut() {
         fAuth.signOut();
+        GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
         Intent intent = new Intent(getApplicationContext(), Welcome.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
