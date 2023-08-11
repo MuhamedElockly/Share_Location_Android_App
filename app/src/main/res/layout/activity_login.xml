@@ -115,6 +115,21 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
+                <Button
+                    android:id="@+id/signup2"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/google"
+                    android:onClick="@{()->logIn.logIn()}"
+
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
