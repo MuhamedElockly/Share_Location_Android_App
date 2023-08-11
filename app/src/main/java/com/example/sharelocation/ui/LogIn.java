@@ -2,6 +2,7 @@ package com.example.sharelocation.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogIn extends AppCompatActivity {
+    private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
     ActivityLoginBinding binding;
     DatabaseReference databaseReference;
     GoogleSignInOptions googleSignInOptions;
@@ -36,6 +38,7 @@ public class LogIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore firestore;
+    private boolean showOneTapUI = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,91 +62,136 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void googleSignIn() {
+        /*
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
+
+         */
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        Intent intent = googleSignInClient.getSignInIntent();
+        startActivityForResult(intent, 100);
+
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         if (requestCode == 100) {
+/*
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            Log.e("googlelogin", "yeess toohh");
+            if (account != null) {
 
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                task.getResult(ApiException.class);
+                String name = account.getDisplayName();
+                String email = account.getEmail();
+                String idToken = account.getIdToken();
+                String photoUrl = String.valueOf(account.getPhotoUrl());
+                String id = account.getId();
 
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                finish();
-                startActivity(intent);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    public void logIn() {
-
-        //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
-        String email = binding.loginEmail.getText().toString().trim();
-        String passward = binding.passward.getText().toString().trim();
-        if (email.isEmpty()) {
-            binding.loginEmail.setError("This Field Is Required");
-            binding.loginEmail.requestFocus();
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.loginEmail.setError("Email Is Not Falid");
-            binding.loginEmail.requestFocus();
-        } else if (passward.isEmpty()) {
-            binding.passward.setError("This Field Is Required");
-            binding.passward.requestFocus();
-        } else {
-            binding.pBar.setVisibility(View.VISIBLE);
-            mAuth.signInWithEmailAndPassword(email, passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    binding.pBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        user = mAuth.getCurrentUser();
-                        if (!user.isEmailVerified()) {
-                            Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
-                            mAuth.signOut();
-                        } else {
-                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-                            String userEmail = user.getEmail();
-                            String userName = user.getDisplayName();
-                            String userTokenId = String.valueOf(user.getIdToken(false));
-                            String userId = user.getUid();
-                            String profilePhoto = String.valueOf(user.getPhotoUrl());
-                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
-
-
-                            String id = database.push().getKey();
-                            database.child("users").child(user.getUid()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                            //}
-
+                LogInModel logInModel = new LogInModel(name, email, idToken, id, photoUrl);
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                database.child("users").child(id).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), Home.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             finish();
                             startActivity(intent);
                         }
-                    } else {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }
-            });
+                });
+            }
+
+
+ */
+
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                Log.e("googlelogin", "yeess too");
+                Toast.makeText(this, "google success", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
+                startActivity(intent);
+
+
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+
         }
 
+
+        public void logIn () {
+
+            //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
+            String email = binding.loginEmail.getText().toString().trim();
+            String passward = binding.passward.getText().toString().trim();
+            if (email.isEmpty()) {
+                binding.loginEmail.setError("This Field Is Required");
+                binding.loginEmail.requestFocus();
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.loginEmail.setError("Email Is Not Falid");
+                binding.loginEmail.requestFocus();
+            } else if (passward.isEmpty()) {
+                binding.passward.setError("This Field Is Required");
+                binding.passward.requestFocus();
+            } else {
+                binding.pBar.setVisibility(View.VISIBLE);
+                mAuth.signInWithEmailAndPassword(email, passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        binding.pBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            user = mAuth.getCurrentUser();
+                            if (!user.isEmailVerified()) {
+                                Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
+                                mAuth.signOut();
+                            } else {
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+                                String userEmail = user.getEmail();
+                                String userName = user.getDisplayName();
+                                String userTokenId = String.valueOf(user.getIdToken(false));
+                                String userId = user.getUid();
+                                String profilePhoto = String.valueOf(user.getPhotoUrl());
+                                LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
+
+
+                                String id = database.push().getKey();
+                                database.child("users").child(user.getUid()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                //}
+
+                                Intent intent = new Intent(getApplicationContext(), Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                finish();
+                                startActivity(intent);
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+
+        }
     }
-}
