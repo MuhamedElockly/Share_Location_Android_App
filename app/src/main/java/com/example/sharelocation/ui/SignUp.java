@@ -65,7 +65,7 @@ public class SignUp extends AppCompatActivity {
         singUpViewModel.imageMutableLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.d("userModel", s);
+             //   Log.d("userModel", s);
                 userModel = new UserModel(name, email, passward, s);
                 singUpViewModel.getRegestrationFeedback(userModel, getApplicationContext());
             }

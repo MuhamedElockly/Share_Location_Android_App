@@ -22,9 +22,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,6 +51,11 @@ public class LogIn extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com").requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
     }
 
     @Override
@@ -70,8 +77,7 @@ public class LogIn extends AppCompatActivity {
 
          */
 
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
 
@@ -81,117 +87,117 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == 100) {
-/*
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            Log.e("googlelogin", "yeess toohh");
-            if (account != null) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                } else {
+                    Log.w("AUTH", "Account is NULL");
+                    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                }
+            } catch (ApiException e) {
+                Log.w("AUTH", "Google sign in failed", e);
+                Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
-                String name = account.getDisplayName();
-                String email = account.getEmail();
-                String idToken = account.getIdToken();
-                String photoUrl = String.valueOf(account.getPhotoUrl());
-                String id = account.getId();
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("AUTH", "firebaseAuthWithGoogle:" + acct.getId());
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    //      Log.d("AUTH", "signInWithCredential:success");
+                    //   startActivity(new Intent(this, Home.class));
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), acct.getId(), String.valueOf(acct.getPhotoUrl()));
 
-                LogInModel logInModel = new LogInModel(name, email, idToken, id, photoUrl);
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                database.child("users").child(id).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
+
+                    database.child("users").child(acct.getId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                finish();
+                                startActivity(intent);
+
+                            }
+                        }
+                    });
+
+
+                } else {
+                    //    Log.w("AUTH", "signInWithCredential:failure", task.getException());
+                    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void logIn() {
+
+        //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
+        String email = binding.loginEmail.getText().toString().trim();
+        String passward = binding.passward.getText().toString().trim();
+        if (email.isEmpty()) {
+            binding.loginEmail.setError("This Field Is Required");
+            binding.loginEmail.requestFocus();
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.loginEmail.setError("Email Is Not Falid");
+            binding.loginEmail.requestFocus();
+        } else if (passward.isEmpty()) {
+            binding.passward.setError("This Field Is Required");
+            binding.passward.requestFocus();
+        } else {
+            binding.pBar.setVisibility(View.VISIBLE);
+            mAuth.signInWithEmailAndPassword(email, passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    binding.pBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        user = mAuth.getCurrentUser();
+                        if (!user.isEmailVerified()) {
+                            Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
+                            mAuth.signOut();
+                        } else {
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+                            String userEmail = user.getEmail();
+                            String userName = user.getDisplayName();
+                            String userTokenId = String.valueOf(user.getIdToken(false));
+                            String userId = user.getUid();
+                            String profilePhoto = String.valueOf(user.getPhotoUrl());
+                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
+
+
+                            String id = database.push().getKey();
+                            database.child("users").child(user.getUid()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            //}
+
                             Intent intent = new Intent(getApplicationContext(), Home.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             finish();
                             startActivity(intent);
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
-                });
-            }
-
-
- */
-
-
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                Log.e("googlelogin", "yeess too");
-                Toast.makeText(this, "google success", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                finish();
-                startActivity(intent);
-
-
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-
+                }
+            });
         }
 
-
-        public void logIn () {
-
-            //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
-            String email = binding.loginEmail.getText().toString().trim();
-            String passward = binding.passward.getText().toString().trim();
-            if (email.isEmpty()) {
-                binding.loginEmail.setError("This Field Is Required");
-                binding.loginEmail.requestFocus();
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.loginEmail.setError("Email Is Not Falid");
-                binding.loginEmail.requestFocus();
-            } else if (passward.isEmpty()) {
-                binding.passward.setError("This Field Is Required");
-                binding.passward.requestFocus();
-            } else {
-                binding.pBar.setVisibility(View.VISIBLE);
-                mAuth.signInWithEmailAndPassword(email, passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        binding.pBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            user = mAuth.getCurrentUser();
-                            if (!user.isEmailVerified()) {
-                                Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
-                                mAuth.signOut();
-                            } else {
-                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-                                String userEmail = user.getEmail();
-                                String userName = user.getDisplayName();
-                                String userTokenId = String.valueOf(user.getIdToken(false));
-                                String userId = user.getUid();
-                                String profilePhoto = String.valueOf(user.getPhotoUrl());
-                                LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
-
-
-                                String id = database.push().getKey();
-                                database.child("users").child(user.getUid()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                                //}
-
-                                Intent intent = new Intent(getApplicationContext(), Home.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                finish();
-                                startActivity(intent);
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-
-        }
     }
+}

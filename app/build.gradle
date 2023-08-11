@@ -73,7 +73,6 @@ dependencies {
     implementation 'com.droidninja:filepicker:2.2.5'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
-    implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 
     // Add the dependency for the Firebase Authentication library
@@ -82,4 +81,5 @@ dependencies {
 
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:20.6.0")
+
 }
