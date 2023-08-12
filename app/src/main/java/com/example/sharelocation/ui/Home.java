@@ -539,7 +539,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         headerImage = headerView.findViewById(R.id.headerProfilImage);
         headerText = headerView.findViewById(R.id.headerProfileName);
 
-
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference("users");
 
