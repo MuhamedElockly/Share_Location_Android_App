@@ -479,7 +479,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
 
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
