@@ -492,7 +492,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
         startActivity(intent);
-
     }
 
     private void addRoom() {
