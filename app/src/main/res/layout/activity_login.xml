@@ -101,18 +101,19 @@
                     android:paddingStart="20dp"
                     android:paddingLeft="30dp"
                     android:textColor="@color/white" />
+
                 <Button
                     android:id="@+id/forgetPassward1"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="40dp"
 
                     android:layout_marginEnd="32dp"
-
-
                     android:background="@color/transparent"
+
                     android:gravity="left"
                     android:text="forgot Passward ?"
+                    android:textColor="@color/light_blue_600"
                     android:textSize="12sp" />
 
                 <Button
