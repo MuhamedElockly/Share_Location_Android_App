@@ -55,7 +55,7 @@ public class LogIn extends AppCompatActivity {
 
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com").requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-
+        forgetPassward();
     }
 
     @Override
