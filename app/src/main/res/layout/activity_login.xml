@@ -101,6 +101,16 @@
                     android:paddingStart="20dp"
                     android:paddingLeft="30dp"
                     android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/forgetPassward1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+
+                    android:background="@color/transparent"
+                    android:gravity="left"
+                    android:text="forgot Passward ?"
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/signup"
