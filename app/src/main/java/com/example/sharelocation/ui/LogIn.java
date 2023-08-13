@@ -84,6 +84,26 @@ public class LogIn extends AppCompatActivity {
 
     }
 
+    private void forgetPassward() {
+
+
+        binding.forgetPassward1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  showProgreesBar();
+                mAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                            //   dialog.cancel();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
