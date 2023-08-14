@@ -217,13 +217,14 @@ public class LogIn extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                                 //  Toast.makeText(getApplicationContext(), "PRESENT", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                finish();
+                                startActivity(intent);
                             } else {
                                 // Toast.makeText(getApplicationContext(), "Nooo", Toast.LENGTH_LONG).show();
-
-
                                 LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()));
-
-
                                 database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -244,33 +245,10 @@ public class LogIn extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(LogIn.this, "cancelled", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LogIn.this, error.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
 
-
-
-
-/*
-                    LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()));
-
-
-                    database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getApplicationContext(), Home.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                finish();
-                                startActivity(intent);
-
-                            }
-                        }
-                    });
-
-
- */
 
                 } else {
                     //    Log.w("AUTH", "signInWithCredential:failure", task.getException());
