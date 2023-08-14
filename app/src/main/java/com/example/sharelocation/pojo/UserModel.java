@@ -6,13 +6,22 @@ public class UserModel {
     private String passward;
     private String tokenId;
     private String imageUri;
+    private String phoneNumber;
 
-    public UserModel(String name, String email, String passward, String imageUri) {
+    public UserModel(String name, String email, String passward, String imageUri, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.passward = passward;
         this.imageUri = imageUri;
+        this.phoneNumber = phoneNumber;
+    }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getImageUri() {

@@ -6,13 +6,23 @@ public class LogInModel {
     private String userId;
     private String tokenId;
     private String profilePhoto;
+    private String phoneNumber;
 
-    public LogInModel(String name, String email, String tokenId, String userId, String profilePhoto) {
+    public LogInModel(String name, String email, String tokenId, String userId, String profilePhoto, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.tokenId = tokenId;
         this.userId = userId;
         this.profilePhoto = profilePhoto;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getProfilePhoto() {

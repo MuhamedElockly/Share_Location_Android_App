@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
@@ -46,8 +48,18 @@ public class SingUpViewModel extends ViewModel {
 
                 if (task.isSuccessful()) {
                     user = mAuth.getCurrentUser();
+                    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(userModel.getPhoneNumber(), "OTP_CODE");
+                    user.updatePhoneNumber(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.e("phoneNumber", " : " + user.getPhoneNumber());
+                            }
+                        }
+                    });
+                    profile = new UserProfileChangeRequest.Builder().setDisplayName(userModel.getName())
 
-                    profile = new UserProfileChangeRequest.Builder().setDisplayName(userModel.getName()).setPhotoUri(Uri.parse(userModel.getImageUri())).build();
+                            .setPhotoUri(Uri.parse(userModel.getImageUri())).build();
                     user.updateProfile(profile);
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -60,8 +72,11 @@ public class SingUpViewModel extends ViewModel {
                                 feedback = task.getException().getMessage();
                                 mutableLiveData.setValue(feedback);
                             }
+                            mAuth.signOut();
+
                         }
                     });
+
 
                 } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
 

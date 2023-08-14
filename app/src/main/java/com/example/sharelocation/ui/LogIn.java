@@ -66,8 +66,12 @@ public class LogIn extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
 
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com").requestEmail().build();
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com")
+
+                .requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
+
         forgetPassward();
     }
 
@@ -182,6 +186,7 @@ public class LogIn extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 } else {
@@ -224,7 +229,7 @@ public class LogIn extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 // Toast.makeText(getApplicationContext(), "Nooo", Toast.LENGTH_LONG).show();
-                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()));
+                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()), "01000002");
                                 database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -298,7 +303,10 @@ public class LogIn extends AppCompatActivity {
                             String userTokenId = String.valueOf(user.getIdToken(false));
                             String userId = user.getUid();
                             String profilePhoto = String.valueOf(user.getPhotoUrl());
-                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto);
+                            String phoneNumber = user.getPhoneNumber();
+                            Toast.makeText(LogIn.this, phoneNumber, Toast.LENGTH_LONG);
+                          //  Log.e("phoneNumber", " : " + user.getPhoneNumber());
+                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto, phoneNumber);
 
 
                             String id = database.push().getKey();

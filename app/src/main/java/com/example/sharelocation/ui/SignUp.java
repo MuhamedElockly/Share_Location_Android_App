@@ -3,15 +3,21 @@ package com.example.sharelocation.ui;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -36,8 +42,10 @@ public class SignUp extends AppCompatActivity {
     String passward = "";
     String rePassward = "";
     String fireBaseImageUrl = "";
+    String phoneNumber = "";
     private FirebaseAuth mAuth;
     private UserModel userModel;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +64,19 @@ public class SignUp extends AppCompatActivity {
             public void onChanged(String s) {
                 binding.pBar.setVisibility(View.GONE);
                 if (s.equals("Please Verify Your E-mail")) {
-
+                    Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
                     startNewActivity();
+                } else {
+                    //   Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(s);
                 }
-                Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
             }
         });
         singUpViewModel.imageMutableLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-             //   Log.d("userModel", s);
-                userModel = new UserModel(name, email, passward, s);
+                //   Log.d("userModel", s);
+                userModel = new UserModel(name, email, passward, s,phoneNumber);
                 singUpViewModel.getRegestrationFeedback(userModel, getApplicationContext());
             }
         });
@@ -75,7 +85,7 @@ public class SignUp extends AppCompatActivity {
         binding.profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SignUp.this, "Image", Toast.LENGTH_SHORT).show();
+                //     Toast.makeText(SignUp.this, "Image", Toast.LENGTH_SHORT).show();
                 showImage();
             }
         });
@@ -100,6 +110,37 @@ public class SignUp extends AppCompatActivity {
         //  updateUI(currentUser);
     }
 
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
+
     public void register() {
         //  ProgressDialog.show(this, "Loading", "Wait while loading...");
 
@@ -108,25 +149,36 @@ public class SignUp extends AppCompatActivity {
         email = binding.email.getText().toString().trim();
         passward = binding.passward.getText().toString().trim();
         rePassward = binding.rePassward.getText().toString().trim();
+        phoneNumber = binding.phoneNumber.getText().toString().trim();
         if (name.isEmpty()) {
-            binding.userName.setError("This Field Is Required");
+            showConfirmationDialoge("Name field is required");
+            //  binding.userName.setError("This Field Is Required");
             binding.userName.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.email.setError("Email Is Not Falid");
+            showConfirmationDialoge("Email not valid");
+            //  binding.email.setError("Email Is Not valid");
             binding.email.requestFocus();
         } else if (email.isEmpty()) {
-            binding.email.setError("This Field Is Required");
+            showConfirmationDialoge("Email field is required");
+            //    binding.email.setError("This Field Is Required");
             binding.email.requestFocus();
+        } else if (phoneNumber.isEmpty()) {
+            showConfirmationDialoge("Phone number field is required");
+            // binding.phoneNumber.setError("This Field Is Required");
+            binding.phoneNumber.requestFocus();
         } else if (passward.isEmpty()) {
-            binding.passward.setError("This Field Is Required");
+            showConfirmationDialoge("Passward field is required");
+            //  binding.passward.setError("This Field Is Required");
             binding.passward.requestFocus();
 
         } else if (rePassward.isEmpty()) {
-            binding.rePassward.setError("This Field Is Required");
+            showConfirmationDialoge("RePassward field is required");
+            //  binding.rePassward.setError("This Field Is Required");
             binding.rePassward.requestFocus();
 
         } else if (!passward.equals(rePassward)) {
-            binding.rePassward.setError("Passward Is Not Matches");
+            showConfirmationDialoge("Passward Is Not Matches");
+            //    binding.rePassward.setError("Passward Is Not Matches");
             binding.rePassward.requestFocus();
         } else {
             binding.pBar.setVisibility(View.VISIBLE);
