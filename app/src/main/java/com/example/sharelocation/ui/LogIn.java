@@ -22,9 +22,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
@@ -103,10 +105,22 @@ public class LogIn extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
                                     //   dialog.cancel();
+                                } else if (task.getException() instanceof FirebaseAuthException) {
+                                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+
+                                    if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
+
+
+                                        Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
+                                    }
+                                } else if (task.getException() instanceof FirebaseNetworkException) {
+                                    Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
                                 } else {
+
                                     Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
+
                         });
 
                     } else {
