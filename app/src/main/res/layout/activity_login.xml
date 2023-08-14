@@ -103,13 +103,13 @@
                     android:textColor="@color/white" />
 
                 <Button
-                    android:id="@+id/forgetPassward1"
+                    android:id="@+id/forgetPassward"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginLeft="40dp"
-
                     android:layout_marginRight="30dp"
                     android:background="@color/transparent"
+
 
                     android:gravity="left"
                     android:text="forgot Passward ?"

@@ -86,26 +86,45 @@ public class LogIn extends AppCompatActivity {
 
     private void forgetPassward() {
 
-        if (!binding.loginEmail.getText().toString().isEmpty()) {
-            binding.forgetPassward1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //  showProgreesBar();
-                    mAuth.sendPasswordResetEmail(binding.loginEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
-                                //   dialog.cancel();
-                            }
-                        }
-                    });
-                }
-            });
-        } else {
 
-        }
+        binding.forgetPassward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = binding.loginEmail.getText().toString();
+                if (!email.isEmpty()) {
+                    //  binding.forgetPassward.setEnabled(true);
+                    if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+                        //  showProgreesBar();
+
+                        mAuth.sendPasswordResetEmail(binding.loginEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                                    //   dialog.cancel();
+                                } else {
+                                    Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    } else {
+                        binding.loginEmail.setError("Email is not vaild");
+                        binding.loginEmail.requestFocus();
+                    }
+
+                } else {
+                    binding.loginEmail.setError("Email is empty");
+                    binding.loginEmail.requestFocus();
+                }
+            }
+
+        });
+
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
