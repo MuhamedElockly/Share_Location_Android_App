@@ -119,8 +119,6 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void forgetPassward() {
-
-
         binding.forgetPassward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,8 +171,6 @@ public class LogIn extends AppCompatActivity {
             }
 
         });
-
-
     }
 
 
@@ -182,17 +178,20 @@ public class LogIn extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
+            showProgreesBar();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 } else {
+                    dialog.cancel();
                     Log.w("AUTH", "Account is NULL");
                     //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
                     showConfirmationDialoge("Sign-in failed, try again later.");
                 }
             } catch (ApiException e) {
+                dialog.cancel();
                 Log.w("AUTH", "Google sign in failed", e);
                 //  Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
                 showConfirmationDialoge("Sign-in failed, try again later.");
@@ -215,6 +214,7 @@ public class LogIn extends AppCompatActivity {
 
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            dialog.cancel();
                             if (snapshot.exists()) {
                                 //  Toast.makeText(getApplicationContext(), "PRESENT", Toast.LENGTH_LONG).show();
                                 Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
@@ -238,22 +238,24 @@ public class LogIn extends AppCompatActivity {
                                         }
                                     }
                                 });
-
-
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(LogIn.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                            dialog.cancel();
+                            showConfirmationDialoge(error.getMessage());
                         }
                     });
 
-
+                } else if (task.getException() instanceof FirebaseNetworkException) {
+                    dialog.cancel();
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
                 } else {
-                    //    Log.w("AUTH", "signInWithCredential:failure", task.getException());
-                    //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
-                    showConfirmationDialoge("Sign-in failed, try again later.");
+                    dialog.cancel();
+                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(task.getException().getMessage());
                 }
             }
         });
