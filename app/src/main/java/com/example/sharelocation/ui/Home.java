@@ -165,6 +165,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+      //  Toast.makeText(this, user.getUid().toString() ,Toast.LENGTH_LONG).show();
+
         recyclerView = binding.roomRecyclerView;
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
         rooms = new ArrayList<>();

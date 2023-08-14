@@ -36,8 +36,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogIn extends AppCompatActivity {
@@ -200,17 +203,59 @@ public class LogIn extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("AUTH", "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+
+
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    //      Log.d("AUTH", "signInWithCredential:success");
-                    //   startActivity(new Intent(this, Home.class));
-                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), acct.getId(), String.valueOf(acct.getPhotoUrl()));
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+                    String userId = mAuth.getCurrentUser().getUid();
+                    database.orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                //  Toast.makeText(getApplicationContext(), "PRESENT", Toast.LENGTH_LONG).show();
+                            } else {
+                                // Toast.makeText(getApplicationContext(), "Nooo", Toast.LENGTH_LONG).show();
 
 
-                    database.child("users").child(acct.getId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()));
+
+
+                                database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            finish();
+                                            startActivity(intent);
+
+                                        }
+                                    }
+                                });
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(LogIn.this, "cancelled", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+
+
+/*
+                    LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()));
+
+
+                    database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -224,6 +269,8 @@ public class LogIn extends AppCompatActivity {
                         }
                     });
 
+
+ */
 
                 } else {
                     //    Log.w("AUTH", "signInWithCredential:failure", task.getException());
