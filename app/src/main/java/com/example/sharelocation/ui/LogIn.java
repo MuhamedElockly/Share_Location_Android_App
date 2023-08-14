@@ -1,14 +1,21 @@
 package com.example.sharelocation.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -43,6 +50,7 @@ public class LogIn extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseFirestore firestore;
     private boolean showOneTapUI = true;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,49 +94,84 @@ public class LogIn extends AppCompatActivity {
 
     }
 
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
+
     private void forgetPassward() {
 
 
         binding.forgetPassward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgreesBar();
                 String email = binding.loginEmail.getText().toString();
                 if (!email.isEmpty()) {
                     //  binding.forgetPassward.setEnabled(true);
                     if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
-                        //  showProgreesBar();
 
                         mAuth.sendPasswordResetEmail(binding.loginEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                dialog.cancel();
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                                  //  Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                                    showConfirmationDialoge("Verification email was sent ");
                                     //   dialog.cancel();
                                 } else if (task.getException() instanceof FirebaseAuthException) {
                                     String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
-
                                     if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
-
-
-                                        Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
+                                        //  Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
+                                        showConfirmationDialoge("This email not exist");
                                     }
                                 } else if (task.getException() instanceof FirebaseNetworkException) {
-                                    Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                                    showConfirmationDialoge("Please check internet connection !");
                                 } else {
 
-                                    Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    showConfirmationDialoge(task.getException().getMessage());
                                 }
                             }
 
                         });
 
                     } else {
+                        dialog.cancel();
                         binding.loginEmail.setError("Email is not vaild");
                         binding.loginEmail.requestFocus();
                     }
 
                 } else {
+                    dialog.cancel();
                     binding.loginEmail.setError("Email is empty");
                     binding.loginEmail.requestFocus();
                 }
@@ -202,13 +245,16 @@ public class LogIn extends AppCompatActivity {
         String email = binding.loginEmail.getText().toString().trim();
         String passward = binding.passward.getText().toString().trim();
         if (email.isEmpty()) {
-            binding.loginEmail.setError("This Field Is Required");
+            //  binding.loginEmail.setError("This Field Is Required");
+            showConfirmationDialoge("Email field is required");
             binding.loginEmail.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.loginEmail.setError("Email Is Not Falid");
+            //  binding.loginEmail.setError("Email Is Not Falid");
+            showConfirmationDialoge("Email is not falid");
             binding.loginEmail.requestFocus();
         } else if (passward.isEmpty()) {
-            binding.passward.setError("This Field Is Required");
+            //  binding.passward.setError("This Field Is Required");
+            showConfirmationDialoge("Passward field is required");
             binding.passward.requestFocus();
         } else {
             binding.pBar.setVisibility(View.VISIBLE);
@@ -219,7 +265,8 @@ public class LogIn extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         user = mAuth.getCurrentUser();
                         if (!user.isEmailVerified()) {
-                            Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
+                            //  Toast.makeText(getApplicationContext(), "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
+                            showConfirmationDialoge("Please verify your email !");
                             mAuth.signOut();
                         } else {
                             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -248,8 +295,19 @@ public class LogIn extends AppCompatActivity {
                             finish();
                             startActivity(intent);
                         }
+                    } else if (task.getException() instanceof FirebaseAuthException) {
+                        String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+                        if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
+                            //  Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
+                            showConfirmationDialoge("This email not exist");
+                        }
+                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                        // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                        showConfirmationDialoge("Please check internet connection !");
                     } else {
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                        //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        showConfirmationDialoge(task.getException().getMessage());
                     }
                 }
             });
