@@ -79,18 +79,8 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void googleSignIn() {
-        /*
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
-
-         */
-
-
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, 100);
-
 
     }
 
@@ -143,7 +133,7 @@ public class LogIn extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 dialog.cancel();
                                 if (task.isSuccessful()) {
-                                  //  Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                                    //  Toast.makeText(LogIn.this, "We Sent Email", Toast.LENGTH_SHORT).show();
                                     showConfirmationDialoge("Verification email was sent ");
                                     //   dialog.cancel();
                                 } else if (task.getException() instanceof FirebaseAuthException) {
@@ -166,13 +156,15 @@ public class LogIn extends AppCompatActivity {
 
                     } else {
                         dialog.cancel();
-                        binding.loginEmail.setError("Email is not vaild");
+                        //    binding.loginEmail.setError("Email is not vaild");
+                        showConfirmationDialoge("Email is not vaild");
                         binding.loginEmail.requestFocus();
                     }
 
                 } else {
                     dialog.cancel();
-                    binding.loginEmail.setError("Email is empty");
+                    //  binding.loginEmail.setError("Email is empty");
+                    showConfirmationDialoge("Email is empty");
                     binding.loginEmail.requestFocus();
                 }
             }
@@ -194,11 +186,13 @@ public class LogIn extends AppCompatActivity {
                     firebaseAuthWithGoogle(account);
                 } else {
                     Log.w("AUTH", "Account is NULL");
-                    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                    //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Sign-in failed, try again later.");
                 }
             } catch (ApiException e) {
                 Log.w("AUTH", "Google sign in failed", e);
-                Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                showConfirmationDialoge("Sign-in failed, try again later.");
             }
         }
     }
@@ -233,7 +227,8 @@ public class LogIn extends AppCompatActivity {
 
                 } else {
                     //    Log.w("AUTH", "signInWithCredential:failure", task.getException());
-                    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                    //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Sign-in failed, try again later.");
                 }
             }
         });
