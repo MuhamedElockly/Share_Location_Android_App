@@ -678,55 +678,51 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void createLink() {
-        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.facebofok.com/"))
-                .setDynamicLinkDomain("sharelocationapp.page.link")
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink().setLink(Uri.parse("https://www.facebofok.com/")).setDynamicLinkDomain("sharelocationapp.page.link")
 
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
 
-              //  .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-         .buildDynamicLink();
+                //  .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.d("longLink", String.valueOf(dynamicLink.getUri()));
 
 
         //Manual Link
-String textLinl="https://sharelocationapp.page.link/?" +
-        "link=http://www.facebofok.com/" +
-        "&apn="+getPackageName()+
-        "&st="+"My Refer Link "+
-        "&sd="+"Room Invite"+
-        "&si="+"https://www.facebofok.com/logo-1.png"
-        ;
+        String textLink = "https://sharelocationapp.page.link/?"
+                + "link=http://www.facebofok.com/myrefer.php?roomid="+this.roomId
+                + "&apn=" + getPackageName() + "&st=" + "My Refer Link "
+                + "&sd=" + "Room Invite" +
+                "&si=" + "https://www.facebofok.com/logo-1.png";
+
 
         //Shorten Link
 
         Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(dynamicLink.getUri())
-                .setDynamicLinkDomain("sharelocationapp.page.link").buildShortDynamicLink()
-                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-            @Override
-            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                if (task.isSuccessful()) {
-                    // Short link created
-                    Uri shortLink = task.getResult().getShortLink();
-                    Uri flowchartLink = task.getResult().getPreviewLink();
+                // .setLink(dynamicLink.getUri())
+                .setLink(Uri.parse(textLink)).setDynamicLinkDomain("sharelocationapp.page.link").buildShortDynamicLink().addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            Uri flowchartLink = task.getResult().getPreviewLink();
 
-                    Log.d("shortLink", String.valueOf(shortLink));
+                            Log.d("shortLink", String.valueOf(shortLink));
 
 
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
-                    intent.setType("text/plain");
-                    startActivity(intent);
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
+                            intent.setType("text/plain");
+                            startActivity(intent);
 
-                } else {
-                    Log.d("shortLink", String.valueOf(task.getException()));
-                }
-            }
-        });
+                        } else {
+                            Log.d("shortLink", String.valueOf(task.getException()));
+                        }
+                    }
+                });
 
     }
 

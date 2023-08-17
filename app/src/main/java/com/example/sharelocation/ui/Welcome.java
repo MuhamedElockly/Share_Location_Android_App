@@ -81,6 +81,14 @@ public class Welcome extends AppCompatActivity {
                     deepLink = pendingDynamicLinkData.getLink();
 
                     Log.d("recivedLink", deepLink.toString());
+
+                    String referedLink = deepLink.toString();
+                    try {
+                        referedLink = referedLink.substring(referedLink.lastIndexOf("=") + 1);
+                        Log.d("roomId", referedLink);
+                    } catch (Exception e) {
+
+                    }
                 }
 
             }
