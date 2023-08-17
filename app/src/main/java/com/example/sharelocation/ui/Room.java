@@ -692,7 +692,13 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         //Manual Link
-
+String textLinl="https://sharelocationapp.page.link/?" +
+        "link=http://www.facebofok.com/" +
+        "&apn="+getPackageName()+
+        "&st="+"My Refer Link "+
+        "&sd="+"Room Invite"+
+        "&si="+"https://www.facebofok.com/logo-1.png"
+        ;
 
         //Shorten Link
 
