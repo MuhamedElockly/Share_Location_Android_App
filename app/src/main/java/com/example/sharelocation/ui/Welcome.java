@@ -75,12 +75,12 @@ public class Welcome extends AppCompatActivity {
         }
     }
 
-    private void openNewRoom(String roomId) {
+    private void openNewRoom(String roomId, String roomName) {
         Intent intent = new Intent(Welcome.this, Room.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //     ((Home) context).finish();
         intent.putExtra("roomId", (String) roomId);
-        intent.putExtra("roomName", roomId);
+        intent.putExtra("roomName", roomName);
         startActivity(intent);
     }
 
@@ -97,8 +97,11 @@ public class Welcome extends AppCompatActivity {
 
                     String referedLink = deepLink.toString();
                     try {
-                        String roomId = referedLink.substring(referedLink.lastIndexOf("=") + 1);
-                        pushUserToFireBase(roomId);
+                        referedLink = referedLink.substring(referedLink.lastIndexOf("=") + 1);
+
+                        String roomId = referedLink.substring(0, referedLink.indexOf("#"));
+                        String roomName = referedLink.substring(referedLink.lastIndexOf("#") + 1);
+                        pushUserToFireBase(roomId, roomName);
 
                         Log.d("roomId", referedLink);
 
@@ -122,7 +125,7 @@ public class Welcome extends AppCompatActivity {
         });
     }
 
-    private void pushUserToFireBase(String roomId) {
+    private void pushUserToFireBase(String roomId, String roomName) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         //  RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
@@ -139,7 +142,7 @@ public class Welcome extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         increseRoomCapacity(roomId);
                         //   refresh();
-                        openNewRoom(roomId);
+                        openNewRoom(roomId, roomName);
                         Toast.makeText(Welcome.this, "Invitation accepted succesfly", Toast.LENGTH_SHORT).show();
                     }
                 });
