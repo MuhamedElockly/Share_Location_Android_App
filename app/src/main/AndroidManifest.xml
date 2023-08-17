@@ -74,6 +74,18 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sharelocationapp.page.link"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.Home"
@@ -118,19 +130,7 @@
             android:name=".ui.LocationService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <intent-filter android:autoVerify="true">
-            <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data
-                android:host="example.com/link"
-                android:scheme="http" />
-            <data
-                android:host="example.com/link"
-                android:scheme="https" />
-        </intent-filter>
     </application>
 
 </manifest>

@@ -39,6 +39,8 @@ import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityRoomBinding;
 import com.example.sharelocation.pojo.MemebrsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,12 +53,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.util.ArrayList;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class Room extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "splash";
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -643,15 +648,75 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void recieveLink() {
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+            @Override
+            public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                // Get deep link from result (may be null if no link is found)
+                Uri deepLink = null;
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.getLink();
+
+                    Log.d("longLink", deepLink.toString());
+                }
+
+            }
+        }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "getDynamicLink:onFailure", e);
+            }
+        });
+    }
+
+    private void sendLenk() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        // intent.putExtra(Intent.EXTRA_TEXT);
+        intent.setType("text/plain");
+        startActivity(intent);
+    }
+
     private void createLink() {
-        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink().setLink(Uri.parse("https://www.sharelocationapp.com/")).setDomainUriPrefix("https://sharelocationapp.page.link")
-                // Open links with this app on Android
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://www.facebofok.com/"))
+                .setDynamicLinkDomain("sharelocationapp.page.link")
+
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                // Open links with com.example.ios on iOS
-                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build()).buildDynamicLink();
+
+              //  .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+         .buildDynamicLink();
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.d("longLink", String.valueOf(dynamicLink.getUri()));
+
+        //Shorten Link
+
+        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(dynamicLink.getUri())
+                .setDynamicLinkDomain("sharelocationapp.page.link").buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+            @Override
+            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                if (task.isSuccessful()) {
+                    // Short link created
+                    Uri shortLink = task.getResult().getShortLink();
+                    Uri flowchartLink = task.getResult().getPreviewLink();
+
+                    Log.d("shortLink", String.valueOf(shortLink));
+
+
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
+                    intent.setType("text/plain");
+                    startActivity(intent);
+
+                } else {
+                    Log.d("shortLink", String.valueOf(task.getException()));
+                }
+            }
+        });
 
     }
 
