@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -48,6 +49,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 import java.util.ArrayList;
 
@@ -213,6 +216,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 //  pushToFireBase();
+                createLink();
                 addMember();
             }
         });
@@ -639,6 +643,17 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void createLink() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink().setLink(Uri.parse("https://www.sharelocationapp.com/")).setDomainUriPrefix("https://sharelocationapp.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build()).buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.d("longLink", String.valueOf(dynamicLink.getUri()));
+
+    }
 
     private void showConfirmationLogOut(String alertStringMessage, String confirmStringMessage, String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -699,8 +714,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                                                     for (DataSnapshot dataSnapshot : roomSnapshot.getChildren()) {
                                                         newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
                                                         if (!newAdminId.equals("empty")) {
-                                                            Log.e("newAdmin",newAdminId);
-                                                            roomRef=FirebaseDatabase.getInstance().getReference("rooms");
+                                                            Log.e("newAdmin", newAdminId);
+                                                            roomRef = FirebaseDatabase.getInstance().getReference("rooms");
                                                             roomRef.child(roomId).child("admin").setValue(newAdminId);
                                                         }
                                                         break;
