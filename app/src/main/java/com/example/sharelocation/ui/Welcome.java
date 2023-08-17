@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +15,15 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityWelcomeBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
@@ -25,6 +31,7 @@ public class Welcome extends AppCompatActivity {
     ActivityWelcomeBinding binding;
     private FirebaseAuth fAuth;
     private FirebaseUser user;
+    private DatabaseReference roomRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +63,25 @@ public class Welcome extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-        recieveLink();
+        // recieveLink();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if (user != null) {
+            recieveLink();
 
-            Intent intent = new Intent(getApplicationContext(), Home.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            finish();
-            startActivity(intent);
         }
+    }
+
+    private void openNewRoom(String roomId) {
+        Intent intent = new Intent(Welcome.this, Room.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //     ((Home) context).finish();
+        intent.putExtra("roomId", (String) roomId);
+        intent.putExtra("roomName", roomId);
+        startActivity(intent);
     }
 
     private void recieveLink() {
@@ -84,11 +97,19 @@ public class Welcome extends AppCompatActivity {
 
                     String referedLink = deepLink.toString();
                     try {
-                        referedLink = referedLink.substring(referedLink.lastIndexOf("=") + 1);
+                        String roomId = referedLink.substring(referedLink.lastIndexOf("=") + 1);
+                        pushUserToFireBase(roomId);
+
                         Log.d("roomId", referedLink);
+
                     } catch (Exception e) {
 
                     }
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(intent);
                 }
 
             }
@@ -100,5 +121,50 @@ public class Welcome extends AppCompatActivity {
             }
         });
     }
+
+    private void pushUserToFireBase(String roomId) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String id = database.push().getKey();
+        //  RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
+
+
+        // to add the current roomId for userRooms tree after getting the size
+        database.child("userRooms").child(user.getUid()).child(roomId).child("id").setValue(roomId).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                // to add a new userId for roomMembers tree after getting the size
+                database.child("roomMembers").child(roomId).child(user.getUid()).child("id").setValue(user.getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        increseRoomCapacity(roomId);
+                        //   refresh();
+                        openNewRoom(roomId);
+                        Toast.makeText(Welcome.this, "Invitation accepted succesfly", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
+        //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+    }
+
+    private void increseRoomCapacity(String roomId) {
+        roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int newRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    newRoomCapacity++;
+                    roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(newRoomCapacity));
+                }
+            }
+        });
+    }
+
 
 }
