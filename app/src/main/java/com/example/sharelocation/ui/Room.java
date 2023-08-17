@@ -690,6 +690,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.d("longLink", String.valueOf(dynamicLink.getUri()));
 
+
+        //Manual Link
+
+
         //Shorten Link
 
         Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
