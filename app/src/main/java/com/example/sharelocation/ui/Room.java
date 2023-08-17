@@ -691,7 +691,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         //Manual Link
         String textLink = "https://sharelocationapp.page.link/?"
-                + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomId + "#" + roomName
+                + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomId + "@" + roomName
                 + "&apn=" + getPackageName() + "&st=" + "My Refer Link "
                 + "&sd=" + "Room Invite" +
                 "&si=" + "https://www.facebofok.com/logo-1.png";

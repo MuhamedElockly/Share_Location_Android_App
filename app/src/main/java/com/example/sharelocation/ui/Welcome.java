@@ -99,8 +99,8 @@ public class Welcome extends AppCompatActivity {
                     try {
                         referedLink = referedLink.substring(referedLink.lastIndexOf("=") + 1);
 
-                        String roomId = referedLink.substring(0, referedLink.indexOf("#"));
-                        String roomName = referedLink.substring(referedLink.lastIndexOf("#") + 1);
+                        String roomId = referedLink.substring(0, referedLink.indexOf("@"));
+                        String roomName = referedLink.substring(referedLink.lastIndexOf("@") + 1);
                         pushUserToFireBase(roomId, roomName);
 
                         Log.d("roomId", referedLink);
