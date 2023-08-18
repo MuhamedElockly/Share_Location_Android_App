@@ -57,6 +57,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -690,11 +691,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         //Manual Link
-        String textLink = "https://sharelocationapp.page.link/?"
-                + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomId + "@" + roomName
-                + "&apn=" + getPackageName() + "&st=" + "My Refer Link "
-                + "&sd=" + "Room Invite" +
-                "&si=" + "https://www.facebofok.com/logo-1.png";
+        String textLink = "https://sharelocationapp.page.link/?" + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomId + "@" + roomName + "&apn=" + getPackageName() + "&st=" + "My Refer Link " + "&sd=" + "Room Invite" + "&si=" + "https://www.facebofok.com/logo-1.png";
 
 
         //Shorten Link
@@ -724,6 +721,20 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                 });
 
+    }
+
+    private String generateInvitationCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rnd = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = rnd.nextInt(characters.length());
+            char randomChar = characters.charAt(index);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
     }
 
     private void showConfirmationLogOut(String alertStringMessage, String confirmStringMessage, String userId) {
