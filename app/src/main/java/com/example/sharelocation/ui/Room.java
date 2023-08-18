@@ -723,7 +723,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-
     private String generateInvitationCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random rnd = new Random();
