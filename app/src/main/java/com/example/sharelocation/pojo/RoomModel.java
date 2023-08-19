@@ -9,17 +9,27 @@ public class RoomModel {
     private String roomCapacity;
     private String id;
     private String admin;
+    private String invitaionCode;
 
     public RoomModel() {
 
     }
 
-    public RoomModel(String name, String numberOfRooms, String id, String roomCapacity, String admin) {
+    public RoomModel(String name, String numberOfRooms, String id, String roomCapacity, String admin, String invitaionCode) {
         this.name = name;
         this.numberOfRooms = numberOfRooms;
         this.id = id;
         this.roomCapacity = roomCapacity;
         this.admin = admin;
+        this.invitaionCode = invitaionCode;
+    }
+
+    public String getInvitaionCode() {
+        return invitaionCode;
+    }
+
+    public void setInvitaionCode(String invitaionCode) {
+        this.invitaionCode = invitaionCode;
     }
 
     public String getAdmin() {

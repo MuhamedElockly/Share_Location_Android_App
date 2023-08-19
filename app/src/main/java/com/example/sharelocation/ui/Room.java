@@ -7,14 +7,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +78,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private String roomId;
     private Button invite;
     private Button cancel;
-    private EditText memberEmailText;
+    private TextView invitationCodeView;
     private String roomName = "";
     private DatabaseReference userRef;
     private ActionBarDrawerToggle drawerToggle;
@@ -222,7 +220,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 //  pushToFireBase();
-                createLink();
+                //   createLink();
                 addMember();
             }
         });
@@ -242,6 +240,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         swipeRefreshLayout.setEnabled(false);
 
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
+        generateInvitationCode(6);
     }
 
     @Override
@@ -351,19 +350,17 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void addMember() {
-
-
         final AlertDialog.Builder[] builder = {new AlertDialog.Builder(this)};
         View view = LayoutInflater.from(this).inflate(R.layout.add_member, null);
         invite = (Button) view.findViewById(R.id.invite);
         cancel = (Button) view.findViewById(R.id.cancel);
-        memberEmailText = view.findViewById(R.id.dialogeMemberEmail);
+        invitationCodeView = view.findViewById(R.id.dialogeMemberEmail);
 
 
         builder[0].setView(view);
         final AlertDialog dialog = builder[0].create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -373,6 +370,26 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+            }
+        });
+
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String invitationCode = snapshot.child("invitationCode").getValue(String.class);
+                    dialog.show();
+                    invitationCodeView.setText(invitationCode);
+                }
+            }
+        });
+
+
+
+                /*
                 String memberEmail = memberEmailText.getText().toString();
                 if (memberEmail.isEmpty()) {
                     memberEmailText.setError("This Field Is Required");
@@ -410,9 +427,9 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     });
 
 
-                }
-            }
-        });
+                 */
+
+
     }
 
 
@@ -734,7 +751,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             char randomChar = characters.charAt(index);
             sb.append(randomChar);
         }
-
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
         return sb.toString();
     }
 

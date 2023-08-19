@@ -60,6 +60,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -165,7 +166,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
-      //  Toast.makeText(this, user.getUid().toString() ,Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, user.getUid().toString() ,Toast.LENGTH_LONG).show();
 
         recyclerView = binding.roomRecyclerView;
         userRoomsRef = FirebaseDatabase.getInstance().getReference("userRooms");
@@ -350,11 +351,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private String generateInvitationCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rnd = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = rnd.nextInt(characters.length());
+            char randomChar = characters.charAt(index);
+            sb.append(randomChar);
+        }
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+        return sb.toString();
+    }
+
     private void pushToFireBase2(String roomName, String roomCapacity) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid());
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid(), generateInvitationCode(6));
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -387,7 +402,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid());
+        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid(), generateInvitationCode(6));
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
