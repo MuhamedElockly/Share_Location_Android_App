@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -570,6 +571,53 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         codeFeild4.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         codeFeild5.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         codeFeild6.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild6.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    return false;
+                }
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (codeFeild6.getText().toString().length() == 0) {
+                        codeFeild5.setEnabled(true);
+                        codeFeild5.requestFocus();
+                    }
+                }
+
+                return false;
+
+            }
+        });
+
+        codeFeild5.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    return false;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (codeFeild5.getText().toString().length() == 0) {
+                        codeFeild4.setEnabled(true);
+                        codeFeild4.requestFocus();
+                    }
+                } else {
+                    if (codeFeild5.getText().toString().length() > 0) {
+                        codeFeild6.setEnabled(true);
+                        codeFeild6.requestFocus();
+                    }
+                }
+
+                return false;
+
+            }
+        });
 
         codeFeild1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -584,8 +632,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
-                codeFeild2.setEnabled(true);
-                codeFeild2.requestFocus();
+                if (s.toString().length() > 0) {
+                    codeFeild2.setEnabled(true);
+                    codeFeild2.requestFocus();
+                }
             }
         });
         codeFeild2.addTextChangedListener(new TextWatcher() {
@@ -601,8 +651,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
-                codeFeild3.setEnabled(true);
-                codeFeild3.requestFocus();
+                if (s.toString().length() > 0) {
+                    codeFeild3.setEnabled(true);
+                    codeFeild3.requestFocus();
+                }
             }
         });
         codeFeild3.addTextChangedListener(new TextWatcher() {
@@ -618,8 +670,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
-                codeFeild4.setEnabled(true);
-                codeFeild4.requestFocus();
+                if (s.toString().length() > 0) {
+                    codeFeild4.setEnabled(true);
+                    codeFeild4.requestFocus();
+                }
             }
         });
 
@@ -636,8 +690,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
-                codeFeild5.setEnabled(true);
-                codeFeild5.requestFocus();
+                if (s.toString().length() > 0) {
+                    codeFeild5.setEnabled(true);
+                    codeFeild5.requestFocus();
+                }
             }
         });
         codeFeild5.addTextChangedListener(new TextWatcher() {
@@ -653,8 +709,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
-                codeFeild6.setEnabled(true);
-                codeFeild6.requestFocus();
+
+                if (s.toString().length() > 0) {
+                    codeFeild6.setEnabled(true);
+                    codeFeild6.requestFocus();
+                }
             }
         });
     }
