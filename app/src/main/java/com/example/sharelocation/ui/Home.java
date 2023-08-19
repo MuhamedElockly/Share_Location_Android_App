@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
@@ -63,6 +64,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -559,21 +562,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         View windowView = Home.this.getCurrentFocus();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        showKeypoard(codeFeild1);
+        //   showKeypoard(codeFeild1);
+        UIUtil.showKeyboardInDialog(dialog, codeFeild1);
+        codeFeild1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild3.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild4.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild5.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        codeFeild6.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         codeFeild1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //   dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                if (windowView != null) {
-
-                    InputMethodManager manager = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                        manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    }
-                    manager.toggleSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
-                }
 
             }
 
@@ -584,11 +584,79 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void afterTextChanged(Editable s) {
+                codeFeild2.setEnabled(true);
+                codeFeild2.requestFocus();
+            }
+        });
+        codeFeild2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                codeFeild3.setEnabled(true);
+                codeFeild3.requestFocus();
+            }
+        });
+        codeFeild3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                codeFeild4.setEnabled(true);
+                codeFeild4.requestFocus();
             }
         });
 
+        codeFeild4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                codeFeild5.setEnabled(true);
+                codeFeild5.requestFocus();
+            }
+        });
+        codeFeild5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                codeFeild6.setEnabled(true);
+                codeFeild6.requestFocus();
+            }
+        });
     }
 
     private void showKeypoard(EditText editText) {
@@ -597,7 +665,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             Toast.makeText(this, "Keypoard", Toast.LENGTH_LONG).show();
         }
-        manager.showSoftInput(editText.getRootView(), InputMethodManager.SHOW_FORCED);
+        manager.showSoftInput(editText.getRootView(), InputMethodManager.SHOW_IMPLICIT);
         editText.requestFocus();
     }
 

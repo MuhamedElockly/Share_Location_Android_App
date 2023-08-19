@@ -38,10 +38,10 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:maxLength="1"
             android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-
             android:textStyle="bold" />
 
         <EditText
@@ -49,36 +49,34 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
-
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/codeFeild1"
             android:background="@drawable/edittext_background"
+            android:enabled="false"
             android:gravity="center_vertical|center_horizontal"
+            android:maxLength="1"
             android:padding="7dp"
             android:textColor="@color/majesty"
-            android:textSize="30dp"
 
-            android:textStyle="bold"
-            android:enabled="false"
-            />
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/codeFeild3"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
-
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/codeFeild2"
             android:background="@drawable/edittext_background"
+            android:enabled="false"
             android:gravity="center"
-            android:padding="7dp"
+            android:maxLength="1"
 
+            android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:enabled="false"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/invitationCodeCeter"
@@ -104,36 +102,34 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
-
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
+            android:enabled="false"
             android:gravity="center"
-            android:padding="7dp"
+            android:maxLength="1"
 
+            android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:enabled="false"
-            />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/codeFeild5"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
-
             android:layout_margin="5dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
+            android:enabled="false"
             android:gravity="center"
-            android:padding="7dp"
+            android:maxLength="1"
 
+            android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:enabled="false"
-            />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/codeFeild6"
@@ -144,15 +140,14 @@
             android:layout_marginRight="80dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
+            android:enabled="false"
             android:gravity="center"
+            android:maxLength="1"
             android:padding="7dp"
-
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
 
-            android:enabled="false"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <Button

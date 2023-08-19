@@ -39,6 +39,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
+
 public class ProfileActivity extends AppCompatActivity {
     AlertDialog dialog;
     private ActivityProfileBinding binding;
@@ -85,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
         imagePicker();
         updatPassward();
         forgetPassward();
+
     }
 
     private void updatePasswardView() {
