@@ -357,15 +357,11 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         cancel = (Button) view.findViewById(R.id.cancel);
         invitationCodeView = view.findViewById(R.id.dialogeMemberEmail);
 
-
-        builder[0].setView(view);
-        final AlertDialog dialog = builder[0].create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        final AlertDialog[] dialog = {null};
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog[0].cancel();
             }
         });
         invite.setOnClickListener(new View.OnClickListener() {
@@ -384,7 +380,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                     String invitationCode = snapshot.child("invitationCode").getValue(String.class);
 
                     invitationCodeView.setText(invitationCode);
-                    dialog.show();
+                    builder[0].setView(view);
+                    dialog[0] = builder[0].create();
+                    dialog[0].getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog[0].show();
                 }
             }
         });
