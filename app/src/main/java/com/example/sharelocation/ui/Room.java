@@ -76,8 +76,8 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private String roomAdmin = "";
     private FirebaseAuth fAuth;
     private String roomId;
-    private Button invite;
-    private Button cancel;
+    private Button sendCodeBtn;
+    private Button cancelBtn;
     private TextView invitationCodeView;
     private String roomName = "";
     private DatabaseReference userRef;
@@ -151,6 +151,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
     };
     private DatabaseReference rooms;
+    private Button resetInvitaionCode;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -353,22 +354,39 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private void addMember() {
         final AlertDialog.Builder[] builder = {new AlertDialog.Builder(this)};
         View view = LayoutInflater.from(this).inflate(R.layout.add_member, null);
-        invite = (Button) view.findViewById(R.id.invite);
-        cancel = (Button) view.findViewById(R.id.cancel);
-        invitationCodeView = view.findViewById(R.id.dialogeMemberEmail);
-
+        sendCodeBtn = (Button) view.findViewById(R.id.sendCode);
+        cancelBtn = (Button) view.findViewById(R.id.cancel);
+        invitationCodeView = view.findViewById(R.id.invitationcode);
+        resetInvitaionCode = view.findViewById(R.id.resetInvitationCode);
         final AlertDialog[] dialog = {null};
-        cancel.setOnClickListener(new View.OnClickListener() {
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog[0].cancel();
             }
         });
-        invite.setOnClickListener(new View.OnClickListener() {
+        sendCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+            }
+        });
+        resetInvitaionCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String newInvitationCode = generateInvitationCode(6);
+                roomRef.child(roomId).child("invitationCode").setValue(newInvitationCode).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+                            invitationCodeView.setText(newInvitationCode);
+                        }
+
+                    }
+                });
             }
         });
 
