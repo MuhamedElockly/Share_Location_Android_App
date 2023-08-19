@@ -22,13 +22,15 @@
         android:textStyle="normal|bold" />
 
     <ProgressBar
-        android:id="@+id/PROGRESS_BAR"
+        android:id="@+id/invitationCodeBPar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/invitationcode"
         android:layout_alignTop="@id/invitationcode"
         android:layout_alignRight="@id/invitationcode"
-        android:layout_alignBottom="@id/invitationcode" />
+        android:layout_alignBottom="@id/invitationcode"
+
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/resetInvitationCode"
@@ -46,44 +48,51 @@
 
         />
 
-
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/invitationcode"
+        android:layout_below="@id/resetInvitationCode"
         android:layout_alignStart="@id/invitationcode"
-        android:layout_margin="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_alignEnd="@id/invitationcode">
 
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/invitationcode"
+            android:layout_alignStart="@id/invitationcode"
+            android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
 
-        android:background="@drawable/cancel_button"
-        android:padding="10dp"
-        android:text="Cancel"
-        android:textColor="@color/white" />
-
-
-    <Button
-        android:id="@+id/sendCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@id/invitationcode"
-
-        android:layout_alignEnd="@id/invitationcode"
-        android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toLeftOf="@id/sendCode"
+            android:layout_weight="1"
+            android:background="@drawable/cancel_button"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:textColor="@color/white" />
 
 
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toRightOf="@id/cancel"
-        android:background="@drawable/confirm_button"
+        <Button
+            android:id="@+id/sendCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-        android:padding="10dp"
-        android:text="Send code " />
+            android:layout_below="@id/invitationcode"
 
+            android:layout_alignEnd="@id/invitationcode"
+            android:layout_marginStart="20dp"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+
+            android:background="@drawable/confirm_button"
+
+            android:padding="10dp"
+            android:text="Send code " />
+    </LinearLayout>
 </RelativeLayout>
