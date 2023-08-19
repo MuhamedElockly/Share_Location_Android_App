@@ -140,6 +140,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+    private Button joinRoom;
+    private Button createNewRoom;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -512,6 +514,29 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void addRoom() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.add_new_room, null);
+        joinRoom = (Button) view.findViewById(R.id.joinRoom);
+        createNewRoom = (Button) view.findViewById(R.id.createNewRoom);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        joinRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        createNewRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewRoom();
+            }
+        });
+    }
+
+    private void createNewRoom() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.add_room, null);
         apply = (Button) view.findViewById(R.id.apply);
