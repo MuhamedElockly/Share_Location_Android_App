@@ -2,6 +2,7 @@ package com.example.sharelocation.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
@@ -9,12 +10,16 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -541,11 +546,59 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.join_room, null);
         submit = (Button) view.findViewById(R.id.submit);
-
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        EditText codeFeild1 = view.findViewById(R.id.codeFeild1);
+        EditText codeFeild2 = view.findViewById(R.id.codeFeild2);
+        EditText codeFeild3 = view.findViewById(R.id.codeFeild3);
+        EditText codeFeild4 = view.findViewById(R.id.codeFeild4);
+        EditText codeFeild5 = view.findViewById(R.id.codeFeild5);
+        EditText codeFeild6 = view.findViewById(R.id.codeFeild6);
+        View windowView = Home.this.getCurrentFocus();
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        showKeypoard(codeFeild1);
+
+        codeFeild1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //   dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                if (windowView != null) {
+
+                    InputMethodManager manager = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    }
+                    manager.toggleSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+    }
+
+    private void showKeypoard(EditText editText) {
+        InputMethodManager manager = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            Toast.makeText(this, "Keypoard", Toast.LENGTH_LONG).show();
+        }
+        manager.showSoftInput(editText.getRootView(), InputMethodManager.SHOW_FORCED);
+        editText.requestFocus();
     }
 
     private void createNewRoom() {

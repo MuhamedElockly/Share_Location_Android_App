@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/delete_confirmation_dialoge"
-    >
+    android:background="@drawable/delete_confirmation_dialoge">
 
     <TextView
         android:id="@+id/headerTextView"
@@ -16,10 +15,9 @@
 
         android:layout_marginBottom="20dp"
         android:text="Enter the invite code "
-        android:textSize="22dp"
-        android:textStyle="bold"
         android:textColor="@color/majesty"
-        />
+        android:textSize="22dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/codeView"
@@ -31,53 +29,55 @@
         <EditText
             android:id="@+id/codeFeild1"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
 
             android:layout_marginStart="80dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:text="X"
 
-            />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/codeFeild2"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
 
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toRightOf="@id/codeFeild1"
             android:background="@drawable/edittext_background"
-            android:gravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="7dp"
             android:textColor="@color/majesty"
             android:textSize="30dp"
+
             android:textStyle="bold"
-            android:text="X"
+            android:enabled="false"
             />
 
         <EditText
             android:id="@+id/codeFeild3"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
 
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toRightOf="@id/codeFeild2"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:padding="7dp"
+
             android:textColor="@color/majesty"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:text="X"
-
+            android:enabled="false"
             />
 
         <TextView
@@ -94,60 +94,64 @@
 
 
             android:gravity="center"
+            android:text="-"
             android:textColor="@color/majesty"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:text="-" />
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/codeField4"
+            android:id="@+id/codeFeild4"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
 
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:padding="7dp"
+
             android:textColor="@color/majesty"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:text="X"
-
+            android:enabled="false"
             />
 
         <EditText
-            android:id="@+id/codeField5"
+            android:id="@+id/codeFeild5"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
 
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:padding="7dp"
+
             android:textColor="@color/majesty"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:text="X"
-
+            android:enabled="false"
             />
 
         <EditText
-            android:id="@+id/codeField6"
+            android:id="@+id/codeFeild6"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/headerTextView"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="80dp"
             android:layout_toRightOf="@id/invitationCodeCeter"
             android:background="@drawable/edittext_background"
             android:gravity="center"
+            android:padding="7dp"
+
             android:textColor="@color/majesty"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:text="Y"
 
+            android:enabled="false"
             />
     </LinearLayout>
 
@@ -156,10 +160,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/codeView"
-        android:background="@drawable/submit_btn"
         android:layout_margin="20dp"
+        android:background="@drawable/submit_btn"
         android:text="submit"
         android:textColor="@color/white"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp" />
 </RelativeLayout>
