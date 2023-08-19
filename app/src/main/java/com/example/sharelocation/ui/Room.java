@@ -188,6 +188,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+        roomRef = FirebaseDatabase.getInstance().getReference("rooms");
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -240,7 +241,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         swipeRefreshLayout.setEnabled(false);
 
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
-        generateInvitationCode(6);
+        //  generateInvitationCode(6);
     }
 
     @Override
@@ -334,7 +335,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void increseRoomCapacity(String roomId) {
-        roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+
         roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -381,8 +382,9 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
                     String invitationCode = snapshot.child("invitationCode").getValue(String.class);
-                    dialog.show();
+
                     invitationCodeView.setText(invitationCode);
+                    dialog.show();
                 }
             }
         });
