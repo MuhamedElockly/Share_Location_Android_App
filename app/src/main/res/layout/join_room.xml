@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/headerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+
+        android:layout_marginBottom="20dp"
+        android:text="Enter the invite code "
+        android:textSize="22dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/codeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerTextView"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/codeFeild1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="X"
+            />
+
+        <EditText
+            android:id="@+id/codeFeild2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/codeFeild1"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="X"
+            />
+
+        <EditText
+            android:id="@+id/codeFeild3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/codeFeild2"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="X"
+
+            />
+
+        <TextView
+            android:id="@+id/invitationCodeCeter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+
+
+            android:layout_toRightOf="@id/codeFeild3"
+
+
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="-" />
+
+        <EditText
+            android:id="@+id/codeField4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/invitationCodeCeter"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="X"
+
+            />
+
+        <EditText
+            android:id="@+id/codeField5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/invitationCodeCeter"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="X"
+
+            />
+
+        <EditText
+            android:id="@+id/codeField6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/headerTextView"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="80dp"
+            android:layout_toRightOf="@id/invitationCodeCeter"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:textColor="@color/majesty"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="Y"
+
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/codeView"
+        android:background="@drawable/submit_btn"
+        android:layout_margin="20dp"
+        android:text="submit"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        />
+</RelativeLayout>
