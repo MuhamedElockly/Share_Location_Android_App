@@ -142,6 +142,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     };
     private Button joinRoom;
     private Button createNewRoom;
+    private Button submit;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -525,7 +526,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         joinRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                joinRoom();
             }
         });
         createNewRoom.setOnClickListener(new View.OnClickListener() {
@@ -534,6 +535,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 createNewRoom();
             }
         });
+    }
+
+    private void joinRoom() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.join_room, null);
+        submit = (Button) view.findViewById(R.id.submit);
+
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     private void createNewRoom() {
