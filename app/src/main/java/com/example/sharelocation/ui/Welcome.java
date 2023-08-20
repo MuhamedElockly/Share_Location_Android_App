@@ -110,22 +110,51 @@ public class Welcome extends AppCompatActivity {
                     try {
                         referedLink = referedLink.substring(referedLink.lastIndexOf("=") + 1);
 
-                        String roomId = referedLink.substring(0, referedLink.indexOf("@"));
+                        String invitationCode = referedLink.substring(0, referedLink.indexOf("@"));
                         String roomName = referedLink.substring(referedLink.lastIndexOf("@") + 1);
-
-                        database.child(roomId).orderByChild("id").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        database.orderByChild("invitationCode").equalTo(invitationCode).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
-                                    dialog.cancel();
-                                    openNewRoom(roomId, roomName);
-                                } else {
-                                    pushUserToFireBase(roomId, roomName);
+                                    String roomName = null;
+                                    String roomId = null;
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        roomName = ds.child("name").getValue(String.class);
+                                        roomId = ds.child("id").getValue(String.class);
+                                        //  pushUserToFireBase(id, roomName);
+                                    }
+
+
+                                    String finalRoomId = roomId;
+                                    String finalRoomName = roomName;
+                                    database.child(roomId).orderByChild("id").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()) {
+                                                dialog.cancel();
+                                                openNewRoom(finalRoomId, finalRoomName);
+                                            } else {
+                                                pushUserToFireBase(finalRoomId, finalRoomName);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(Welcome.this, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                            dialog.cancel();
+                                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            finish();
+                                            startActivity(intent);
+                                        }
+                                    });
+
                                 }
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(Welcome.this, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                 dialog.cancel();
                                 Intent intent = new Intent(getApplicationContext(), Home.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -151,6 +180,7 @@ public class Welcome extends AppCompatActivity {
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Welcome.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 String TAG = "splash";
                 Log.e(TAG, "getDynamicLink:onFailure", e);
             }

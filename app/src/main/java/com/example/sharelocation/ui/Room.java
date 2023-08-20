@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityRoomBinding;
 import com.example.sharelocation.pojo.MemebrsModel;
+import com.example.sharelocation.pojo.RoomModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -150,6 +151,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     };
+    private RoomModel roomModel;
     private DatabaseReference rooms;
     private Button resetInvitaionCode;
 
@@ -341,7 +343,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
+
                     DataSnapshot snapshot = task.getResult();
+
+
                     String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
                     int newRoomCapacity = Integer.parseInt(lastRoomCapcity);
                     newRoomCapacity++;
@@ -368,7 +373,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         sendCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                createLink();
 
             }
         });
@@ -515,6 +520,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
+                    roomModel = snapshot.getValue(RoomModel.class);
                     roomAdmin = snapshot.child("admin").getValue(String.class);
                     membersAdapter = new MembersAdapter(Room.this, members, roomAdmin);
                     recyclerView.setAdapter(membersAdapter);
@@ -724,10 +730,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.d("longLink", String.valueOf(dynamicLink.getUri()));
-
+        Toast.makeText(this, roomModel.getName(), Toast.LENGTH_SHORT).show();
 
         //Manual Link
-        String textLink = "https://sharelocationapp.page.link/?" + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomId + "@" + roomName + "&apn=" + getPackageName() + "&st=" + "My Refer Link " + "&sd=" + "Room Invite" + "&si=" + "https://www.facebofok.com/logo-1.png";
+        String textLink = "https://sharelocationapp.page.link/?" + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomModel.getInvitationCode() + "@" + roomName + "&apn=" + getPackageName() + "&st=" + "My Refer Link " + "&sd=" + "Room Invite" + "&si=" + "https://www.facebofok.com/logo-1.png";
 
 
         //Shorten Link
