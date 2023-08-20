@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
@@ -546,6 +547,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private void enableButten(Button button) {
+        Drawable drawable = getResources().getDrawable(R.drawable.submit_btn_active);
+
+        button.setEnabled(true);
+        button.setBackground(drawable);
+    }
+
+    private void disenableButton(Button button) {
+        Drawable drawable = getResources().getDrawable(R.drawable.submit_btn);
+        button.setEnabled(false);
+        button.setBackground(drawable);
+    }
+
     private void joinRoom() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.join_room, null);
@@ -576,8 +590,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
 
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
                     return false;
                 }
@@ -596,15 +609,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         codeFeild5.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Log.e("keyDownn5", "enter");
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //   Log.e("keyDownn5", "enter");
                     return false;
                 }
 
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
 
-                    Log.e("keyDownn5", "delete");
+                    //   Log.e("keyDownn5", "delete");
                     if (codeFeild5.getText().toString().length() == 0) {
 
 
@@ -612,11 +624,101 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         codeFeild4.requestFocus();
                     }
                 } else {
-                    Log.e("keyDownn5", "other");
+                    //   Log.e("keyDownn5", "other");
                     if (codeFeild5.getText().toString().length() > 0) {
 
                         codeFeild6.setEnabled(true);
                         codeFeild6.requestFocus();
+                    }
+                }
+
+                return false;
+
+            }
+        });
+        codeFeild4.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    return false;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+
+
+                    if (codeFeild4.getText().toString().length() == 0) {
+
+
+                        codeFeild3.setEnabled(true);
+                        codeFeild3.requestFocus();
+                    }
+                } else {
+
+                    if (codeFeild4.getText().toString().length() > 0) {
+
+                        codeFeild5.setEnabled(true);
+                        codeFeild5.requestFocus();
+                    }
+                }
+
+                return false;
+
+            }
+        });
+        codeFeild3.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    return false;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+
+
+                    if (codeFeild3.getText().toString().length() == 0) {
+
+
+                        codeFeild2.setEnabled(true);
+                        codeFeild2.requestFocus();
+                    }
+                } else {
+
+                    if (codeFeild3.getText().toString().length() > 0) {
+
+                        codeFeild4.setEnabled(true);
+                        codeFeild4.requestFocus();
+                    }
+                }
+
+                return false;
+
+            }
+        });
+        codeFeild2.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    return false;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+
+
+                    if (codeFeild2.getText().toString().length() == 0) {
+
+
+                        codeFeild1.setEnabled(true);
+                        codeFeild1.requestFocus();
+                    }
+                } else {
+
+                    if (codeFeild2.getText().toString().length() > 0) {
+
+                        codeFeild3.setEnabled(true);
+                        codeFeild3.requestFocus();
                     }
                 }
 
@@ -641,6 +743,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if (s.toString().length() > 0) {
                     codeFeild2.setEnabled(true);
                     codeFeild2.requestFocus();
+                    if (codeFeild1.getText().toString().isEmpty()) {
+                        disenableButton(submit);
+                    }
+
                 }
             }
         });
