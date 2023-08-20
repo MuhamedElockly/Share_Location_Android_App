@@ -127,7 +127,7 @@ public class JoinRoom {
                             //   Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
                         } else {
                             dialog.cancel();
-                            Toast.makeText(context, "Sorry,that code is not valid", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Sorry, that code is not valid", Toast.LENGTH_SHORT).show();
 
                         }
                     }
