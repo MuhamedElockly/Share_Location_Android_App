@@ -91,6 +91,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Button apply;
     private Button cancel;
     private FirebaseAuth fAuth;
+
+    public FirebaseUser getUser() {
+        return user;
+    }
+
+    public void setUser(FirebaseUser user) {
+        this.user = user;
+    }
+
     private FirebaseUser user;
     private LinearLayoutManager mLayoutManager;
     private ImageView headerImage;

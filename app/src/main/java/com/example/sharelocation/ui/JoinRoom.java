@@ -1,6 +1,7 @@
 package com.example.sharelocation.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,20 +14,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.sharelocation.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 public class JoinRoom {
     private Context context;
     private Button submit;
+    private DatabaseReference database;
+    private AlertDialog dialog;
+    private FirebaseAuth fAuth;
+    private FirebaseUser user;
+    private DatabaseReference roomRef;
 
     public JoinRoom(Context context) {
         this.context = context;
+        fAuth = FirebaseAuth.getInstance();
+        this.user = fAuth.getCurrentUser();
     }
 
     public Context getContext() {
@@ -35,6 +54,7 @@ public class JoinRoom {
 
     public void setContext(Context context) {
         this.context = context;
+
     }
 
     public void joinRoom() {
@@ -68,7 +88,33 @@ public class JoinRoom {
                 sb.append(codeFeild5.getText().toString());
                 sb.append(codeFeild6.getText().toString());
                 String invitationCode = sb.toString();
-                Toast.makeText(context, invitationCode, Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(context, invitationCode, Toast.LENGTH_SHORT).show();
+
+                database = FirebaseDatabase.getInstance().getReference("rooms");
+                database.orderByChild("invitationCode").equalTo(invitationCode).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String roomName = null;
+                            String id = null;
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                roomName = ds.child("name").getValue(String.class);
+                                id = ds.child("id").getValue(String.class);
+                                pushUserToFireBase(id, roomName);
+                            }
+                            Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Not exist", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
 
@@ -452,4 +498,72 @@ public class JoinRoom {
         button.setEnabled(false);
         button.setBackground(drawable);
     }
+
+    private void pushUserToFireBase(String roomId, String roomName) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String id = database.push().getKey();
+        //  RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id);
+
+
+        // to add the current roomId for userRooms tree after getting the size
+        database.child("userRooms").child(user.getUid()).child(roomId).child("id").setValue(roomId).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                // to add a new userId for roomMembers tree after getting the size
+                database.child("roomMembers").child(roomId).child(user.getUid()).child("id").setValue(user.getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        increseRoomCapacity(roomId);
+                        //   refresh();
+                        openNewRoom(roomId, roomName);
+                        Toast.makeText(context, "Invitation accepted succesfly", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
+        //  Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+    }
+
+    private void openNewRoom(String roomId, String roomName) {
+        Intent intent = new Intent(context, Room.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //     ((Home) context).finish();
+        intent.putExtra("roomId", (String) roomId);
+        intent.putExtra("roomName", roomName);
+        context.startActivity(intent);
+    }
+
+    private void increseRoomCapacity(String roomId) {
+        roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                dialog.cancel();
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String lastRoomCapcity = snapshot.child("roomCapacity").getValue(String.class);
+                    int newRoomCapacity = Integer.parseInt(lastRoomCapcity);
+                    newRoomCapacity++;
+                    roomRef.child(roomId).child("roomCapacity").setValue(String.valueOf(newRoomCapacity));
+                }
+            }
+        });
+    }
+
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+
+    }
+
 }
