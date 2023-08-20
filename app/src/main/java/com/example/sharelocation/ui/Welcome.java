@@ -112,6 +112,7 @@ public class Welcome extends AppCompatActivity {
 
                         String invitationCode = referedLink.substring(0, referedLink.indexOf("@"));
                         String roomName = referedLink.substring(referedLink.lastIndexOf("@") + 1);
+                        database = FirebaseDatabase.getInstance().getReference("rooms");
                         database.orderByChild("invitationCode").equalTo(invitationCode).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,16 +123,19 @@ public class Welcome extends AppCompatActivity {
                                         roomName = ds.child("name").getValue(String.class);
                                         roomId = ds.child("id").getValue(String.class);
                                         //  pushUserToFireBase(id, roomName);
+                                        //  Toast.makeText(Welcome.this, roomId, Toast.LENGTH_SHORT).show();
                                     }
 
 
                                     String finalRoomId = roomId;
                                     String finalRoomName = roomName;
+                                    database = FirebaseDatabase.getInstance().getReference("roomMembers");
                                     database.child(roomId).orderByChild("id").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if (snapshot.exists()) {
                                                 dialog.cancel();
+                                                Toast.makeText(Welcome.this, "Room already exist ", Toast.LENGTH_SHORT).show();
                                                 openNewRoom(finalRoomId, finalRoomName);
                                             } else {
                                                 pushUserToFireBase(finalRoomId, finalRoomName);
@@ -149,6 +153,13 @@ public class Welcome extends AppCompatActivity {
                                         }
                                     });
 
+                                } else {
+                                    Toast.makeText(Welcome.this, "Sorry, link is not valid", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
                                 }
                             }
 
