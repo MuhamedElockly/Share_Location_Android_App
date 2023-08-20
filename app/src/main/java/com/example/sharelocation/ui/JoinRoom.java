@@ -64,9 +64,9 @@ public class JoinRoom {
 
 
         builder.setView(view);
-        final AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        final AlertDialog invitationCodeDialoge = builder.create();
+        invitationCodeDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        invitationCodeDialoge.show();
         EditText codeFeild1 = view.findViewById(R.id.codeFeild1);
         EditText codeFeild2 = view.findViewById(R.id.codeFeild2);
         EditText codeFeild3 = view.findViewById(R.id.codeFeild3);
@@ -100,18 +100,37 @@ public class JoinRoom {
                             for (DataSnapshot ds : snapshot.getChildren()) {
                                 roomName = ds.child("name").getValue(String.class);
                                 id = ds.child("id").getValue(String.class);
-                                pushUserToFireBase(id, roomName);
+                                //  pushUserToFireBase(id, roomName);
                             }
+                            String finalId = id;
+                            String finalRoomName = roomName;
+                            database.child(id).orderByChild("id").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        dialog.cancel();
+                                        //   openNewRoom(finalId, finalRoomName);
+                                        Toast.makeText(context, "Room arleady exist !", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        pushUserToFireBase(finalId, finalRoomName);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, "Not exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Sorry,that code is not valid", Toast.LENGTH_SHORT).show();
 
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -529,7 +548,7 @@ public class JoinRoom {
 
     private void openNewRoom(String roomId, String roomName) {
         Intent intent = new Intent(context, Room.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //     ((Home) context).finish();
         intent.putExtra("roomId", (String) roomId);
         intent.putExtra("roomName", roomName);
