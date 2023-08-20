@@ -579,7 +579,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    return false;
+                  //  return false;
                 }
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     if (codeFeild6.getText().toString().length() == 0) {
@@ -599,7 +599,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    return false;
+                  //  return false;
                 }
 
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
