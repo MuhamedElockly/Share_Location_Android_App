@@ -735,6 +735,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
+                }
 
             }
 
@@ -743,9 +758,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if (s.toString().length() > 0) {
                     codeFeild2.setEnabled(true);
                     codeFeild2.requestFocus();
-                    if (codeFeild1.getText().toString().isEmpty()) {
-                        disenableButton(submit);
-                    }
 
                 }
             }
@@ -758,12 +770,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
+
+
                     codeFeild3.setEnabled(true);
                     codeFeild3.requestFocus();
                 }
@@ -778,11 +806,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
+
+
                     codeFeild4.setEnabled(true);
                     codeFeild4.requestFocus();
                 }
@@ -797,6 +842,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
+                }
+
 
             }
 
@@ -816,17 +878,69 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.e("onText", "onnnnn");
+
+
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 Log.e("afterText", "after");
-                if (s.toString().length() > 0) {
-                    codeFeild6.setEnabled(true);
-                    codeFeild6.requestFocus();
+
+                codeFeild6.setEnabled(true);
+                codeFeild6.requestFocus();
+            }
+
+        });
+        codeFeild6.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.e("beforeText", "beforeeee");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                if (codeFeild1.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild2.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild3.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild4.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild5.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else if (codeFeild6.getText().toString().isEmpty()) {
+                    disenableButton(submit);
+                } else {
+                    enableButten(submit);
                 }
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.e("afterText", "after");
+
+                //   codeFeild6.setEnabled(true);
+                //    codeFeild6.requestFocus();
+            }
+
         });
     }
 
