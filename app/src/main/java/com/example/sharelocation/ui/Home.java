@@ -579,7 +579,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                  //  return false;
+                    return false;
                 }
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     if (codeFeild6.getText().toString().length() == 0) {
@@ -598,17 +598,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                  //  return false;
+                    Log.e("keyDownn5", "enter");
+                    return false;
                 }
 
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
+
+                    Log.e("keyDownn5", "delete");
                     if (codeFeild5.getText().toString().length() == 0) {
+
+
                         codeFeild4.setEnabled(true);
                         codeFeild4.requestFocus();
                     }
                 } else {
+                    Log.e("keyDownn5", "other");
                     if (codeFeild5.getText().toString().length() > 0) {
+
                         codeFeild6.setEnabled(true);
                         codeFeild6.requestFocus();
                     }
@@ -699,17 +705,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         codeFeild5.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                Log.e("beforeText", "beforeeee");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                Log.e("onText", "onnnnn");
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                Log.e("afterText", "after");
                 if (s.toString().length() > 0) {
                     codeFeild6.setEnabled(true);
                     codeFeild6.requestFocus();
