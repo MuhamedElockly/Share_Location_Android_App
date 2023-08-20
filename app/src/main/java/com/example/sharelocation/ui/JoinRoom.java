@@ -41,12 +41,7 @@ public class JoinRoom {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.join_room, null);
         submit = (Button) view.findViewById(R.id.submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Submit", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         builder.setView(view);
         final AlertDialog dialog = builder.create();
@@ -58,7 +53,24 @@ public class JoinRoom {
         EditText codeFeild4 = view.findViewById(R.id.codeFeild4);
         EditText codeFeild5 = view.findViewById(R.id.codeFeild5);
         EditText codeFeild6 = view.findViewById(R.id.codeFeild6);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder sb = new StringBuilder(6);
 
+                //  ((Home)context).printValues();
+
+
+                sb.append(codeFeild1.getText().toString());
+                sb.append(codeFeild2.getText().toString());
+                sb.append(codeFeild3.getText().toString());
+                sb.append(codeFeild4.getText().toString());
+                sb.append(codeFeild5.getText().toString());
+                sb.append(codeFeild6.getText().toString());
+                String invitationCode = sb.toString();
+                Toast.makeText(context, invitationCode, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //  context.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         //   showKeypoard(codeFeild1);
