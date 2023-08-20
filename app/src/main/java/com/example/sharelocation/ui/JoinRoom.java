@@ -76,6 +76,7 @@ public class JoinRoom {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgreesBar();
                 StringBuilder sb = new StringBuilder(6);
 
                 //  ((Home)context).printValues();
@@ -104,13 +105,14 @@ public class JoinRoom {
                             }
                             String finalId = id;
                             String finalRoomName = roomName;
+                            database = FirebaseDatabase.getInstance().getReference("roomMembers");
                             database.child(id).orderByChild("id").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                         dialog.cancel();
                                         //   openNewRoom(finalId, finalRoomName);
-                                        Toast.makeText(context, "Room arleady exist !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Room already exist !", Toast.LENGTH_SHORT).show();
                                     } else {
                                         pushUserToFireBase(finalId, finalRoomName);
                                     }
@@ -118,11 +120,13 @@ public class JoinRoom {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
+                                    dialog.cancel();
                                     Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
                         } else {
+                            dialog.cancel();
                             Toast.makeText(context, "Sorry,that code is not valid", Toast.LENGTH_SHORT).show();
 
                         }
@@ -130,6 +134,7 @@ public class JoinRoom {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        dialog.cancel();
                         Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -461,9 +466,10 @@ public class JoinRoom {
             @Override
             public void afterTextChanged(Editable s) {
                 Log.e("afterText", "after");
-
-                codeFeild6.setEnabled(true);
-                codeFeild6.requestFocus();
+                if (s.toString().length() > 0) {
+                    codeFeild6.setEnabled(true);
+                    codeFeild6.requestFocus();
+                }
             }
 
         });
