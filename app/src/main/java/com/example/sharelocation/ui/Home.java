@@ -217,6 +217,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 addRoom();
             }
         });
+
         swipeRefreshLayout = findViewById(R.id.swipeToRefresh);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -229,7 +230,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
 
 
-        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setEnabled(true);
+
+
+
+
 
 
    /*
