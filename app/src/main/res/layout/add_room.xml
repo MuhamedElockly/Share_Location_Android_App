@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:background="@drawable/confirm_button"
+                    android:background="@drawable/submit_btn_active"
                     android:padding="10dp"
                     android:text="Apply" />
             </LinearLayout>
