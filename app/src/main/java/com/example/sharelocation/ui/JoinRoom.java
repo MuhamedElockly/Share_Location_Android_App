@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +45,7 @@ public class JoinRoom {
     private FirebaseAuth fAuth;
     private FirebaseUser user;
     private DatabaseReference roomRef;
+    private AlertDialog confirmationDialoge;
 
     public JoinRoom(Context context) {
         this.context = context;
@@ -56,6 +60,30 @@ public class JoinRoom {
     public void setContext(Context context) {
         this.context = context;
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog confirmationDialoge = builder.create();
+        confirmationDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        confirmationDialoge.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmationDialoge.cancel();
+            }
+        });
     }
 
     public void joinRoom() {
@@ -77,6 +105,10 @@ public class JoinRoom {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 showProgreesBar();
                 StringBuilder sb = new StringBuilder(6);
 
@@ -113,7 +145,8 @@ public class JoinRoom {
                                     if (snapshot.exists()) {
                                         dialog.cancel();
                                         //   openNewRoom(finalId, finalRoomName);
-                                        Toast.makeText(context, "Room already exist !", Toast.LENGTH_SHORT).show();
+                                   //     Toast.makeText(context, "Room already exist !", Toast.LENGTH_SHORT).show();
+                                        showConfirmationDialoge("Room already exist !");
                                     } else {
                                         pushUserToFireBase(finalId, finalRoomName);
                                     }
@@ -122,21 +155,26 @@ public class JoinRoom {
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     dialog.cancel();
-                                    Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                               //     Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                    showConfirmationDialoge(error.getMessage().toString());
                                 }
                             });
                             //   Toast.makeText(context, "Exist : " + id, Toast.LENGTH_SHORT).show();
                         } else {
                             dialog.cancel();
-                            Toast.makeText(context, "Sorry, that code is not valid", Toast.LENGTH_SHORT).show();
-
+                          //  Toast.makeText(context, "Sorry, that code is not valid", Toast.LENGTH_SHORT).show();
+                            showConfirmationDialoge("Sorry, that code is not valid");
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         dialog.cancel();
-                        Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+
+                        showConfirmationDialoge(error.getMessage().toString());
+
                     }
                 });
 
@@ -144,7 +182,7 @@ public class JoinRoom {
         });
 
         ((Home) context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-       //  showKeypoard(codeFeild1);
+        //  showKeypoard(codeFeild1);
         UIUtil.showKeyboardInDialog(dialog, codeFeild1);
         codeFeild1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         codeFeild2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
