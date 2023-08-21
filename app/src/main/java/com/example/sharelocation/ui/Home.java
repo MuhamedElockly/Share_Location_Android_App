@@ -226,6 +226,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 //    logOut();
                 addRoom();
+
             }
         });
 
@@ -442,15 +443,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         }
                     });
                 } else if (task.getException() instanceof FirebaseAuthException) {
-
+                    progressBarDialoge.cancel();
 
                     showConfirmationDialoge(task.getException().getMessage().toString());
 
                 } else if (task.getException() instanceof FirebaseNetworkException) {
+                    progressBarDialoge.cancel();
                     // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
                     showConfirmationDialoge("Please check internet connection !");
                 } else {
-
+                    progressBarDialoge.cancel();
                     //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     showConfirmationDialoge(task.getException().getMessage());
                 }
@@ -632,6 +634,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 showProgreesBar();
                 String roomName = roomNameText.getText().toString();
 
@@ -773,8 +779,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
+        if (!isNetworkAvailable() && id != R.id.navHome) {
+            showConfirmationDialoge("Please check internet connection !");
+            return false;
+        }
+
         if (id == R.id.logout) {
             logOut();
             // drawerLayout.closeDrawer(GravityCompat.START);
