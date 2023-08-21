@@ -5,11 +5,23 @@
     android:layout_height="wrap_content"
     android:background="@drawable/delete_confirmation_dialoge">
 
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@id/invitationcode"
+        android:gravity="left"
+        android:text="INVITATION CODE"
+        android:textColor="@color/light_blue_600"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/invitationcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/textViewHeader"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
@@ -75,9 +87,9 @@
             android:background="@drawable/cancel_button"
             android:padding="10dp"
             android:text="Cancel"
-            android:textSize="20dp"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white" />
+            android:textSize="20dp" />
 
 
         <Button
@@ -94,12 +106,12 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-
             android:background="@drawable/submit_btn_active"
-
             android:padding="10dp"
-            android:text="Send code " />
+
+            android:text="Send code "
+
+            android:textColor="@color/white"
+            android:textSize="20dp" />
     </LinearLayout>
 </RelativeLayout>

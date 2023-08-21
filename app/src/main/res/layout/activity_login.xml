@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="LogIn"
+                    android:text="Sign-In"
                     android:textColor="@color/orange"
                     android:textSize="55dp"
                     android:textStyle="bold" />
@@ -126,9 +126,9 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/background_btn_welcome2"
                     android:onClick="@{()->logIn.logIn()}"
-                    android:text="LogIn"
+                    android:text="sign-in"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <Button

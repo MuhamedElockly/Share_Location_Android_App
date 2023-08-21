@@ -288,15 +288,15 @@ public class LogIn extends AppCompatActivity {
         String passward = binding.passward.getText().toString().trim();
         if (email.isEmpty()) {
             //  binding.loginEmail.setError("This Field Is Required");
-            showConfirmationDialoge("Email field is required");
+            showConfirmationDialoge("Email feild is required");
             binding.loginEmail.requestFocus();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             //  binding.loginEmail.setError("Email Is Not Falid");
-            showConfirmationDialoge("Email is not falid");
+            showConfirmationDialoge("Email is not valid");
             binding.loginEmail.requestFocus();
         } else if (passward.isEmpty()) {
             //  binding.passward.setError("This Field Is Required");
-            showConfirmationDialoge("Passward field is required");
+            showConfirmationDialoge("Passward feild is required");
             binding.passward.requestFocus();
         } else {
             binding.pBar.setVisibility(View.VISIBLE);
@@ -329,7 +329,7 @@ public class LogIn extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(getApplicationContext(), "Added Successfly", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Sign-in successful", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -344,7 +344,7 @@ public class LogIn extends AppCompatActivity {
                         String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                         if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
                             //  Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
-                            showConfirmationDialoge("This email not exist");
+                            showConfirmationDialoge("This email is not exist");
                         }
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
