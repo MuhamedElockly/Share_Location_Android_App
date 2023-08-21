@@ -56,7 +56,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,6 +110,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            if (!isNetworkAvailable()) {
+                showConfirmationDialoge("Please check internet connection !");
+                roomAdapter.notifyDataSetChanged();
+                return;
+            }
             int posation = viewHolder.getAdapterPosition();
 
             if (searchArryList.size() != 0) {
@@ -202,7 +209,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         //   refresh();
-        checkRooms();
+        //   checkRooms();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -227,33 +234,27 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                if (!isNetworkAvailable()) {
+
+                    showConfirmationDialoge("Please check internet connection !");
+                    swipeRefreshLayout.setRefreshing(false);
+                    return;
+                }
+
                 refresh();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
         });
 
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
+        checkRooms();
 
-        swipeRefreshLayout.setEnabled(true);
-
-
-
-
-
-
-   /*
-        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-            private static final String TAG = "scroll";
-            @Override
-            public boolean canChildScrollUp(SwipeRefreshLayout parent, View child) {
-                if (recyclerView != null) {
-                    Log.e(TAG, "Scroll : nottttt " );
-                    return recyclerView.canScrollVertically(-1);
-                } return false;
-            }
-        });
-
-         */
+        // swipeRefreshLayout.setEnabled(true);
 
         //
         //  Toast.makeText(this, scroll+"", Toast.LENGTH_SHORT).show();
@@ -418,15 +419,42 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             database.child("roomMembers").child(id).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    progressBarDialoge.cancel();
-                                    //   refresh();
-                                    refresh();
-                                    Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
+                                    if (task.isSuccessful()) {
+                                        progressBarDialoge.cancel();
+                                        //   refresh();
+                                        refresh();
+                                        Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
+                                    } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                                        showConfirmationDialoge(task.getException().getMessage().toString());
+
+                                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                                        // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                                        showConfirmationDialoge("Please check internet connection !");
+                                    } else {
+
+                                        //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        showConfirmationDialoge(task.getException().getMessage());
+                                    }
                                 }
                             });
                         }
                     });
+                } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                    showConfirmationDialoge(task.getException().getMessage().toString());
+
+                } else if (task.getException() instanceof FirebaseNetworkException) {
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
+                } else {
+
+                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(task.getException().getMessage());
                 }
+
             }
 
         });
@@ -505,6 +533,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                showConfirmationDialoge(error.getMessage().toString());
             }
         });
     }
@@ -531,6 +560,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                showConfirmationDialoge(error.getMessage().toString());
             }
         });
 
@@ -606,7 +636,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 String roomName = roomNameText.getText().toString();
 
                 if (roomName.isEmpty()) {
-                    roomNameText.setError("This Field Is Required");
+                    showConfirmationDialoge("Room name is required");
+                    //  roomNameText.setError("This Field Is Required");
                     roomNameText.requestFocus();
                 } else {
                     //  pushToFireBase(roomName);
@@ -675,6 +706,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         binding.homePBar.setVisibility(View.GONE);
                         updateNavHeader();
                     }
+                } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                    showConfirmationDialoge(task.getException().getMessage().toString());
+
+                } else if (task.getException() instanceof FirebaseNetworkException) {
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
+                } else {
+
+                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(task.getException().getMessage());
                 }
             }
         });
@@ -682,6 +725,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void refresh() {
+
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
         // updateNavHeader();
         binding.homePBar.setVisibility(View.VISIBLE);
         rooms.clear();
@@ -703,6 +751,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                     getRooms();
                     binding.homePBar.setVisibility(View.GONE);
+                } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                    showConfirmationDialoge(task.getException().getMessage().toString());
+
+                } else if (task.getException() instanceof FirebaseNetworkException) {
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
+                } else {
+
+                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(task.getException().getMessage());
                 }
             }
         });
@@ -787,42 +847,84 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         userRoomsRef.child(userId).child(roomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                DataSnapshot snapshot = task.getResult();
-                                DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+                if (task.isSuccessful()) {
+                    roomMembersRef.child(roomId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            roomMembersRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DataSnapshot snapshot = task.getResult();
+                                        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms");
 
-                                roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        String roomAdmin = "";
-                                        DataSnapshot roomSnapshot = task.getResult();
-                                        roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+                                        roomRef.child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                if (task.isSuccessful()) {
 
-                                        if (user.getUid().equals(roomAdmin)) {
-                                            String newAdminId = null;
-                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                                newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
-                                                break;
+                                                    String roomAdmin = "";
+                                                    DataSnapshot roomSnapshot = task.getResult();
+                                                    roomAdmin = roomSnapshot.child("admin").getValue(String.class);
+
+                                                    if (user.getUid().equals(roomAdmin)) {
+                                                        String newAdminId = null;
+                                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                            newAdminId = String.valueOf(dataSnapshot.child("id").getValue(String.class));
+                                                            break;
+                                                        }
+                                                        if (newAdminId != null) {
+
+                                                            roomRef.child(roomId).child("admin").setValue(newAdminId);
+                                                        }
+                                                    }
+                                                } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                                                    showConfirmationDialoge(task.getException().getMessage().toString());
+
+                                                } else if (task.getException() instanceof FirebaseNetworkException) {
+                                                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                                                    showConfirmationDialoge("Please check internet connection !");
+                                                } else {
+
+                                                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    showConfirmationDialoge(task.getException().getMessage());
+                                                }
                                             }
-                                            if (newAdminId != null) {
+                                        });
 
-                                                roomRef.child(roomId).child("admin").setValue(newAdminId);
-                                            }
-                                        }
+                                    } else if (task.getException() instanceof FirebaseAuthException) {
+
+
+                                        showConfirmationDialoge(task.getException().getMessage().toString());
+
+                                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                                        // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                                        showConfirmationDialoge("Please check internet connection !");
+                                    } else {
+
+                                        //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        showConfirmationDialoge(task.getException().getMessage());
                                     }
-                                });
+                                }
+                            });
+                            decreaseRoomCapacity(roomId);
+                        }
+                    });
+                } else if (task.getException() instanceof FirebaseAuthException) {
 
 
-                            }
-                        });
-                        decreaseRoomCapacity(roomId);
-                    }
-                });
+                    showConfirmationDialoge(task.getException().getMessage().toString());
+
+                } else if (task.getException() instanceof FirebaseNetworkException) {
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
+                } else {
+
+                    //   Toast.makeText(LogIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    showConfirmationDialoge(task.getException().getMessage());
+                }
             }
         });
     }
@@ -844,6 +946,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                 }
                 refresh();
+            }
+        });
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
             }
         });
     }
