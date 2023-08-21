@@ -90,6 +90,11 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void googleSignIn() {
+
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
         //     showProgreesBar();
