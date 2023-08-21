@@ -88,7 +88,7 @@ public class LogIn extends AppCompatActivity {
     public void googleSignIn() {
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
-
+   //     showProgreesBar();
     }
 
     private void showProgreesBar() {
@@ -305,7 +305,7 @@ public class LogIn extends AppCompatActivity {
                             String profilePhoto = String.valueOf(user.getPhotoUrl());
                             String phoneNumber = user.getPhoneNumber();
                             Toast.makeText(LogIn.this, phoneNumber, Toast.LENGTH_LONG);
-                          //  Log.e("phoneNumber", " : " + user.getPhoneNumber());
+                            //  Log.e("phoneNumber", " : " + user.getPhoneNumber());
                             LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto, phoneNumber);
 
 
