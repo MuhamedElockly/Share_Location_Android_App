@@ -1,5 +1,6 @@
 package com.example.sharelocation.ui;
 
+import android.accounts.NetworkErrorException;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -88,7 +89,7 @@ public class LogIn extends AppCompatActivity {
     public void googleSignIn() {
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
-   //     showProgreesBar();
+        //     showProgreesBar();
     }
 
     private void showProgreesBar() {
@@ -191,15 +192,29 @@ public class LogIn extends AppCompatActivity {
                     firebaseAuthWithGoogle(account);
                 } else {
                     dialog.cancel();
+                    if (task.getException() instanceof NetworkErrorException) {
+
+                        // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                        showConfirmationDialoge("Please check internet connection !");
+                    } else {
+
+                        Log.w("AUTH", "Account is NULL");
+                        //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
+                        showConfirmationDialoge("Sign-in failed, try again later.");
+                    }
+                }
+            } catch (ApiException e) {
+                dialog.cancel();
+                if (task.getException() instanceof FirebaseNetworkException) {
+
+                    // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
+                    showConfirmationDialoge("Please check internet connection !");
+                } else {
+
                     Log.w("AUTH", "Account is NULL");
                     //    Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
                     showConfirmationDialoge("Sign-in failed, try again later.");
                 }
-            } catch (ApiException e) {
-                dialog.cancel();
-                Log.w("AUTH", "Google sign in failed", e);
-                //  Toast.makeText(LogIn.this, "Sign-in failed, try again later.", Toast.LENGTH_LONG).show();
-                showConfirmationDialoge("Sign-in failed, try again later.");
             }
         }
     }
