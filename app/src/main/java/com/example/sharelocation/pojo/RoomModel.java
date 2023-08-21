@@ -5,7 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class RoomModel {
     private String name;
-    private String numberOfRooms;
+
     private String roomCapacity;
     private String id;
     private String admin;
@@ -15,9 +15,9 @@ public class RoomModel {
 
     }
 
-    public RoomModel(String name, String numberOfRooms, String id, String roomCapacity, String admin, String invitationCode) {
+    public RoomModel(String name,  String id, String roomCapacity, String admin, String invitationCode) {
         this.name = name;
-        this.numberOfRooms = numberOfRooms;
+
         this.id = id;
         this.roomCapacity = roomCapacity;
         this.admin = admin;
@@ -64,11 +64,5 @@ public class RoomModel {
         this.name = name;
     }
 
-    public String getNumberOfRooms() {
-        return numberOfRooms;
-    }
 
-    public void setNumberOfRooms(String numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
-    }
 }

@@ -35,7 +35,7 @@ public class AddRoomDialoge extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_room, null);
         roomName = view.findViewById(R.id.dialogeRoomName);
-        roomCapacity = view.findViewById(R.id.roomCapacity);
+
 
 
         builder.setView(view);
@@ -52,8 +52,8 @@ public class AddRoomDialoge extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 String roomNameText = roomName.getText().toString();
-                String roomCapacityText = roomCapacity.getText().toString();
-                listener.applyNewRoom(roomNameText, roomCapacityText);
+
+                listener.applyNewRoom(roomNameText);
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class AddRoomDialoge extends AppCompatDialogFragment {
     }
 
     public interface AddRoomDialogListener {
-        void applyNewRoom(String roomName, String roomCapactiy);
+        void applyNewRoom(String roomName);
     }
 }
 

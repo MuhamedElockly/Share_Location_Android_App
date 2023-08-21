@@ -384,11 +384,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return sb.toString();
     }
 
-    private void pushToFireBase2(String roomName, String roomCapacity) {
+    private void pushToFireBase2(String roomName) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid(), generateInvitationCode(6));
+        RoomModel roomModel1 = new RoomModel(roomName, id, roomMembers, user.getUid(), generateInvitationCode(6));
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -417,11 +417,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
-    private void pushToFireBase(String roomName, String roomCapacity) {
+    private void pushToFireBase(String roomName) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String id = database.push().getKey();
         String roomMembers = "1";
-        RoomModel roomModel1 = new RoomModel(roomName, roomCapacity, id, roomMembers, user.getUid(), generateInvitationCode(6));
+        RoomModel roomModel1 = new RoomModel(roomName, id, roomMembers, user.getUid(), generateInvitationCode(6));
         String userId = fAuth.getCurrentUser().getUid();
         database.child("rooms").child(id).setValue(roomModel1).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -573,7 +573,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         apply = (Button) view.findViewById(R.id.apply);
         cancel = (Button) view.findViewById(R.id.cancel);
         roomNameText = view.findViewById(R.id.dialogeRoomName);
-        roomCapacityText = view.findViewById(R.id.roomCapacity);
+
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -588,16 +588,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 String roomName = roomNameText.getText().toString();
-                String roomCapacity = roomCapacityText.getText().toString();
+
                 if (roomName.isEmpty()) {
                     roomNameText.setError("This Field Is Required");
                     roomNameText.requestFocus();
-                } else if (roomCapacity.isEmpty()) {
-                    roomCapacityText.setError("This Field Is Required");
-                    roomCapacityText.requestFocus();
                 } else {
-                    //  pushToFireBase(roomName, roomCapacity);
-                    pushToFireBase2(roomName, roomCapacity);
+                    //  pushToFireBase(roomName);
+                    pushToFireBase2(roomName);
                     dialog.cancel();
                 }
             }
