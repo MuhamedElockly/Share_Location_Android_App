@@ -91,15 +91,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Button apply;
     private Button cancel;
     private FirebaseAuth fAuth;
-
-    public FirebaseUser getUser() {
-        return user;
-    }
-
-    public void setUser(FirebaseUser user) {
-        this.user = user;
-    }
-
     private FirebaseUser user;
     private LinearLayoutManager mLayoutManager;
     private ImageView headerImage;
@@ -155,6 +146,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Button createNewRoom;
     private Button submit;
 
+    public FirebaseUser getUser() {
+        return user;
+    }
+
+    public void setUser(FirebaseUser user) {
+        this.user = user;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -180,6 +179,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+        if (user == null) {
+            Intent intent = new Intent(getApplicationContext(), Welcome.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
+        }
         //  Toast.makeText(this, user.getUid().toString() ,Toast.LENGTH_LONG).show();
 
         recyclerView = binding.roomRecyclerView;
@@ -518,6 +523,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void logOut() {
         fAuth.signOut();
+
         GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
         Intent intent = new Intent(getApplicationContext(), Welcome.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

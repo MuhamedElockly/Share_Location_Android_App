@@ -49,6 +49,7 @@ public class Welcome extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+
         binding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +80,7 @@ public class Welcome extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (user != null) {
+           // Toast.makeText(this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
             recieveLink();
 
         }
@@ -154,7 +156,7 @@ public class Welcome extends AppCompatActivity {
                                     });
 
                                 } else {
-                                    Toast.makeText(Welcome.this, "Sorry, link is not valid", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Welcome.this, "Sorry, that link is not valid", Toast.LENGTH_SHORT).show();
                                     dialog.cancel();
                                     Intent intent = new Intent(getApplicationContext(), Home.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
