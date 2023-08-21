@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/erorr_dialoge_background"
+        android:background="@drawable/erorr_confirmation_dialoge"
         android:orientation="vertical">
 
 
@@ -49,8 +49,8 @@
                 android:background="@drawable/submit_btn_active"
                 android:padding="10dp"
                 android:text="ok"
-                android:textSize="20dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </LinearLayout>

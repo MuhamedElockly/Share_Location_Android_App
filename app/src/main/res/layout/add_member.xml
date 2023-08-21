@@ -3,7 +3,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/delete_confirmation_dialoge">
+    android:background="@drawable/erorr_confirmation_dialoge">
 
     <TextView
         android:id="@+id/textViewHeader"

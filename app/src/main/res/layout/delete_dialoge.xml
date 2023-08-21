@@ -45,7 +45,7 @@
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:text="You w'll not be able to find this account again !"
-                android:textColor="@color/black"
+                android:textColor="@color/majesty"
                 android:textSize="15sp"
                 android:textStyle="bold"
 
@@ -58,7 +58,7 @@
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:text="Are you sure for deleting ?"
-                android:textColor="@color/black"
+                android:textColor="@color/majesty"
                 android:textSize="18sp"
                 android:textStyle="bold"
 
@@ -73,7 +73,6 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:padding="20dp"
 
                 >
 
@@ -81,19 +80,22 @@
                     android:id="@+id/deleteCancelButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:layout_margin="20dp"
                     android:background="@drawable/cancel_button"
                     android:text="Cancel"
+                    android:padding="10dp"
+                    android:textSize="20dp"
                     android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/deletSureButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/confirm_button"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/submit_btn_active"
                     android:text="Sure"
-
+                    android:textSize="20dp"
+                    android:padding="10dp"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
