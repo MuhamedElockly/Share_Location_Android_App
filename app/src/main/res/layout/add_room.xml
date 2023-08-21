@@ -88,7 +88,8 @@
                     android:background="@drawable/cancel_button"
                     android:padding="10dp"
                     android:text="Cancel"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -104,7 +105,9 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/submit_btn_active"
                     android:padding="10dp"
-                    android:text="Apply" />
+                    android:text="Apply"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

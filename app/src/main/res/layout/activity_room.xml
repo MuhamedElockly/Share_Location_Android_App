@@ -9,25 +9,25 @@
 
     </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".ui.Home">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/header"
-            app:menu="@menu/main_menu" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeToRefresh"
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context=".ui.Home">
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                app:headerLayout="@layout/header"
+                app:menu="@menu/main_menu" />
+
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
@@ -80,17 +80,25 @@
                     android:layout_marginTop="20dp"
                     android:visibility="gone" />
 
-                <androidx.core.widget.NestedScrollView
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeToRefresh"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+                    android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/memberRecyclerView"
+                    <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.core.widget.NestedScrollView>
+                        android:layout_height="match_parent"
+                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/memberRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </androidx.core.widget.NestedScrollView>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addMember"
@@ -102,7 +110,8 @@
                     android:src="@drawable/add_icon"
                     android:visibility="gone" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+    </RelativeLayout>
 </layout>

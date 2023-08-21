@@ -241,7 +241,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         });
 
 
-        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setEnabled(true);
 
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
         //  generateInvitationCode(6);
