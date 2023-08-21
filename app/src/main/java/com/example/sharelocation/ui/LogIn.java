@@ -1,9 +1,12 @@
 package com.example.sharelocation.ui;
 
 import android.accounts.NetworkErrorException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -103,6 +106,12 @@ public class LogIn extends AppCompatActivity {
         dialog.show();
 
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void showConfirmationDialoge(String erorrMessage) {
@@ -282,6 +291,13 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void logIn() {
+        /*
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
+
+         */
 
         //  Toast.makeText(getApplicationContext(), "gggg", Toast.LENGTH_LONG).show();
         String email = binding.loginEmail.getText().toString().trim();

@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,6 +148,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private Button joinRoom;
     private Button createNewRoom;
     private Button submit;
+    private AlertDialog progressBarDialoge;
 
     public FirebaseUser getUser() {
         return user;
@@ -375,6 +379,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private String generateInvitationCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random rnd = new Random();
@@ -385,7 +395,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             char randomChar = characters.charAt(index);
             sb.append(randomChar);
         }
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
         return sb.toString();
     }
 
@@ -408,7 +418,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             database.child("roomMembers").child(id).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-
+                                    progressBarDialoge.cancel();
                                     //   refresh();
                                     refresh();
                                     Toast.makeText(getApplicationContext(), "Room Added Succefly", Toast.LENGTH_SHORT).show();
@@ -562,7 +572,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
-
     private void showKeypoard(EditText editText) {
         InputMethodManager manager = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -593,6 +602,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgreesBar();
                 String roomName = roomNameText.getText().toString();
 
                 if (roomName.isEmpty()) {
@@ -607,6 +617,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
     }
 
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        progressBarDialoge = builder.create();
+        progressBarDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBarDialoge.show();
+
+
+    }
 
     public void updateNavHeader() {
 
@@ -638,6 +660,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     public void checkRooms() {
+        binding.homePBar.setVisibility(View.VISIBLE);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRoomsRef.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -649,6 +672,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         // refresh();
                         refresh();
                     } else {
+                        binding.homePBar.setVisibility(View.GONE);
                         updateNavHeader();
                     }
                 }
