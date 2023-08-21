@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="SignUp"
+                    android:text="Sign-Up"
                     android:textColor="@color/orange"
                     android:textSize="50dp"
                     android:textStyle="bold" />
@@ -171,7 +171,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/background_btn_welcome2"
                     android:onClick="@{()->signUp.register()}"
-                    android:text="SignUp"
+                    android:text="Sign-Up"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
