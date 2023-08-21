@@ -61,6 +61,7 @@
                     android:hint="Name Of Room"
                     android:inputType="textPersonName"
                     android:padding="10dp"
+                    android:textColor="@color/majesty"
                     android:textSize="24sp"
                     android:textStyle="normal|bold" />
 

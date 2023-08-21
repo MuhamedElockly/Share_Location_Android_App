@@ -545,13 +545,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 JoinRoom joinRoom = new JoinRoom(Home.this);
                 joinRoom.joinRoom();
-
+                dialog.cancel();
             }
         });
         createNewRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createNewRoom();
+                dialog.cancel();
             }
         });
     }
