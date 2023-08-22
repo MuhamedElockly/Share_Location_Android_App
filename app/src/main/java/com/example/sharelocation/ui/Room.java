@@ -1,9 +1,12 @@
 package com.example.sharelocation.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +41,8 @@ import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityRoomBinding;
 import com.example.sharelocation.pojo.MemebrsModel;
 import com.example.sharelocation.pojo.RoomModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -154,6 +160,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private RoomModel roomModel;
     private DatabaseReference rooms;
     private Button resetInvitaionCode;
+    private ProgressBar invitationCodePBar;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -218,8 +225,6 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         // recyclerView.setAdapter(membersAdapter);
 
 
-        refresh();
-
         binding.addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,14 +239,23 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refresh();
                 swipeRefreshLayout.setRefreshing(false);
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
+                refresh();
+
 
             }
         });
 
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
+        refresh();
 
-        swipeRefreshLayout.setEnabled(true);
 
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.memberRecyclerView);
         //  generateInvitationCode(6);
@@ -283,6 +297,30 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         return true;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     private void search(String token) {
@@ -363,6 +401,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         cancelBtn = (Button) view.findViewById(R.id.cancel);
         invitationCodeView = view.findViewById(R.id.invitationcode);
         resetInvitaionCode = view.findViewById(R.id.resetInvitationCode);
+        invitationCodePBar = view.findViewById(R.id.invitationCodeBPar);
         final AlertDialog[] dialog = {null};
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,14 +419,15 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         resetInvitaionCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                invitationCodePBar.setVisibility(View.VISIBLE);
                 String newInvitationCode = generateInvitationCode(6);
                 roomRef.child(roomId).child("invitationCode").setValue(newInvitationCode).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
+                        invitationCodePBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             invitationCodeView.setText(newInvitationCode);
+
                         }
 
                     }
@@ -535,6 +575,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void refresh() {
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
         binding.roomPBar.setVisibility(View.VISIBLE);
         usersId.clear();
         members.clear();
@@ -621,8 +665,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        //   Toast.makeText(Home.this, "Drawer", Toast.LENGTH_SHORT).show();
-        // printValues();
+        if (!isNetworkAvailable()&& ) {
+            showConfirmationDialoge("Please check internet connection !");
+            return false;
+        }
         int id = item.getItemId();
         if (id == R.id.logout) {
             logOut();
@@ -653,6 +699,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
     private void logOut() {
         fAuth = FirebaseAuth.getInstance();
         fAuth.signOut();
+        GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
         Intent intent = new Intent(getApplicationContext(), Welcome.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
