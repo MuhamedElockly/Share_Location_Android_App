@@ -513,7 +513,8 @@
                             android:layout_margin="10dp"
 
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -523,9 +524,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="15dp"
+                                    android:padding="5dp"
                                     app:cardCornerRadius="15dp"
-                                    app:cardElevation="10dp"
-                                    android:padding="5dp">
+                                    app:cardElevation="10dp">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -553,13 +554,13 @@
                                                 android:layout_marginStart="5dp"
                                                 android:layout_marginEnd="5dp"
                                                 android:background="@color/transparent"
-                                                android:textStyle="bold"
                                                 android:gravity="center"
                                                 android:hint="Current Passward "
                                                 android:inputType="textPassword"
                                                 android:padding="5dp"
                                                 android:textColor="@color/majesty"
-                                                android:textSize="16sp" />
+                                                android:textSize="16sp"
+                                                android:textStyle="bold" />
 
 
                                         </androidx.cardview.widget.CardView>
@@ -598,13 +599,13 @@
 
                                                 android:background="@color/transparent"
 
-                                                android:textStyle="bold"
                                                 android:gravity="center"
                                                 android:hint="New Passward "
                                                 android:inputType="textPassword"
                                                 android:padding="5dp"
                                                 android:textColor="@color/majesty"
-                                                android:textSize="16sp" />
+                                                android:textSize="16sp"
+                                                android:textStyle="bold" />
 
 
                                         </androidx.cardview.widget.CardView>
@@ -627,13 +628,13 @@
 
                                                 android:background="@color/transparent"
 
-                                              android:textStyle="bold"
                                                 android:gravity="center"
                                                 android:hint="Re-type New Passward "
                                                 android:inputType="textPassword"
                                                 android:padding="5dp"
                                                 android:textColor="@color/majesty"
-                                                android:textSize="16sp" />
+                                                android:textSize="16sp"
+                                                android:textStyle="bold" />
 
 
                                         </androidx.cardview.widget.CardView>
@@ -693,8 +694,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:orientation="horizontal">
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
