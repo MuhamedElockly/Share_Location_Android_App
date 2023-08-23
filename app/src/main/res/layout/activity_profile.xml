@@ -9,72 +9,65 @@
 
     </data>
 
-
-    <LinearLayout
-        android:id="@+id/drawerLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        tools:context=".ui.Home">
+        android:layout_height="match_parent">
 
-
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/profileToolbar"
+        <LinearLayout
+            android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeToRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            tools:context=".ui.Home">
 
 
-            <LinearLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/profileToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme" />
 
-                android:orientation="vertical">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeToRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
+
                     android:orientation="vertical">
 
                     <LinearLayout
-
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
+
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                            <LinearLayout
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_gravity="center"
-
-                                android:orientation="horizontal">
+                                android:layout_margin="15dp"
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="10dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
-                                    android:layout_weight="11"
-
 
                                     android:orientation="horizontal">
 
@@ -82,552 +75,220 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_gravity="center"
-                                        android:gravity="center"
-
-                                        android:orientation="vertical">
-
-                                        <androidx.cardview.widget.CardView
-                                            android:layout_width="60dp"
-                                            android:layout_height="60dp"
-                                            android:layout_marginTop="10dp"
-                                            app:cardCornerRadius="30dp"
-
-                                            app:cardElevation="5dp">
+                                        android:layout_weight="11"
 
 
-                                            <com.google.android.material.imageview.ShapeableImageView
-                                                android:id="@+id/profilePhoto"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:src="@drawable/locationicon"
-
-                                                app:shapeAppearanceOverlay="@style/circular"
-                                                app:strokeColor="@color/heavy_red"
-                                                app:strokeWidth="5dp" />
-
-
-                                        </androidx.cardview.widget.CardView>
-
-                                        <ImageButton
-                                            android:id="@+id/editProfilePhoto"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="bottom|center"
-                                            android:layout_marginBottom="10dp"
-
-                                            android:background="@drawable/photo_edit" />
-
-
-                                    </LinearLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="3"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
                                         android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:elevation="10dp"
-
-                                            app:cardCornerRadius="15dp"
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
-
-
-                                            <EditText
-
-                                                android:id="@+id/name"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_margin="10dp"
-                                                android:layout_marginLeft="10dp"
-                                                android:layout_marginRight="10dp"
-                                                android:background="@color/transparent"
-                                                android:enabled="false"
-
-
-                                                android:fontFamily="@font/baloo"
-                                                android:gravity="center"
-                                                android:padding="2dp"
-                                                android:text="Muhamed Elockly"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="20sp" />
-
-
-                                        </androidx.cardview.widget.CardView>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="3"
-                                        android:gravity="center"
-                                        android:orientation="horizontal">
-
-                                        <ImageButton
-                                            android:id="@+id/editName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="left|center_vertical"
-                                            android:layout_marginRight="40dp"
-                                            android:background="@drawable/edit" />
-
-                                        <ImageButton
-                                            android:id="@+id/confirmName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="5dp"
-                                            android:background="@drawable/submit"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:id="@+id/closeName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_marginRight="10dp"
-                                            android:background="@drawable/close"
-                                            android:visibility="gone" />
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="2"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="5dp"
-                                        app:cardCornerRadius="15dp"
-
-                                        app:cardElevation="5dp">
-
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_margin="10dp"
-                                            android:fontFamily="@font/baloo"
-                                            android:gravity="center"
-                                            android:padding="2dp"
-                                            android:text="E-mail : "
-                                            android:textColor="@color/heavy_red"
-                                            android:textSize="18sp" />
-
-                                    </androidx.cardview.widget.CardView>
-
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
-
-                                    android:layout_weight="1"
-
-                                    android:orientation="horizontal">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        app:cardCornerRadius="15dp"
-
-
-                                        app:cardElevation="5dp"
-                                        app:cardUseCompatPadding="true">>
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
+                                            android:layout_gravity="center"
                                             android:gravity="center"
-                                            android:orientation="horizontal"
 
-                                            >
+                                            android:orientation="vertical">
 
-
-                                            <EditText
-                                                android:id="@+id/email"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_marginLeft="6dp"
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="60dp"
+                                                android:layout_height="60dp"
                                                 android:layout_marginTop="10dp"
-                                                android:layout_marginRight="6dp"
+                                                app:cardCornerRadius="30dp"
+
+                                                app:cardElevation="5dp">
+
+
+                                                <com.google.android.material.imageview.ShapeableImageView
+                                                    android:id="@+id/profilePhoto"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:src="@drawable/locationicon"
+
+                                                    app:shapeAppearanceOverlay="@style/circular"
+                                                    app:strokeColor="@color/heavy_red"
+                                                    app:strokeWidth="5dp" />
+
+
+                                            </androidx.cardview.widget.CardView>
+
+                                            <ImageButton
+                                                android:id="@+id/editProfilePhoto"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom|center"
                                                 android:layout_marginBottom="10dp"
 
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:fontFamily="@font/baloo"
-                                                android:gravity="center"
-                                                android:padding="2dp"
-                                                android:text="Muhamed Elockly"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp" />
+                                                android:background="@drawable/photo_edit" />
 
 
                                         </LinearLayout>
-                                    </androidx.cardview.widget.CardView>
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="3dp"
-                                        android:background="@drawable/edit"
-                                        android:visibility="gone" />
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="3dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/close"
-                                        android:visibility="gone" />
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="5dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/submit"
-                                        android:visibility="gone" />
-
-
-                                </LinearLayout>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical|center_horizontal"
-                                    android:orientation="vertical">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="5dp"
-                                        app:cardCornerRadius="15dp"
-
-                                        app:cardElevation="5dp">
-
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_margin="10dp"
-                                            android:fontFamily="@font/baloo"
-                                            android:gravity="center"
-                                            android:padding="2dp"
-                                            android:text="Phone : "
-                                            android:textColor="@color/heavy_red"
-                                            android:textSize="18sp" />
-
-                                    </androidx.cardview.widget.CardView>
-
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
-
-                                    android:layout_weight="1"
-                                    android:gravity="center_vertical|center_horizontal"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-
-                                        android:layout_weight="1"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            app:cardCornerRadius="15dp"
-
-
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
-
-
-                                            <EditText
-                                                android:id="@+id/phoneNumber"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_marginLeft="6dp"
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginRight="6dp"
-                                                android:layout_marginBottom="10dp"
-
-                                                android:background="@color/transparent"
-                                                android:enabled="false"
-                                                android:fontFamily="@font/baloo"
-                                                android:gravity="center"
-                                                android:padding="2dp"
-                                                android:text="Muhamed Elockly"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp" />
-
-
-                                        </androidx.cardview.widget.CardView>
                                     </LinearLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-
-
                                         android:layout_weight="3"
-                                        android:gravity="center_vertical|center_horizontal"
                                         android:orientation="horizontal">
-
-                                        <ImageButton
-                                            android:id="@+id/editPhone"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="left|center_vertical"
-                                            android:layout_marginRight="30dp"
-                                            android:background="@drawable/edit"
-
-                                            />
-
-                                        <ImageButton
-                                            android:id="@+id/confirmPhone"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginRight="5dp"
-                                            android:background="@drawable/submit"
-                                            android:visibility="gone" />
-
-                                        <ImageButton
-                                            android:id="@+id/closePhone"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-
-                                            android:layout_marginLeft="0dp"
-                                            android:layout_marginRight="5dp"
-                                            android:background="@drawable/close"
-                                            android:visibility="gone" />
-
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/passwardDialoge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="13"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
-                                    android:layout_gravity="center"
-                                    android:layout_weight="5"
-                                    android:gravity="center"
-                                    android:orientation="horizontal">
-
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-                                        android:layout_gravity="center"
-
-
-                                        android:orientation="vertical">
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
+                                            android:gravity="center"
                                             android:orientation="horizontal">
 
                                             <androidx.cardview.widget.CardView
-                                                android:layout_width="match_parent"
+                                                android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_gravity="top"
+                                                android:elevation="10dp"
 
-                                                app:cardCornerRadius="22dp"
+                                                app:cardCornerRadius="15dp"
                                                 app:cardElevation="5dp"
                                                 app:cardUseCompatPadding="true">>
 
-                                                <LinearLayout
+
+                                                <EditText
+
+                                                    android:id="@+id/name"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:gravity="top"
-                                                    android:orientation="horizontal"
-
-                                                  >
-
-
-                                                    <EditText
-                                                        android:id="@+id/currentPassward"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="match_parent"
-                                                        android:layout_marginLeft="5dp"
-                                                        android:layout_marginRight="5dp"
-                                                        android:background="@color/transparent"
-
-                                                        android:fontFamily="@font/baloo"
-                                                        android:gravity="center"
-                                                        android:hint="Current Passward "
-                                                        android:inputType="textPassword"
-                                                        android:padding="2dp"
-                                                        android:textColor="@color/majesty"
-                                                        android:textSize="14sp" />
+                                                    android:layout_margin="10dp"
+                                                    android:layout_marginLeft="10dp"
+                                                    android:layout_marginRight="10dp"
+                                                    android:background="@color/transparent"
+                                                    android:enabled="false"
 
 
-                                                </LinearLayout>
+                                                    android:fontFamily="@font/baloo"
+                                                    android:gravity="center"
+                                                    android:padding="2dp"
+                                                    android:text="Name"
+                                                    android:textColor="@color/majesty"
+                                                    android:textSize="20sp" />
+
+
                                             </androidx.cardview.widget.CardView>
                                         </LinearLayout>
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_weight="2"
-                                            android:gravity="left|top"
+                                            android:layout_weight="3"
+                                            android:gravity="center"
                                             android:orientation="horizontal">
 
-                                            <Button
-                                                android:id="@+id/forgetPassward1"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_marginLeft="10dp"
+                                            <ImageButton
+                                                android:id="@+id/editName"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="left|center_vertical"
+                                                android:layout_marginRight="40dp"
+                                                android:background="@drawable/edit" />
 
-                                                android:background="@color/transparent"
-                                                android:gravity="left"
-                                                android:text="forgot Passward ?"
-                                                android:textSize="12sp" />
+                                            <ImageButton
+                                                android:id="@+id/confirmName"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginRight="5dp"
+                                                android:background="@drawable/submit"
+                                                android:visibility="gone" />
+
+                                            <ImageButton
+                                                android:id="@+id/closeName"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+
+                                                android:layout_marginLeft="10dp"
+                                                android:layout_marginRight="10dp"
+                                                android:background="@drawable/close"
+                                                android:visibility="gone" />
                                         </LinearLayout>
 
-
                                     </LinearLayout>
+
+
                                 </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="15dp"
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="10dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_weight="6"
                                     android:gravity="center"
                                     android:orientation="horizontal">
 
 
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="2"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginLeft="10dp"
+                                            android:layout_marginRight="5dp"
+                                            app:cardCornerRadius="15dp"
+
+                                            app:cardElevation="5dp">
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="10dp"
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:padding="2dp"
+                                                android:text="E-mail : "
+                                                android:textColor="@color/heavy_red"
+                                                android:textSize="18sp" />
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+
+                                        android:layout_weight="1"
+
+                                        android:orientation="horizontal">
 
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            app:cardCornerRadius="22dp"
+                                            app:cardCornerRadius="15dp"
 
 
                                             app:cardElevation="5dp"
@@ -639,46 +300,473 @@
                                                 android:gravity="center"
                                                 android:orientation="horizontal"
 
-                                             >
+                                                >
 
 
                                                 <EditText
-                                                    android:id="@+id/newPassward"
+                                                    android:id="@+id/email"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
+                                                    android:layout_marginLeft="6dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="6dp"
+                                                    android:layout_marginBottom="10dp"
 
                                                     android:background="@color/transparent"
-
+                                                    android:editable="false"
                                                     android:fontFamily="@font/baloo"
                                                     android:gravity="center"
-                                                    android:hint="New Passward "
-                                                    android:inputType="textPassword"
                                                     android:padding="2dp"
+                                                    android:text="email"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="14sp" />
+                                                    android:textSize="18dp" />
 
 
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
 
+                                        <ImageButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="3dp"
+                                            android:background="@drawable/edit"
+                                            android:visibility="gone" />
+
+                                        <ImageButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="3dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/close"
+                                            android:visibility="gone" />
+
+                                        <ImageButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="5dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/submit"
+                                            android:visibility="gone" />
 
 
-
+                                    </LinearLayout>
                                 </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="15dp"
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="10dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
-                                    android:layout_weight="6"
                                     android:gravity="center"
                                     android:orientation="horizontal">
 
 
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="2"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:orientation="vertical">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginLeft="10dp"
+                                            android:layout_marginRight="5dp"
+                                            app:cardCornerRadius="15dp"
+
+                                            app:cardElevation="5dp">
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="10dp"
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:padding="2dp"
+                                                android:text="Phone : "
+                                                android:textColor="@color/heavy_red"
+                                                android:textSize="18sp" />
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+
+                                        android:layout_weight="1"
+                                        android:gravity="center_vertical|center_horizontal"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+
+
+                                            android:layout_weight="1"
+                                            android:gravity="center_vertical|center_horizontal"
+                                            android:orientation="horizontal">
+
+                                            <androidx.cardview.widget.CardView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                app:cardCornerRadius="15dp"
+
+
+                                                app:cardElevation="5dp"
+                                                app:cardUseCompatPadding="true">>
+
+
+                                                <EditText
+                                                    android:id="@+id/phoneNumber"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="6dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="6dp"
+                                                    android:layout_marginBottom="10dp"
+
+                                                    android:background="@color/transparent"
+                                                    android:enabled="false"
+                                                    android:fontFamily="@font/baloo"
+                                                    android:gravity="center"
+                                                    android:padding="2dp"
+                                                    android:text="Phone Number"
+                                                    android:textColor="@color/majesty"
+                                                    android:textSize="18dp" />
+
+
+                                            </androidx.cardview.widget.CardView>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+
+
+                                            android:layout_weight="3"
+                                            android:gravity="center_vertical|center_horizontal"
+                                            android:orientation="horizontal">
+
+                                            <ImageButton
+                                                android:id="@+id/editPhone"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="left|center_vertical"
+                                                android:layout_marginRight="30dp"
+                                                android:background="@drawable/edit"
+
+                                                />
+
+                                            <ImageButton
+                                                android:id="@+id/confirmPhone"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginRight="5dp"
+                                                android:background="@drawable/submit"
+                                                android:visibility="gone" />
+
+                                            <ImageButton
+                                                android:id="@+id/closePhone"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginRight="5dp"
+                                                android:background="@drawable/close"
+                                                android:visibility="gone" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/passwardDialoge"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="13"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="15dp"
+                                    app:cardCornerRadius="15dp"
+                                    app:cardElevation="10dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <androidx.cardview.widget.CardView
+                                            android:id="@+id/currentPasswardCard"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="top"
+
+                                            app:cardCornerRadius="22dp"
+                                            app:cardElevation="5dp"
+                                            android:layout_margin="10dp"
+                                        >
+
+
+                                            <EditText
+                                                android:id="@+id/currentPassward"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_centerHorizontal="true"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginEnd="5dp"
+                                                android:background="@color/transparent"
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:hint="Current Passward "
+                                                android:inputType="textPassword"
+                                                android:padding="2dp"
+                                                android:textColor="@color/majesty"
+                                                android:textSize="14sp" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                        <Button
+                                            android:id="@+id/forgetPassward1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_below="@id/currentPassward"
+                                            android:layout_alignLeft="@id/currentPasswardCard"
+                                            android:layout_marginStart="20dp"
+
+                                            android:background="@color/transparent"
+                                            android:gravity="left"
+                                            android:text="forgot Passward ?"
+                                            android:textColor="@color/light_blue_600"
+                                            android:textSize="12sp" />
 
 
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            app:cardCornerRadius="22dp"
+
+
+                                            app:cardElevation="5dp"
+                                          android:layout_margin="10dp"
+                                            >
+
+
+                                            <EditText
+
+                                                android:id="@+id/newPassward"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+
+                                                android:background="@color/transparent"
+
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:hint="New Passward "
+                                                android:inputType="textPassword"
+                                                android:padding="2dp"
+                                                android:textColor="@color/majesty"
+                                                android:textSize="14sp" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            app:cardCornerRadius="22dp"
+
+
+                                            app:cardElevation="5dp"
+                                          android:layout_margin="10dp">
+
+
+                                            <EditText
+                                                android:id="@+id/reNewPassward"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+
+                                                android:background="@color/transparent"
+
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:hint="Re-type New Passward "
+                                                android:inputType="textPassword"
+                                                android:padding="2dp"
+                                                android:textColor="@color/majesty"
+                                                android:textSize="14sp" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+
+                                            android:orientation="horizontal"
+                                            android:layout_below="@id/reNewPassward"
+                                            android:layout_alignStart="@id/reNewPassward"
+                                            >
+
+
+
+                                                <Button
+                                                    android:id="@+id/cancelPassward"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center"
+                                                    android:background="@drawable/cancel_button"
+                                                    android:padding="5dp"
+                                                    android:layout_weight="1"
+                                                    android:layout_margin="10dp"
+                                                    android:text="Cancel"
+                                                    android:textColor="@color/white"
+                                                    android:textSize="15dp"
+                                                    />
+
+
+
+
+                                                <Button
+
+                                                    android:id="@+id/confirmPassward"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center"
+                                                    android:background="@drawable/submit_btn_active"
+                                                    android:padding="5dp"
+                                                    android:layout_weight="1"
+                                                    android:layout_margin="10dp"
+                                                    android:text="Confirm"
+                                                    android:textSize="15dp"
+                                                    android:textColor="@color/white" />
+
+
+
+
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+
+                                </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/changePassward"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="15dp"
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_margin="20dp"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_marginRight="5dp"
+                                            app:cardCornerRadius="15dp"
+                                            app:cardElevation="5dp">
+
+                                            <TextView
+                                                android:id="@+id/changePasswardBtn"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
+                                                android:layout_margin="10dp"
+                                                android:clickable="true"
+                                                android:fontFamily="@font/baloo"
+                                                android:gravity="center"
+                                                android:padding="2dp"
+                                                android:text="Change Passward "
+                                                android:textColor="@color/heavy_red"
+                                                android:textSize="18sp" />
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+
+                                        android:layout_weight="1"
+                                        android:gravity="left|center_vertical"
+                                        android:orientation="horizontal">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             app:cardCornerRadius="22dp"
 
@@ -691,246 +779,67 @@
                                                 android:layout_height="match_parent"
                                                 android:gravity="center"
                                                 android:orientation="horizontal"
+
                                                 android:weightSum="1">
 
 
                                                 <EditText
-                                                    android:id="@+id/reNewPassward"
+                                                    android:id="@+id/passward"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-
+                                                    android:layout_marginLeft="6dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="6dp"
+                                                    android:layout_marginBottom="10dp"
                                                     android:background="@color/transparent"
 
+                                                    android:editable="false"
                                                     android:fontFamily="@font/baloo"
                                                     android:gravity="center"
-                                                    android:hint="Re-type New Passward "
-                                                    android:inputType="textPassword"
                                                     android:padding="2dp"
+                                                    android:text="Muhamed Elockly"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="14sp" />
+                                                    android:textSize="18dp"
+                                                    android:visibility="gone" />
+
 
                                             </LinearLayout>
                                         </androidx.cardview.widget.CardView>
 
-
-
-
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
-                                    android:layout_gravity="center"
-                                    android:layout_weight="6"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
-
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
+                                        <ImageButton
                                             android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_marginBottom="5dp"
-                                            android:layout_weight="1"
-                                            android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="3dp"
+                                            android:background="@drawable/edit"
+                                            android:visibility="gone" />
 
-                                            <Button
-
-                                                android:id="@+id/confirmPassward"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:background="@drawable/confirm_button"
-                                                android:padding="5dp"
-                                                android:text="Confirm"
-                                                android:textColor="@color/white" />
-
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
+                                        <ImageButton
                                             android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_marginBottom="5dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="3dp"
                                             android:layout_weight="1"
-                                            android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:background="@drawable/close"
+                                            android:visibility="gone" />
+
+                                        <ImageButton
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="5dp"
+
+                                            android:layout_weight="1"
+                                            android:background="@drawable/submit"
+                                            android:visibility="gone" />
 
 
-                                            <Button
-                                                android:id="@+id/cancelPassward"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:background="@drawable/cancel_button"
-                                                android:padding="5dp"
-                                                android:text="Cancel"
-                                                android:textColor="@color/white" />
-
-
-                                        </LinearLayout>
                                     </LinearLayout>
-
                                 </LinearLayout>
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/changePassward"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            app:cardCornerRadius="15dp"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="20dp"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_marginRight="5dp"
-                                        app:cardCornerRadius="15dp"
-                                        app:cardElevation="5dp">
-
-                                        <TextView
-                                            android:id="@+id/changePasswardBtn"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_margin="10dp"
-                                            android:clickable="true"
-                                            android:fontFamily="@font/baloo"
-                                            android:gravity="center"
-                                            android:padding="2dp"
-                                            android:text="Change Passward "
-                                            android:textColor="@color/heavy_red"
-                                            android:textSize="18sp" />
-
-                                    </androidx.cardview.widget.CardView>
-
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-
-
-                                    android:layout_weight="1"
-                                    android:gravity="left|center_vertical"
-                                    android:orientation="horizontal">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        app:cardCornerRadius="22dp"
-
-
-                                        app:cardElevation="5dp"
-                                        app:cardUseCompatPadding="true">>
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-
-                                            android:weightSum="1">
-
-
-                                            <EditText
-                                                android:id="@+id/passward"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_marginLeft="6dp"
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginRight="6dp"
-                                                android:layout_marginBottom="10dp"
-                                                android:background="@color/transparent"
-
-                                                android:editable="false"
-                                                android:fontFamily="@font/baloo"
-                                                android:gravity="center"
-                                                android:padding="2dp"
-                                                android:text="Muhamed Elockly"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp"
-                                                android:visibility="gone" />
-
-
-                                        </LinearLayout>
-                                    </androidx.cardview.widget.CardView>
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="3dp"
-                                        android:background="@drawable/edit"
-                                        android:visibility="gone" />
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="3dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/close"
-                                        android:visibility="gone" />
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="5dp"
-
-                                        android:layout_weight="1"
-                                        android:background="@drawable/submit"
-                                        android:visibility="gone" />
-
-
-                                </LinearLayout>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
                 </LinearLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            </LinearLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>
