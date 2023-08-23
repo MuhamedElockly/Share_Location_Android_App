@@ -424,6 +424,10 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
         resetInvitaionCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 invitationCodePBar.setVisibility(View.VISIBLE);
                 String newInvitationCode = generateInvitationCode(6);
                 roomRef.child(roomId).child("invitationCode").setValue(newInvitationCode).addOnCompleteListener(new OnCompleteListener<Void>() {
