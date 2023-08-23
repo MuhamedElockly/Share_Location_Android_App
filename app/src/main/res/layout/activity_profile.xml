@@ -158,12 +158,12 @@
                                                     android:enabled="false"
 
 
-                                                    android:fontFamily="@font/baloo"
                                                     android:gravity="center"
                                                     android:padding="2dp"
                                                     android:text="Name"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="20sp" />
+                                                    android:textSize="20sp"
+                                                    android:textStyle="bold" />
 
 
                                             </androidx.cardview.widget.CardView>
