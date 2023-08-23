@@ -766,7 +766,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.d("longLink", String.valueOf(dynamicLink.getUri()));
-        Toast.makeText(this, roomModel.getName(), Toast.LENGTH_SHORT).show();
+        //     Toast.makeText(this, roomModel.getName(), Toast.LENGTH_SHORT).show();
 
         //Manual Link
         String textLink = "https://sharelocationapp.page.link/?" + "link=http://www.facebofok.com/myrefer.php?roomid=" + this.roomModel.getInvitationCode() + "@" + roomName + "&apn=" + getPackageName() + "&st=" + "My Refer Link " + "&sd=" + "Room Invite" + "&si=" + "https://www.facebofok.com/logo-1.png";
@@ -812,7 +812,7 @@ public class Room extends AppCompatActivity implements NavigationView.OnNavigati
             char randomChar = characters.charAt(index);
             sb.append(randomChar);
         }
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+        //   Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
         return sb.toString();
     }
 
