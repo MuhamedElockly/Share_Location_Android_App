@@ -69,13 +69,16 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
 
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+
+
+                                    >
 
                                     <RelativeLayout
-                                        android:layout_margin="10dp"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
+                                        android:layout_margin="10dp"
                                         android:layout_weight="9"
 
 
@@ -89,8 +92,8 @@
                                             android:src="@drawable/locationicon"
 
                                             app:shapeAppearanceOverlay="@style/circular"
-                                            android:elevation="10dp"
-                                          />
+
+                                            />
 
 
                                         <ImageButton
@@ -122,13 +125,14 @@
                                             android:orientation="horizontal">
 
                                             <androidx.cardview.widget.CardView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_margin="10dp"
                                                 android:elevation="10dp"
-
                                                 app:cardCornerRadius="15dp"
                                                 app:cardElevation="5dp"
-                                                app:cardUseCompatPadding="true">>
+
+                                                >
 
 
                                                 <EditText
@@ -136,15 +140,14 @@
                                                     android:id="@+id/name"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:layout_margin="10dp"
-                                                    android:layout_marginLeft="10dp"
-                                                    android:layout_marginRight="10dp"
+
+
                                                     android:background="@color/transparent"
                                                     android:enabled="false"
 
 
                                                     android:gravity="center"
-                                                    android:padding="2dp"
+                                                    android:padding="10dp"
                                                     android:text="Name"
                                                     android:textColor="@color/majesty"
                                                     android:textSize="20sp"
