@@ -378,21 +378,23 @@
 
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="match_parent"
                                             android:layout_gravity="center"
                                             android:layout_marginLeft="10dp"
+                                            android:layout_marginTop="10dp"
                                             android:layout_marginRight="5dp"
+                                            android:layout_marginBottom="10dp"
                                             app:cardCornerRadius="15dp"
 
                                             app:cardElevation="5dp">
 
                                             <TextView
                                                 android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
+                                                android:layout_height="match_parent"
                                                 android:layout_gravity="center"
-                                                android:layout_margin="10dp"
+
                                                 android:gravity="center"
-                                                android:padding="2dp"
+                                                android:padding="10dp"
                                                 android:text="Phone : "
                                                 android:textColor="@color/heavy_red"
                                                 android:textSize="18sp"
@@ -422,28 +424,24 @@
                                             android:orientation="horizontal">
 
                                             <androidx.cardview.widget.CardView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_margin="10dp"
+
                                                 app:cardCornerRadius="15dp"
-
-
-                                                app:cardElevation="5dp"
-                                                app:cardUseCompatPadding="true">>
+                                                app:cardElevation="5dp">
 
 
                                                 <EditText
                                                     android:id="@+id/phoneNumber"
                                                     android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="6dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginEnd="6dp"
-                                                    android:layout_marginBottom="10dp"
+                                                    android:layout_height="match_parent"
+
 
                                                     android:background="@color/transparent"
                                                     android:enabled="false"
                                                     android:gravity="center"
-                                                    android:padding="2dp"
+                                                    android:padding="10dp"
                                                     android:text="Phone Number"
                                                     android:textColor="@color/majesty"
                                                     android:textSize="18dp"
