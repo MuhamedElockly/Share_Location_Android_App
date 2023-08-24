@@ -71,57 +71,53 @@
 
                                     android:orientation="horizontal">
 
-                                    <LinearLayout
+                                    <RelativeLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_gravity="center"
                                         android:layout_weight="11"
 
 
-                                        android:orientation="horizontal">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:gravity="center"
-
-                                            android:orientation="vertical">
-
-                                            <androidx.cardview.widget.CardView
-                                                android:layout_width="60dp"
-                                                android:layout_height="60dp"
-                                                android:layout_marginTop="10dp"
-                                                app:cardCornerRadius="30dp"
-
-                                                app:cardElevation="5dp">
+                                        >
 
 
-                                                <com.google.android.material.imageview.ShapeableImageView
-                                                    android:id="@+id/profilePhoto"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="match_parent"
-                                                    android:src="@drawable/locationicon"
+                                        <androidx.cardview.widget.CardView
+                                            android:id="@+id/profilePhotocCard"
+                                            android:layout_width="60dp"
+                                            android:layout_height="60dp"
+                                            android:layout_marginTop="10dp"
+                                            app:cardCornerRadius="30dp"
 
-                                                    app:shapeAppearanceOverlay="@style/circular"
-                                                    app:strokeColor="@color/heavy_red"
-                                                    app:strokeWidth="5dp" />
-
-
-                                            </androidx.cardview.widget.CardView>
-
-                                            <ImageButton
-                                                android:id="@+id/editProfilePhoto"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="bottom|center"
-                                                android:layout_marginBottom="10dp"
-
-                                                android:background="@drawable/photo_edit" />
+                                            app:cardElevation="5dp">
 
 
-                                        </LinearLayout>
-                                    </LinearLayout>
+                                            <com.google.android.material.imageview.ShapeableImageView
+                                                android:id="@+id/profilePhoto"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:src="@drawable/locationicon"
+
+                                                app:shapeAppearanceOverlay="@style/circular"
+                                                app:strokeColor="@color/heavy_red"
+                                                app:strokeWidth="5dp" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+                                        <ImageButton
+                                            android:id="@+id/editProfilePhoto"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignEnd="@id/profilePhoto"
+                                            android:layout_alignBottom="@id/profilePhoto"
+                                       android:layout_below="@id/profilePhoto"
+
+                                            android:layout_marginBottom="10dp"
+
+                                            android:background="@drawable/photo_edit" />
+
+
+                                    </RelativeLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
