@@ -223,7 +223,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:orientation="horizontal">
@@ -240,24 +240,25 @@
                                         <androidx.cardview.widget.CardView
                                             android:id="@+id/emailCard"
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="match_parent"
                                             android:layout_gravity="center"
                                             android:layout_marginLeft="10dp"
+                                            android:layout_marginTop="10dp"
                                             android:layout_marginRight="5dp"
+                                            android:layout_marginBottom="10dp"
                                             app:cardCornerRadius="15dp"
 
                                             app:cardElevation="5dp">
 
                                             <TextView
                                                 android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
+                                                android:layout_height="match_parent"
                                                 android:layout_gravity="center"
 
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginBottom="10dp"
-
                                                 android:gravity="center"
-                                                android:padding="5dp"
+
+                                                android:padding="10dp"
+
                                                 android:text="E-mail : "
                                                 android:textColor="@color/heavy_red"
                                                 android:textSize="18sp"
@@ -300,15 +301,12 @@
                                                     android:id="@+id/email"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:layout_marginStart="6dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginEnd="6dp"
-                                                    android:layout_marginBottom="10dp"
+
 
                                                     android:background="@color/transparent"
                                                     android:editable="false"
                                                     android:gravity="center"
-                                                    android:padding="2dp"
+                                                    android:padding="10dp"
                                                     android:text="email"
                                                     android:textColor="@color/majesty"
                                                     android:textSize="18dp"
