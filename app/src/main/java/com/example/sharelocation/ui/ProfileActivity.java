@@ -322,8 +322,8 @@ public class ProfileActivity extends AppCompatActivity {
         showProgreesBar();
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String email = user.getEmail();
-        String oldpass = String.valueOf(binding.currentPassward.getText());
-        AuthCredential credential = EmailAuthProvider.getCredential(email, oldpass);
+        String oldpass ="";
+        AuthCredential credential ;
         if (binding.currentPassward.getText().toString().isEmpty()) {
             dialog.cancel();
             //   Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
@@ -347,7 +347,8 @@ public class ProfileActivity extends AppCompatActivity {
             //  Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
             showConfirmationDialoge("Passward dosen't matches");
         } else {
-
+            oldpass = String.valueOf(binding.currentPassward.getText());
+            credential = EmailAuthProvider.getCredential(email, oldpass);
             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
