@@ -81,38 +81,26 @@
                                         >
 
 
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/profilePhotocCard"
+                                        <com.google.android.material.imageview.ShapeableImageView
+                                            android:id="@+id/profilePhoto"
                                             android:layout_width="60dp"
                                             android:layout_height="60dp"
-                                            android:layout_marginTop="10dp"
-                                            app:cardCornerRadius="30dp"
+                                            android:src="@drawable/locationicon"
 
-                                            app:cardElevation="5dp">
+                                            app:shapeAppearanceOverlay="@style/circular"
+                                            app:strokeColor="@color/heavy_red"
+                                            app:strokeWidth="5dp" />
 
-
-                                            <com.google.android.material.imageview.ShapeableImageView
-                                                android:id="@+id/profilePhoto"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:src="@drawable/locationicon"
-
-                                                app:shapeAppearanceOverlay="@style/circular"
-                                                app:strokeColor="@color/heavy_red"
-                                                app:strokeWidth="5dp" />
-
-
-                                        </androidx.cardview.widget.CardView>
 
                                         <ImageButton
                                             android:id="@+id/editProfilePhoto"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+
+
                                             android:layout_alignEnd="@id/profilePhoto"
                                             android:layout_alignBottom="@id/profilePhoto"
-                                       android:layout_below="@id/profilePhoto"
 
-                                            android:layout_marginBottom="10dp"
 
                                             android:background="@drawable/photo_edit" />
 
