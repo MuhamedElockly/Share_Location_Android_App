@@ -56,12 +56,13 @@ public class ProfileActivity extends AppCompatActivity {
     private StorageReference imageRef;
     private String profileEmail;
     private String fireBaseImageUri;
+    private Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
-
+        this.savedInstanceState = savedInstanceState;
         setSupportActionBar(binding.profileToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -100,7 +101,9 @@ public class ProfileActivity extends AppCompatActivity {
         binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                binding.currentPassward.getText().clear();
+                binding.newPassward.getText().clear();
+                binding.reNewPassward.getText().clear();
                 binding.changePassward.setVisibility(View.GONE);
                 binding.passwardDialoge.setVisibility(View.VISIBLE);
             }
@@ -122,6 +125,10 @@ public class ProfileActivity extends AppCompatActivity {
         binding.editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 binding.editName.setVisibility(View.GONE);
                 binding.confirmName.setVisibility(View.VISIBLE);
                 binding.closeName.setVisibility(View.VISIBLE);
@@ -143,6 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.confirmName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String newName = String.valueOf(binding.name.getText());
                         if (!lastName.equals(newName)) {
                             userRef.child(userId).child("name").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -175,6 +183,10 @@ public class ProfileActivity extends AppCompatActivity {
         binding.editPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 binding.editPhone.setVisibility(View.GONE);
                 binding.confirmPhone.setVisibility(View.VISIBLE);
                 binding.closePhone.setVisibility(View.VISIBLE);
@@ -196,6 +208,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.confirmPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String newPhoneNumber = String.valueOf(binding.phoneNumber.getText());
                         if (!lasetPhoneNumber.equals(newPhoneNumber)) {
                             userRef.child(userId).child("phoneNumber").setValue(newPhoneNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -270,6 +283,11 @@ public class ProfileActivity extends AppCompatActivity {
         binding.confirmPassward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
+
                 confirmPasswordToFirebase();
             }
         });
@@ -281,12 +299,17 @@ public class ProfileActivity extends AppCompatActivity {
         binding.forgetPassward1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    showConfirmationDialoge("Please check internet connection !");
+                    return;
+                }
                 showProgreesBar();
                 fAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ProfileActivity.this, "We Sent Email", Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(ProfileActivity.this, "Verification email was sent ", Toast.LENGTH_SHORT).show();
+                            showConfirmationDialoge("Verification email was sent ");
                             dialog.cancel();
                         }
                     }
@@ -303,11 +326,26 @@ public class ProfileActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(email, oldpass);
         if (binding.currentPassward.getText().toString().isEmpty()) {
             dialog.cancel();
-            Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+            showConfirmationDialoge("Current passward field must completed ");
+
             binding.currentPassward.requestFocus();
+        } else if (binding.newPassward.getText().toString().isEmpty()) {
+            dialog.cancel();
+            //   Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+            showConfirmationDialoge("New passward field must completed ");
+
+            binding.newPassward.requestFocus();
+        } else if (binding.reNewPassward.getText().toString().isEmpty()) {
+            dialog.cancel();
+            //   Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
+            showConfirmationDialoge("reNew passward field must completed ");
+
+            binding.reNewPassward.requestFocus();
         } else if (!String.valueOf(binding.newPassward.getText()).equals(String.valueOf(binding.reNewPassward.getText()))) {
             dialog.cancel();
-            Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "Passward dosent matches", Toast.LENGTH_SHORT).show();
+            showConfirmationDialoge("Passward dosen't matches");
         } else {
 
             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -320,18 +358,21 @@ public class ProfileActivity extends AppCompatActivity {
                                 dialog.cancel();
                                 updatePasswardView();
                                 if (!task.isSuccessful()) {
-                                    Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
-                                    snackbar_fail.show();
+                                    showConfirmationDialoge("Something went wrong. Please try again later");
+                                 //   Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                 //   snackbar_fail.show();
                                 } else {
-                                    Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Password Successfully Modified", Snackbar.LENGTH_LONG);
+                                    showConfirmationDialoge("Something went wrong. Please try again later");
+                                    Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Password successfully modified", Snackbar.LENGTH_LONG);
                                     snackbar_su.show();
                                 }
                             }
                         });
                     } else {
                         dialog.cancel();
-                        Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
-                        snackbar_su.show();
+                        showConfirmationDialoge("Authentication failed");
+                       // Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
+                      //  snackbar_su.show();
                     }
                 }
             });
@@ -340,6 +381,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage(Uri uri) {
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
         showProgreesBar();
         binding.profilePhoto.setImageURI(uri);
         imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + profileEmail + ".jpg");
@@ -360,7 +405,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             dialog.cancel();
-                                            Toast.makeText(ProfileActivity.this, "Photo Updated Successfly", Toast.LENGTH_SHORT).show();
+                                            Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Photo updated successfly", Snackbar.LENGTH_LONG);
+                                            snackbar_su.show();
+                                         //   Toast.makeText(ProfileActivity.this, "Photo updated successfly", Toast.LENGTH_SHORT).show();
 
                                             refresh();
 
