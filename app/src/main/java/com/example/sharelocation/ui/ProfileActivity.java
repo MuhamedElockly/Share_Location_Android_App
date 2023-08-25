@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
         refresh();
-        Toast.makeText((Context) this, (CharSequence) user.getProviderId(), Toast.LENGTH_SHORT).show();
+
     }
 
     private void updatePasswardView() {
