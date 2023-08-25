@@ -106,7 +106,7 @@ public class SingUpViewModel extends ViewModel {
             public void onSuccess(Uri uri) {
                 Log.d("imageName", "Existtt");
 
-                imageMutableLiveData.setValue(null);
+                imageMutableLiveData.setValue("");
 
             }
         }).addOnFailureListener(new OnFailureListener() {

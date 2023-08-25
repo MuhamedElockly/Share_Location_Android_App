@@ -100,6 +100,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updatePasswardView() {
+        binding.changePassward.setVisibility(View.VISIBLE);
+        binding.passwardDialoge.setVisibility(View.GONE);
+
         binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +114,7 @@ public class ProfileActivity extends AppCompatActivity {
                             DataSnapshot dataSnapshot = task.getResult();
                             signedByGoogle = dataSnapshot.child("signedByGoogle").getValue(boolean.class);
                             if (signedByGoogle) {
-                                showConfirmationDialoge("You signed in by googel ,You can't change passward");
+                                showConfirmationDialoge("You signed in by google ,You can't change passward");
                             } else {
 
                                 binding.currentPassward.getText().clear();
@@ -121,6 +124,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 binding.passwardDialoge.setVisibility(View.VISIBLE);
 
                             }
+                        } else {
+                            showConfirmationDialoge(task.getException().getMessage());
                         }
                     }
                 });
@@ -169,7 +174,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.confirmName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        showProgreesBar();
                         String newName = String.valueOf(binding.name.getText());
                         if (!lastName.equals(newName)) {
                             userRef.child(userId).child("name").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -179,12 +184,17 @@ public class ProfileActivity extends AppCompatActivity {
                                     user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            binding.name.setEnabled(false);
-                                            binding.editName.setVisibility(View.VISIBLE);
-                                            binding.confirmName.setVisibility(View.GONE);
-                                            binding.closeName.setVisibility(View.GONE);
-                                            getSupportActionBar().setTitle(newName);
-                                            refresh();
+                                            dialog.cancel();
+                                            if (task.isSuccessful()) {
+                                                binding.name.setEnabled(false);
+                                                binding.editName.setVisibility(View.VISIBLE);
+                                                binding.confirmName.setVisibility(View.GONE);
+                                                binding.closeName.setVisibility(View.GONE);
+                                                getSupportActionBar().setTitle(newName);
+                                                refresh();
+                                            } else {
+                                                showConfirmationDialoge(task.getException().getMessage());
+                                            }
                                         }
                                     });
 
@@ -206,6 +216,7 @@ public class ProfileActivity extends AppCompatActivity {
                     showConfirmationDialoge("Please check internet connection !");
                     return;
                 }
+
                 binding.editPhone.setVisibility(View.GONE);
                 binding.confirmPhone.setVisibility(View.VISIBLE);
                 binding.closePhone.setVisibility(View.VISIBLE);
@@ -227,17 +238,22 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.confirmPhone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        showProgreesBar();
                         String newPhoneNumber = String.valueOf(binding.phoneNumber.getText());
                         if (!lasetPhoneNumber.equals(newPhoneNumber)) {
                             userRef.child(userId).child("phoneNumber").setValue(newPhoneNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    binding.phoneNumber.setEnabled(false);
-                                    binding.editPhone.setVisibility(View.VISIBLE);
-                                    binding.confirmPhone.setVisibility(View.GONE);
-                                    binding.closePhone.setVisibility(View.GONE);
-                                    refresh();
+                                    dialog.cancel();
+                                    if (task.isSuccessful()) {
+                                        binding.phoneNumber.setEnabled(false);
+                                        binding.editPhone.setVisibility(View.VISIBLE);
+                                        binding.confirmPhone.setVisibility(View.GONE);
+                                        binding.closePhone.setVisibility(View.GONE);
+                                        refresh();
+                                    } else {
+                                        showConfirmationDialoge(task.getException().getMessage());
+                                    }
                                 }
                             });
 
@@ -330,6 +346,8 @@ public class ProfileActivity extends AppCompatActivity {
                             //   Toast.makeText(ProfileActivity.this, "Verification email was sent ", Toast.LENGTH_SHORT).show();
                             showConfirmationDialoge("Verification email was sent ");
                             dialog.cancel();
+                        } else {
+                            showConfirmationDialoge(task.getException().getMessage());
                         }
                     }
                 });
@@ -382,15 +400,16 @@ public class ProfileActivity extends AppCompatActivity {
                                     //   Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
                                     //   snackbar_fail.show();
                                 } else {
-                                    showConfirmationDialoge("Something went wrong. Please try again later");
+
                                     Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Password successfully modified", Snackbar.LENGTH_LONG);
                                     snackbar_su.show();
+                                    updatePasswardView();
                                 }
                             }
                         });
                     } else {
                         dialog.cancel();
-                        showConfirmationDialoge("Authentication failed");
+                        showConfirmationDialoge(task.getException().getMessage());
                         // Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
                         //  snackbar_su.show();
                     }
