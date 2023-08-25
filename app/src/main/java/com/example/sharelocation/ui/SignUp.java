@@ -76,7 +76,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 //   Log.d("userModel", s);
-                userModel = new UserModel(name, email, passward, s,phoneNumber);
+                userModel = new UserModel(name, email, passward, s, phoneNumber, false);
                 singUpViewModel.getRegestrationFeedback(userModel, getApplicationContext());
             }
         });

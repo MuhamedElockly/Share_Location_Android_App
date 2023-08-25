@@ -258,7 +258,7 @@ public class LogIn extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 // Toast.makeText(getApplicationContext(), "Nooo", Toast.LENGTH_LONG).show();
-                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()), "01000002");
+                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()), "01000002", true);
                                 database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -342,7 +342,7 @@ public class LogIn extends AppCompatActivity {
                             String phoneNumber = user.getPhoneNumber();
                             Toast.makeText(LogIn.this, phoneNumber, Toast.LENGTH_LONG);
                             //  Log.e("phoneNumber", " : " + user.getPhoneNumber());
-                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto, phoneNumber);
+                            LogInModel logInModel = new LogInModel(userName, userEmail, userTokenId, userId, profilePhoto, phoneNumber, false);
 
 
                             String id = database.push().getKey();

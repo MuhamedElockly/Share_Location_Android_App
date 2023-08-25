@@ -8,13 +8,24 @@ public class LogInModel {
     private String profilePhoto;
     private String phoneNumber;
 
-    public LogInModel(String name, String email, String tokenId, String userId, String profilePhoto, String phoneNumber) {
+    public boolean isSignedByGoogle() {
+        return signedByGoogle;
+    }
+
+    public void setSignedByGoogle(boolean signedByGoogle) {
+        this.signedByGoogle = signedByGoogle;
+    }
+
+    private boolean signedByGoogle;
+
+    public LogInModel(String name, String email, String tokenId, String userId, String profilePhoto, String phoneNumber, boolean signedByGoogle) {
         this.name = name;
         this.email = email;
         this.tokenId = tokenId;
         this.userId = userId;
         this.profilePhoto = profilePhoto;
         this.phoneNumber = phoneNumber;
+        this.signedByGoogle = signedByGoogle;
     }
 
     public String getPhoneNumber() {
