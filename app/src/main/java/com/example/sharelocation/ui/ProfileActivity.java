@@ -46,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 
 public class ProfileActivity extends AppCompatActivity {
     AlertDialog dialog;
+    boolean signedByGoogle = false;
     private ActivityProfileBinding binding;
     private FirebaseAuth fAuth;
     private FirebaseUser user;
@@ -102,11 +103,28 @@ public class ProfileActivity extends AppCompatActivity {
         binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.currentPassward.getText().clear();
-                binding.newPassward.getText().clear();
-                binding.reNewPassward.getText().clear();
-                binding.changePassward.setVisibility(View.GONE);
-                binding.passwardDialoge.setVisibility(View.VISIBLE);
+
+                userRef.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DataSnapshot dataSnapshot = task.getResult();
+                            signedByGoogle = dataSnapshot.child("signedByGoogle").getValue(boolean.class);
+                            if (signedByGoogle) {
+                                showConfirmationDialoge("You signed in by googel ,You can't change passward");
+                            } else {
+
+                                binding.currentPassward.getText().clear();
+                                binding.newPassward.getText().clear();
+                                binding.reNewPassward.getText().clear();
+                                binding.changePassward.setVisibility(View.GONE);
+                                binding.passwardDialoge.setVisibility(View.VISIBLE);
+
+                            }
+                        }
+                    }
+                });
+
             }
         });
         binding.cancelPassward.setOnClickListener(new View.OnClickListener() {
@@ -323,8 +341,8 @@ public class ProfileActivity extends AppCompatActivity {
         showProgreesBar();
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String email = user.getEmail();
-        String oldpass ="";
-        AuthCredential credential ;
+        String oldpass = "";
+        AuthCredential credential;
         if (binding.currentPassward.getText().toString().isEmpty()) {
             dialog.cancel();
             //   Toast.makeText(this, "This Field Must Completed", Toast.LENGTH_SHORT).show();
@@ -361,8 +379,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 updatePasswardView();
                                 if (!task.isSuccessful()) {
                                     showConfirmationDialoge("Something went wrong. Please try again later");
-                                 //   Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
-                                 //   snackbar_fail.show();
+                                    //   Snackbar snackbar_fail = Snackbar.make(binding.changePassward, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                    //   snackbar_fail.show();
                                 } else {
                                     showConfirmationDialoge("Something went wrong. Please try again later");
                                     Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Password successfully modified", Snackbar.LENGTH_LONG);
@@ -373,8 +391,8 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         dialog.cancel();
                         showConfirmationDialoge("Authentication failed");
-                       // Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
-                      //  snackbar_su.show();
+                        // Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Authentication Failed", Snackbar.LENGTH_LONG);
+                        //  snackbar_su.show();
                     }
                 }
             });
@@ -409,7 +427,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             dialog.cancel();
                                             Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Photo updated successfly", Snackbar.LENGTH_LONG);
                                             snackbar_su.show();
-                                         //   Toast.makeText(ProfileActivity.this, "Photo updated successfly", Toast.LENGTH_SHORT).show();
+                                            //   Toast.makeText(ProfileActivity.this, "Photo updated successfly", Toast.LENGTH_SHORT).show();
 
                                             refresh();
 
