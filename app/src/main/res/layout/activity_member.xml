@@ -434,7 +434,7 @@
                                                 android:editable="false"
                                                 android:gravity="center"
                                                 android:padding="10dp"
-                                                android:text="email"
+                                                android:text="Email"
                                                 android:textColor="@color/majesty"
                                                 android:textSize="18dp"
                                                 android:textStyle="bold" />
@@ -531,7 +531,7 @@
                                                 android:editable="false"
                                                 android:gravity="center"
                                                 android:padding="10dp"
-                                                android:text="email"
+                                                android:text="Phone Number"
                                                 android:textColor="@color/majesty"
                                                 android:textSize="18dp"
                                                 android:textStyle="bold" />
