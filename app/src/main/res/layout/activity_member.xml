@@ -74,8 +74,9 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_margin="10dp"
+                            android:layout_weight="5"
                             android:orientation="horizontal">
 
                             <androidx.cardview.widget.CardView
@@ -163,397 +164,425 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <androidx.cardview.widget.CardView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:elevation="10dp"
+                               android:orientation="horizontal"
+                                android:layout_weight="1"
+                              >
 
-                                app:cardCornerRadius="10dp"
-                                app:cardUseCompatPadding="true">>
-
-                                <LinearLayout
+                                <androidx.cardview.widget.CardView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:layout_height="match_parent"
+                                    android:elevation="10dp"
+
+                                    app:cardCornerRadius="10dp"
+                                    app:cardUseCompatPadding="true">>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="3"
-                                        android:gravity="center"
+
                                         android:orientation="horizontal">
 
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/currentLocationCard"
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_gravity="center"
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginRight="5dp"
-                                            android:layout_marginBottom="10dp"
-                                            app:cardCornerRadius="15dp"
+                                            android:layout_weight="3"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
 
-                                            app:cardElevation="5dp">
-
-                                            <TextView
+                                            <androidx.cardview.widget.CardView
+                                                android:id="@+id/currentLocationCard"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_gravity="center"
+                                                android:layout_marginLeft="10dp"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginRight="5dp"
+                                                android:layout_marginBottom="10dp"
+                                                app:cardCornerRadius="15dp"
 
-                                                android:gravity="center"
+                                                app:cardElevation="5dp">
 
-                                                android:padding="10dp"
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_gravity="center"
 
-                                                android:text="Currnet Location  "
-                                                android:textColor="@color/heavy_red"
-                                                android:textSize="18sp"
-                                                android:textStyle="bold" />
+                                                    android:gravity="center"
 
-                                        </androidx.cardview.widget.CardView>
+                                                    android:padding="10dp"
 
+                                                    android:text="Currnet Location  "
+                                                    android:textColor="@color/heavy_red"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
 
-                                    </LinearLayout>
-
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
+                                            </androidx.cardview.widget.CardView>
 
 
-                                        android:layout_weight="2"
+                                        </LinearLayout>
 
-                                        android:orientation="horizontal">
 
-                                        <androidx.cardview.widget.CardView
-
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
 
-                                            app:cardCornerRadius="15dp"
 
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
+                                            android:layout_weight="2"
 
+                                            android:orientation="horizontal">
 
-                                            <EditText
-                                                android:id="@+id/currentLocation"
+                                            <androidx.cardview.widget.CardView
+
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
+                                                app:cardCornerRadius="15dp"
 
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:gravity="center"
-                                                android:padding="10dp"
-                                                android:text="Current Location"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp"
-                                                android:textStyle="bold" />
+                                                app:cardElevation="5dp"
+                                                app:cardUseCompatPadding="true">>
 
 
-                                        </androidx.cardview.widget.CardView>
+                                                <EditText
+                                                    android:id="@+id/currentLocation"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
 
 
+                                                    android:background="@color/transparent"
+                                                    android:editable="false"
+                                                    android:gravity="center"
+                                                    android:padding="10dp"
+                                                    android:text="Current Location"
+                                                    android:textColor="@color/majesty"
+                                                    android:textSize="18dp"
+                                                    android:textStyle="bold" />
+
+
+                                            </androidx.cardview.widget.CardView>
+
+
+                                        </LinearLayout>
                                     </LinearLayout>
-                                </LinearLayout>
-                            </androidx.cardview.widget.CardView>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:elevation="10dp"
-
-                                app:cardCornerRadius="10dp"
-                                app:cardUseCompatPadding="true">>
+                                </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
 
-                                    <LinearLayout
+                                    <androidx.cardview.widget.CardView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="3"
-                                        android:gravity="center"
-                                        android:orientation="horizontal">
+                                        android:elevation="10dp"
 
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/maximuDistenceCard"
+                                        app:cardCornerRadius="10dp"
+                                        app:cardUseCompatPadding="true">>
+
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginRight="5dp"
-                                            android:layout_marginBottom="10dp"
-                                            app:cardCornerRadius="15dp"
+                                            android:orientation="horizontal">
 
-                                            app:cardElevation="5dp">
-
-                                            <TextView
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_gravity="center"
-
+                                                android:layout_weight="3"
                                                 android:gravity="center"
+                                                android:orientation="horizontal">
 
-                                                android:padding="10dp"
+                                                <androidx.cardview.widget.CardView
+                                                    android:id="@+id/maximuDistenceCard"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginLeft="10dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="5dp"
+                                                    android:layout_marginBottom="10dp"
+                                                    app:cardCornerRadius="15dp"
 
-                                                android:text="Maximum Distence "
-                                                android:textColor="@color/heavy_red"
-                                                android:textSize="18sp"
-                                                android:textStyle="bold" />
+                                                    app:cardElevation="5dp">
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <TextView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_gravity="center"
 
+                                                        android:gravity="center"
 
-                                    </LinearLayout>
+                                                        android:padding="10dp"
 
+                                                        android:text="Maximum Distence "
+                                                        android:textColor="@color/heavy_red"
+                                                        android:textSize="18sp"
+                                                        android:textStyle="bold" />
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-
-                                        android:layout_weight="2"
-
-                                        android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-
-                                            app:cardCornerRadius="15dp"
-
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
+                                                </androidx.cardview.widget.CardView>
 
 
-                                            <EditText
-                                                android:id="@+id/maximuDistence"
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
 
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:gravity="center"
-                                                android:padding="10dp"
-                                                android:text="Maximum Distence"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp"
-                                                android:textStyle="bold" />
+                                                android:layout_weight="2"
+
+                                                android:orientation="horizontal">
+
+                                                <androidx.cardview.widget.CardView
+
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+
+                                                    app:cardCornerRadius="15dp"
+
+                                                    app:cardElevation="5dp"
+                                                    app:cardUseCompatPadding="true">>
 
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <EditText
+                                                        android:id="@+id/maximuDistence"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
 
 
-                                    </LinearLayout>
+                                                        android:background="@color/transparent"
+                                                        android:editable="false"
+                                                        android:gravity="center"
+                                                        android:padding="10dp"
+                                                        android:text="Maximum Distence"
+                                                        android:textColor="@color/majesty"
+                                                        android:textSize="18dp"
+                                                        android:textStyle="bold" />
+
+
+                                                </androidx.cardview.widget.CardView>
+
+
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
                                 </LinearLayout>
-                            </androidx.cardview.widget.CardView>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:elevation="10dp"
-
-                                app:cardCornerRadius="10dp"
-                                app:cardUseCompatPadding="true">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
 
-                                    <LinearLayout
+                                    <androidx.cardview.widget.CardView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="3"
-                                        android:gravity="center"
-                                        android:orientation="horizontal">
+                                        android:elevation="10dp"
 
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/emailCard"
+                                        app:cardCornerRadius="10dp"
+                                        app:cardUseCompatPadding="true">
+
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginRight="5dp"
-                                            android:layout_marginBottom="10dp"
-                                            app:cardCornerRadius="15dp"
+                                            android:orientation="horizontal">
 
-                                            app:cardElevation="5dp">
-
-                                            <TextView
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_gravity="center"
-
+                                                android:layout_weight="3"
                                                 android:gravity="center"
+                                                android:orientation="horizontal">
 
-                                                android:padding="10dp"
+                                                <androidx.cardview.widget.CardView
+                                                    android:id="@+id/emailCard"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginLeft="10dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="5dp"
+                                                    android:layout_marginBottom="10dp"
+                                                    app:cardCornerRadius="15dp"
 
-                                                android:text="E-mail "
-                                                android:textColor="@color/heavy_red"
-                                                android:textSize="18sp"
-                                                android:textStyle="bold" />
+                                                    app:cardElevation="5dp">
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <TextView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_gravity="center"
 
+                                                        android:gravity="center"
 
-                                    </LinearLayout>
+                                                        android:padding="10dp"
 
+                                                        android:text="E-mail "
+                                                        android:textColor="@color/heavy_red"
+                                                        android:textSize="18sp"
+                                                        android:textStyle="bold" />
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-
-                                        android:layout_weight="2"
-
-                                        android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-
-                                            app:cardCornerRadius="15dp"
-
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
+                                                </androidx.cardview.widget.CardView>
 
 
-                                            <EditText
-                                                android:id="@+id/email"
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
 
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:gravity="center"
-                                                android:padding="10dp"
-                                                android:text="Email"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp"
-                                                android:textStyle="bold" />
+                                                android:layout_weight="2"
+
+                                                android:orientation="horizontal">
+
+                                                <androidx.cardview.widget.CardView
+
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+
+                                                    app:cardCornerRadius="15dp"
+
+                                                    app:cardElevation="5dp"
+                                                    app:cardUseCompatPadding="true">>
 
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <EditText
+                                                        android:id="@+id/email"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
 
 
-                                    </LinearLayout>
+                                                        android:background="@color/transparent"
+                                                        android:editable="false"
+                                                        android:gravity="center"
+                                                        android:padding="10dp"
+                                                        android:text="Email"
+                                                        android:textColor="@color/majesty"
+                                                        android:textSize="18dp"
+                                                        android:textStyle="bold" />
+
+
+                                                </androidx.cardview.widget.CardView>
+
+
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
                                 </LinearLayout>
-                            </androidx.cardview.widget.CardView>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:elevation="10dp"
-
-                                app:cardCornerRadius="10dp"
-                                app:cardUseCompatPadding="true">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
 
-                                    <LinearLayout
+                                    <androidx.cardview.widget.CardView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_gravity="center"
-                                        android:layout_weight="3"
-                                        android:gravity="center"
-                                        android:orientation="horizontal">
+                                        android:elevation="10dp"
 
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/phoneNumberCard"
+                                        app:cardCornerRadius="10dp"
+                                        app:cardUseCompatPadding="true">
+
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginRight="5dp"
-                                            android:layout_marginBottom="10dp"
-                                            app:cardCornerRadius="15dp"
+                                            android:orientation="horizontal">
 
-                                            app:cardElevation="5dp">
-
-                                            <TextView
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:layout_gravity="center"
-
+                                                android:layout_weight="3"
                                                 android:gravity="center"
+                                                android:orientation="horizontal">
 
-                                                android:padding="10dp"
+                                                <androidx.cardview.widget.CardView
+                                                    android:id="@+id/phoneNumberCard"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginLeft="10dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginRight="5dp"
+                                                    android:layout_marginBottom="10dp"
+                                                    app:cardCornerRadius="15dp"
 
-                                                android:text="Phone Number "
-                                                android:textColor="@color/heavy_red"
-                                                android:textSize="18sp"
-                                                android:textStyle="bold" />
+                                                    app:cardElevation="5dp">
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <TextView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_gravity="center"
 
+                                                        android:gravity="center"
 
-                                    </LinearLayout>
+                                                        android:padding="10dp"
 
+                                                        android:text="Phone Number "
+                                                        android:textColor="@color/heavy_red"
+                                                        android:textSize="18sp"
+                                                        android:textStyle="bold" />
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-
-
-                                        android:layout_weight="2"
-
-                                        android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-
-                                            app:cardCornerRadius="15dp"
-
-                                            app:cardElevation="5dp"
-                                            app:cardUseCompatPadding="true">>
+                                                </androidx.cardview.widget.CardView>
 
 
-                                            <EditText
-                                                android:id="@+id/phoneNumber"
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
 
-                                                android:background="@color/transparent"
-                                                android:editable="false"
-                                                android:gravity="center"
-                                                android:padding="10dp"
-                                                android:text="Phone Number"
-                                                android:textColor="@color/majesty"
-                                                android:textSize="18dp"
-                                                android:textStyle="bold" />
+                                                android:layout_weight="2"
+
+                                                android:orientation="horizontal">
+
+                                                <androidx.cardview.widget.CardView
+
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+
+                                                    app:cardCornerRadius="15dp"
+
+                                                    app:cardElevation="5dp"
+                                                    app:cardUseCompatPadding="true">>
 
 
-                                        </androidx.cardview.widget.CardView>
+                                                    <EditText
+                                                        android:id="@+id/phoneNumber"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
 
 
-                                    </LinearLayout>
+                                                        android:background="@color/transparent"
+                                                        android:editable="false"
+                                                        android:gravity="center"
+                                                        android:padding="10dp"
+                                                        android:text="Phone Number"
+                                                        android:textColor="@color/majesty"
+                                                        android:textSize="18dp"
+                                                        android:textStyle="bold" />
+
+
+                                                </androidx.cardview.widget.CardView>
+
+
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
                                 </LinearLayout>
-                            </androidx.cardview.widget.CardView>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
 
