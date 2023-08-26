@@ -103,6 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
         binding.changePassward.setVisibility(View.VISIBLE);
         binding.passwardDialoge.setVisibility(View.GONE);
 
+
         binding.changePasswardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
