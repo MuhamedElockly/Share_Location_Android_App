@@ -54,7 +54,7 @@ public class Member extends AppCompatActivity {
         swipeRefreshLayout.setEnabled(false);
         // binding.memberProfileImage.setScaleType(ImageView.ScaleType.FIT_XY);
 
-        binding.memberProfileImage.setOnClickListener(new View.OnClickListener() {
+        binding.mamberProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -136,7 +136,7 @@ public class Member extends AppCompatActivity {
 
 
                 profileImageUri = photoUri;
-                Glide.with(getApplicationContext()).load(photoUri).into(binding.memberProfileImage);
+                Glide.with(getApplicationContext()).load(photoUri).into(binding.mamberProfilePhoto);
                 binding.profileName.setText(name);
             }
 
