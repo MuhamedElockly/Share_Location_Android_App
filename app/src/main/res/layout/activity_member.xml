@@ -99,13 +99,16 @@
                                         app:cardCornerRadius="60dp"
                                         app:cardUseCompatPadding="true">
 
-                                        <ImageView
-                                            android:id="@+id/memberProfileImage"
+                                        <com.google.android.material.imageview.ShapeableImageView
+                                            android:id="@+id/mamberProfilePhoto"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:adjustViewBounds="true"
+                                            android:src="@drawable/locationicon"
 
-                                            android:src="@drawable/locationicon" />
+                                            app:shapeAppearanceOverlay="@style/circular"
+
+                                            />
+
 
                                     </androidx.cardview.widget.CardView>
 
