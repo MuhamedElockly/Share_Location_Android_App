@@ -98,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+
     private void updatePasswardView() {
         binding.changePassward.setVisibility(View.VISIBLE);
         binding.passwardDialoge.setVisibility(View.GONE);
