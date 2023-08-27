@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -77,6 +78,7 @@ public class Member extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 refresh();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         refresh();
@@ -129,11 +131,12 @@ public class Member extends AppCompatActivity {
 
     private void refresh() {
 
-
+        showProgreesBar();
         memberRef = FirebaseDatabase.getInstance().getReference("users");
         memberRef.child(userId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
+                loadingDialoge.cancel();
                 String name = dataSnapshot.child("name").getValue(String.class);
                 String photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
                 String email = dataSnapshot.child(("email")).getValue(String.class);
@@ -147,6 +150,7 @@ public class Member extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                loadingDialoge.cancel();
                 showConfirmationDialoge(e.getMessage());
             }
         });
@@ -170,6 +174,19 @@ public class Member extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+    }
+
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        loadingDialoge = builder.create();
+        loadingDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialoge.show();
+
+
     }
 
 }
