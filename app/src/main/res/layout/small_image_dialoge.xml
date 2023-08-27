@@ -2,22 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:layout_marginLeft="30dp"
-
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_margin="30dp"
         app:cardCornerRadius="23dp"
-        app:cardElevation="30dp">
+        app:cardElevation="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:background="@drawable/show_alert_image"
             android:orientation="vertical">
 
@@ -25,7 +26,9 @@
                 android:id="@+id/smallImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/locationicon" />
         </LinearLayout>
 

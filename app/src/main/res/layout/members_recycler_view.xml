@@ -44,6 +44,8 @@
                         android:id="@+id/memberImageView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/locationicon" />
                 </androidx.cardview.widget.CardView>
 

@@ -137,6 +137,7 @@ public class Member extends AppCompatActivity {
 
                 profileImageUri = photoUri;
                 Glide.with(getApplicationContext()).load(photoUri).into(binding.mamberProfilePhoto);
+
                 binding.profileName.setText(name);
             }
 
