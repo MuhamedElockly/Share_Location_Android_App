@@ -1,12 +1,18 @@
 package com.example.sharelocation.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -15,11 +21,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityMemberBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class Member extends AppCompatActivity {
     ActivityMemberBinding binding;
@@ -30,6 +36,7 @@ public class Member extends AppCompatActivity {
     private String userId;
     private String profileImageUri;
     private String memberName = "";
+    private AlertDialog loadingDialoge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +55,10 @@ public class Member extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         memberName = intent.getStringExtra("memberName");
         getSupportActionBar().setTitle(memberName);
-        refresh();
+
 
         swipeRefreshLayout = binding.swipeToRefresh;
-        swipeRefreshLayout.setEnabled(false);
-        // binding.memberProfileImage.setScaleType(ImageView.ScaleType.FIT_XY);
+        // swipeRefreshLayout.setEnabled(false);
 
         binding.mamberProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,9 +73,14 @@ public class Member extends AppCompatActivity {
 
             }
         });
-
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+        refresh();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -108,14 +119,6 @@ public class Member extends AppCompatActivity {
             newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
         }
 
-        // Immersive mode: Backward compatible to KitKat.
-        // Note that this flag doesn't do anything by itself, it only augments the behavior
-        // of HIDE_NAVIGATION and FLAG_FULLSCREEN.  For the purposes of this sample
-        // all three flags are being toggled together.
-        // Note that there are two immersive mode UI flags, one of which is referred to as "sticky".
-        // Sticky immersive mode differs in that it makes the navigation and status bars
-        // semi-transparent, and the UI flag does not get cleared when the user interacts with
-        // the screen.
         if (Build.VERSION.SDK_INT >= 18) {
             newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         }
@@ -128,23 +131,45 @@ public class Member extends AppCompatActivity {
 
 
         memberRef = FirebaseDatabase.getInstance().getReference("users");
-        memberRef.child(userId).addValueEventListener(new ValueEventListener() {
+        memberRef.child(userId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name = snapshot.child("name").getValue(String.class);
-                String photoUri = snapshot.child("profilePhoto").getValue(String.class);
-
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.child("name").getValue(String.class);
+                String photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
+                String email = dataSnapshot.child(("email")).getValue(String.class);
 
                 profileImageUri = photoUri;
                 Glide.with(getApplicationContext()).load(photoUri).into(binding.mamberProfilePhoto);
 
                 binding.profileName.setText(name);
+                binding.email.setText(email);
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onFailure(@NonNull Exception e) {
+                showConfirmationDialoge(e.getMessage());
+            }
+        });
 
+
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
             }
         });
     }
+
 }
