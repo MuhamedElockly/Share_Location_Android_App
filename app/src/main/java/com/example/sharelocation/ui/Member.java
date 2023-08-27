@@ -1,8 +1,11 @@
 package com.example.sharelocation.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -130,6 +133,10 @@ public class Member extends AppCompatActivity {
     }
 
     private void refresh() {
+        if (!isNetworkAvailable()) {
+            showConfirmationDialoge("Please check internet connection !");
+            return;
+        }
 
         showProgreesBar();
         memberRef = FirebaseDatabase.getInstance().getReference("users");
@@ -140,7 +147,8 @@ public class Member extends AppCompatActivity {
                 String name = dataSnapshot.child("name").getValue(String.class);
                 String photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
                 String email = dataSnapshot.child(("email")).getValue(String.class);
-
+                String phoneNumber = dataSnapshot.child("phoneNumber").getValue(String.class);
+                binding.phoneNumber.setText(phoneNumber);
                 profileImageUri = photoUri;
                 Glide.with(getApplicationContext()).load(photoUri).into(binding.mamberProfilePhoto);
 
@@ -174,6 +182,12 @@ public class Member extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void showProgreesBar() {
