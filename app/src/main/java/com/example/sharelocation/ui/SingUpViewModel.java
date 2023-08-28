@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
@@ -48,6 +50,7 @@ public class SingUpViewModel extends ViewModel {
 
                 if (task.isSuccessful()) {
                     user = mAuth.getCurrentUser();
+
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(userModel.getPhoneNumber(), "OTP_CODE");
                     user.updatePhoneNumber(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -63,18 +66,43 @@ public class SingUpViewModel extends ViewModel {
 
                             .setPhotoUri(Uri.parse(userModel.getImageUri())).build();
                     user.updateProfile(profile);
+
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task1) {
                             if (task1.isSuccessful()) {
-                                feedback = "Please Verify Your E-mail";
-                                //   Toast.makeText(resourceActivity, "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
-                                mutableLiveData.setValue(feedback);
+                                userModel.setTokenId(String.valueOf(user.getIdToken(false)));
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                                database.child("users").child(user.getUid()).setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            feedback = "Please Verify Your E-mail";
+                                            //   Toast.makeText(resourceActivity, "Please Verify Your E-mail", Toast.LENGTH_LONG).show();
+                                            mutableLiveData.setValue(feedback);
+                                        } else {
+                                            feedback = task.getException().getMessage();
+                                            mutableLiveData.setValue(feedback);
+                                        }
+                                        mAuth.signOut();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        feedback = e.getMessage();
+                                        mutableLiveData.setValue(feedback);
+                                        mAuth.signOut();
+                                        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + userModel.getEmail() + ".jpg");
+                                        imageRef.delete();
+                                    }
+                                });
+
+
                             } else {
                                 feedback = task.getException().getMessage();
                                 mutableLiveData.setValue(feedback);
                             }
-                            mAuth.signOut();
+                            //    mAuth.signOut();
 
                         }
                     });

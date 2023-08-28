@@ -7,22 +7,25 @@ public class UserModel {
     private String tokenId;
     private String imageUri;
     private String phoneNumber;
+
     private boolean signedByGoogle;
+
+    public UserModel(String name, String email, String passward, String imageUri, String phoneNumber, boolean signedByGoogle
+            , String tokenId) {
+        this.name = name;
+        this.email = email;
+        this.passward = passward;
+        this.imageUri = imageUri;
+        this.phoneNumber = phoneNumber;
+        this.signedByGoogle = signedByGoogle;
+        this.tokenId = tokenId;
+    }
 
     public boolean isSignedByGoogle() {
         return signedByGoogle;
     }
 
     public void setSignedByGoogle(boolean signedByGoogle) {
-        this.signedByGoogle = signedByGoogle;
-    }
-
-    public UserModel(String name, String email, String passward, String imageUri, String phoneNumber, boolean signedByGoogle) {
-        this.name = name;
-        this.email = email;
-        this.passward = passward;
-        this.imageUri = imageUri;
-        this.phoneNumber = phoneNumber;
         this.signedByGoogle = signedByGoogle;
     }
 
