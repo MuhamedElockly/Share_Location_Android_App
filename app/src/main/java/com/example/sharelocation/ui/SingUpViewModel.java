@@ -24,7 +24,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -155,42 +154,24 @@ public class SingUpViewModel extends ViewModel {
 
 
             }
-        });
-
-
-        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d("imageName", "Existtt");
-
-                imageMutableLiveData.setValue("");
-
-            }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (e instanceof StorageException) {
-                    Log.d("imageName", String.valueOf(e));
 
-                    imageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    fireBaseImageUri = uri.toString();
-                                    //   Log.d("name", fireBaseImageUri);
-                                    // feedback = "Image Successfly Uploaded";
-                                    imageMutableLiveData.setValue(fireBaseImageUri);
+                StorageReference defaultImage = FirebaseStorage.getInstance().getReference("profileImages/" + "default.jpg");
+                defaultImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("imageName", "Existtt");
+                        imageMutableLiveData.setValue(String.valueOf(uri));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        imageMutableLiveData.setValue("");
+                    }
+                });
 
-                                }
-                            });
-
-
-                        }
-                    });
-
-                }
             }
         });
 
