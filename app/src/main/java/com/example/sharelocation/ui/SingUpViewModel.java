@@ -53,7 +53,9 @@ public class SingUpViewModel extends ViewModel {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Log.e("phoneNumber", " : " + user.getPhoneNumber());
+                                Log.e("phoneNumber1", " : " + user.getPhoneNumber());
+                            } else {
+                                Log.e("phoneNumber1", " : " + task.getException().getMessage());
                             }
                         }
                     });
