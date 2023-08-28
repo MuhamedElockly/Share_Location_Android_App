@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
+
 public class SingUpViewModel extends ViewModel {
     MutableLiveData<String> mutableLiveData = new MutableLiveData<>();
     MutableLiveData<String> imageMutableLiveData = new MutableLiveData<>();
@@ -133,7 +135,28 @@ public class SingUpViewModel extends ViewModel {
     }
 
     public void uploadProfileImage(String email, Uri uriProfileImage) {
-        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + email + ".jpg");
+        Calendar calendar = Calendar.getInstance();
+        long now = calendar.getTimeInMillis();
+        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + now + ".jpg");
+
+        imageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        fireBaseImageUri = uri.toString();
+                        //   Log.d("name", fireBaseImageUri);
+                        // feedback = "Image Successfly Uploaded";
+                        imageMutableLiveData.setValue(fireBaseImageUri);
+
+                    }
+                });
+
+
+            }
+        });
+
 
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
