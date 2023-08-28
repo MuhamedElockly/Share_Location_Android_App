@@ -466,9 +466,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             Snackbar snackbar_su = Snackbar.make(binding.changePassward, "Photo updated successfly", Snackbar.LENGTH_LONG);
                                             snackbar_su.show();
                                             //   Toast.makeText(ProfileActivity.this, "Photo updated successfly", Toast.LENGTH_SHORT).show();
-
                                             refresh();
-
                                         }
                                     }
                                 });
