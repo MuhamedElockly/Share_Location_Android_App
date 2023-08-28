@@ -338,6 +338,7 @@ public class LogIn extends AppCompatActivity {
                             showConfirmationDialoge("Please verify your email !");
                             mAuth.signOut();
                         } else {
+                            /*
                             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
                             String userEmail = user.getEmail();
@@ -360,12 +361,15 @@ public class LogIn extends AppCompatActivity {
                                     }
                                 }
                             });
+
+                             */
                             //}
 
                             Intent intent = new Intent(getApplicationContext(), Home.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             finish();
                             startActivity(intent);
+                            Toast.makeText(getApplicationContext(), "Sign-in successful", Toast.LENGTH_SHORT).show();
                         }
                     } else if (task.getException() instanceof FirebaseAuthException) {
                         String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();

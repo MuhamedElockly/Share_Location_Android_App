@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.sharelocation.pojo.LogInModel;
 import com.example.sharelocation.pojo.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -71,9 +72,9 @@ public class SingUpViewModel extends ViewModel {
                         @Override
                         public void onComplete(@NonNull Task<Void> task1) {
                             if (task1.isSuccessful()) {
-                                userModel.setTokenId(String.valueOf(user.getIdToken(false)));
+                                LogInModel logInModel = new LogInModel(user.getDisplayName(), user.getEmail(), String.valueOf(user.getIdToken(false)), user.getUid(), userModel.getImageUri(), userModel.getPhoneNumber(), false);
                                 DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                                database.child("users").child(user.getUid()).setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                database.child("users").child(user.getUid()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
@@ -116,7 +117,9 @@ public class SingUpViewModel extends ViewModel {
                     feedback = task.getException().getMessage();
                     mutableLiveData.setValue(feedback);
                 }
+
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -124,6 +127,7 @@ public class SingUpViewModel extends ViewModel {
                 imageRef.delete();
             }
         });
+
         //   Toast.makeText(resourceActivity, feedback, Toast.LENGTH_SHORT).show();
         return feedback;
     }
