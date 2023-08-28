@@ -60,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String profileEmail;
     private String fireBaseImageUri;
     private Bundle savedInstanceState;
+    private String profilePhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
         refresh();
 
     }
-
 
     private void updatePasswardView() {
         binding.changePassward.setVisibility(View.VISIBLE);
@@ -296,6 +296,7 @@ public class ProfileActivity extends AppCompatActivity {
                     DataSnapshot snapshot = task.getResult();
                     ProfileActivity.this.profileEmail = snapshot.child("email").getValue(String.class);
                     String profilePhotoUri = snapshot.child("profilePhoto").getValue(String.class);
+                    profilePhotoPath = profilePhotoUri;
                     binding.name.setText(snapshot.child("name").getValue(String.class));
                     binding.email.setText(snapshot.child("email").getValue(String.class));
 
@@ -430,12 +431,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
         showProgreesBar();
 
-        String oldeImageUrl = String.valueOf(user.getPhotoUrl());
+
+        String oldeImageUrl = profilePhotoPath;
 
 
         StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(oldeImageUrl);
-      //  StorageReference storageRef = FirebaseStorage.getInstance().getReference("my-bucket/my-object");
-       // Task<Uri> downloadUrl = storageRef.getDownloadUrl();
 
         if (oldeImageUrl != null && !odlProfileImage.getName().equals("default.jpg")) {
             odlProfileImage.delete();

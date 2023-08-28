@@ -9,7 +9,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -35,6 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
@@ -49,10 +53,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 
 public class LogIn extends AppCompatActivity {
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
@@ -60,11 +72,13 @@ public class LogIn extends AppCompatActivity {
     DatabaseReference databaseReference;
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
+    LogInModel logInModel;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore firestore;
     private boolean showOneTapUI = true;
     private AlertDialog dialog;
+    private AsyncTask mMyTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +90,7 @@ public class LogIn extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-
+        user = mAuth.getCurrentUser();
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com")
 
                 .requestEmail().build();
@@ -199,7 +213,6 @@ public class LogIn extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -255,8 +268,9 @@ public class LogIn extends AppCompatActivity {
 
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            dialog.cancel();
+
                             if (snapshot.exists()) {
+                                dialog.cancel();
                                 //  Toast.makeText(getApplicationContext(), "PRESENT", Toast.LENGTH_LONG).show();
                                 Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(getApplicationContext(), Home.class);
@@ -265,20 +279,14 @@ public class LogIn extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 // Toast.makeText(getApplicationContext(), "Nooo", Toast.LENGTH_LONG).show();
-                                LogInModel logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()), "01000002", true);
-                                database.child(userId).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getApplicationContext(), Home.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            finish();
-                                            startActivity(intent);
+                                //    downloadImageFromPath(acct.getPhotoUrl().getPath());
 
-                                        }
-                                    }
-                                });
+
+                                logInModel = new LogInModel(acct.getDisplayName(), acct.getEmail(), acct.getIdToken(), userId, String.valueOf(acct.getPhotoUrl()), "01000002", true);
+
+                                mMyTask = new DownloadTask().execute(stringToURL(acct.getPhotoUrl().toString()));
+
+
                             }
                         }
 
@@ -302,14 +310,14 @@ public class LogIn extends AppCompatActivity {
         });
     }
 
-    public void DownloadImageFromPath(URL url) {
+    public void downloadImageFromPath(String path) {
         InputStream in = null;
         Bitmap bmp = null;
         //ImageView iv = (ImageView)findViewById(R.id.img1);
         int responseCode = -1;
         try {
 
-            // URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
+            URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoInput(true);
             con.connect();
@@ -320,6 +328,10 @@ public class LogIn extends AppCompatActivity {
                 bmp = BitmapFactory.decodeStream(in);
                 in.close();
                 // iv.setImageBitmap(bmp);
+                Toast.makeText(LogIn.this, "Downloadedddd", Toast.LENGTH_LONG).show();
+                Log.e("downloadedImage", "Doooownloadde");
+            } else {
+                Log.e("downloadedImage", "NOoo");
             }
 
         } catch (Exception ex) {
@@ -420,5 +432,153 @@ public class LogIn extends AppCompatActivity {
             });
         }
 
+    }
+
+    protected URL stringToURL(String path) {
+        try {
+            URL url = new URL(path);
+            return url;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private class DownloadTask extends AsyncTask<URL, Void, Bitmap> {
+        protected void onPreExecute() {
+            //   mProgressDialog.show();
+        }
+
+        protected Bitmap doInBackground(URL... urls) {
+            URL url = urls[0];
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                return BitmapFactory.decodeStream(bufferedInputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // When all async task done
+        protected void onPostExecute(Bitmap result) {
+
+            if (result != null) {
+
+                Calendar calendar = Calendar.getInstance();
+                long now = calendar.getTimeInMillis();
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + now + ".jpg");
+
+                imageRef.putFile(getImageUri(LogIn.this, result)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                logInModel.setProfilePhoto(String.valueOf(uri));
+
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+
+                                database.child(logInModel.getUserId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            dialog.cancel();
+                                            Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getApplicationContext(), Home.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            finish();
+                                            startActivity(intent);
+
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        logInModel.setProfilePhoto("");
+
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+                        database.child(logInModel.getUserId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialog.cancel();
+                                    Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
+
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } else {
+                StorageReference defaultImage = FirebaseStorage.getInstance().getReference("profileImages/" + "default.jpg");
+                defaultImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        logInModel.setProfilePhoto(String.valueOf(uri));
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+                        database.child(logInModel.getUserId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialog.cancel();
+                                    Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
+
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        logInModel.setProfilePhoto("");
+
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+                        database.child(logInModel.getUserId()).setValue(logInModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialog.cancel();
+                                    Toast.makeText(LogIn.this, "Sign-in successful!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
+
+                                }
+                            }
+                        });
+                    }
+                });
+
+            }
+        }
     }
 }
