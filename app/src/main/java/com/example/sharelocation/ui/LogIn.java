@@ -3,6 +3,8 @@ package com.example.sharelocation.ui;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -47,6 +49,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LogIn extends AppCompatActivity {
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
@@ -294,6 +300,31 @@ public class LogIn extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void DownloadImageFromPath(URL url) {
+        InputStream in = null;
+        Bitmap bmp = null;
+        //ImageView iv = (ImageView)findViewById(R.id.img1);
+        int responseCode = -1;
+        try {
+
+            // URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setDoInput(true);
+            con.connect();
+            responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                //download
+                in = con.getInputStream();
+                bmp = BitmapFactory.decodeStream(in);
+                in.close();
+                // iv.setImageBitmap(bmp);
+            }
+
+        } catch (Exception ex) {
+            Log.e("Exception", ex.toString());
+        }
     }
 
     public void logIn() {

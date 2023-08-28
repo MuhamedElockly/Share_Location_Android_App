@@ -432,10 +432,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         String oldeImageUrl = String.valueOf(user.getPhotoUrl());
 
-        String imageName=oldeImageUrl.
+
         StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(oldeImageUrl);
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference("my-bucket/my-object");
-        Task<Uri> downloadUrl = storageRef.getDownloadUrl();
+      //  StorageReference storageRef = FirebaseStorage.getInstance().getReference("my-bucket/my-object");
+       // Task<Uri> downloadUrl = storageRef.getDownloadUrl();
 
         if (oldeImageUrl != null && !odlProfileImage.getName().equals("default.jpg")) {
             odlProfileImage.delete();
