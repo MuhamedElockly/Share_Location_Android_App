@@ -43,6 +43,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
+
 public class ProfileActivity extends AppCompatActivity {
     AlertDialog dialog;
     boolean signedByGoogle = false;
@@ -297,7 +299,7 @@ public class ProfileActivity extends AppCompatActivity {
                     binding.email.setText(snapshot.child("email").getValue(String.class));
 
                     //  Log.e("profileName", String.valueOf(snapshot.getValue()));
-                    binding.phoneNumber.setText("01000594861");
+                    binding.phoneNumber.setText(snapshot.child("phoneNumber").getValue(String.class));
                     Glide.with(getApplicationContext()).load(profilePhotoUri).into(binding.profilePhoto);
                     binding.profilePhoto.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -426,8 +428,21 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
         showProgreesBar();
+
+
+        StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(user.getPhotoUrl()));
+        odlProfileImage.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+
+
+        Calendar calendar = Calendar.getInstance();
+        long now = calendar.getTimeInMillis();
         binding.profilePhoto.setImageURI(uri);
-        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + profileEmail + ".jpg");
+        imageRef = FirebaseStorage.getInstance().getReference("profileImages/" + now + ".jpg");
 
         imageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
