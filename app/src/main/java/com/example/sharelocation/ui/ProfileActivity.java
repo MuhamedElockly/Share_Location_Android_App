@@ -431,8 +431,16 @@ public class ProfileActivity extends AppCompatActivity {
         showProgreesBar();
 
         String oldeImageUrl = String.valueOf(user.getPhotoUrl());
+
+        String imageName=oldeImageUrl.
         StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(oldeImageUrl);
-        odlProfileImage.delete();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference("my-bucket/my-object");
+        Task<Uri> downloadUrl = storageRef.getDownloadUrl();
+
+        if (oldeImageUrl != null && !odlProfileImage.getName().equals("default.jpg")) {
+            odlProfileImage.delete();
+        }
+
 
         Calendar calendar = Calendar.getInstance();
         long now = calendar.getTimeInMillis();

@@ -176,6 +176,7 @@ public class SingUpViewModel extends ViewModel {
         });
 
 
+
     }
 
     public void getRegestrationFeedback(UserModel userModel, Context resourceActivity) {
