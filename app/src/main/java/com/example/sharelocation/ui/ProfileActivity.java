@@ -28,6 +28,7 @@ import com.example.sharelocation.R;
 import com.example.sharelocation.databinding.ActivityProfileBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -429,15 +430,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
         showProgreesBar();
 
-
-        StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(user.getPhotoUrl()));
-        odlProfileImage.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-            }
-        });
-
+        String oldeImageUrl = String.valueOf(user.getPhotoUrl());
+        StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(oldeImageUrl);
+        odlProfileImage.delete();
 
         Calendar calendar = Calendar.getInstance();
         long now = calendar.getTimeInMillis();
@@ -475,6 +470,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showConfirmationDialoge(e.getMessage());
             }
         });
     }
