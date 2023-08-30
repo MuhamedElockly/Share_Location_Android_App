@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sharelocation.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
     Button dialogeSure;
     String userId;
     Switch locationSwitch;
+    AlertDialog progressBarDialoge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (locationSwitch.isChecked()) {
-                    deleteByTransaction();
+                    //   deleteByTransaction();
 
                     //    Toast.makeText(SettingsActivity.this, "Share Location Switch Onnnn", Toast.LENGTH_SHORT).show();
                     ComponentName componentName = new ComponentName(getBaseContext(), LocationService.class);
@@ -160,7 +167,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void deleteByTransaction() {
-        Toast.makeText((Context) SettingsActivity.this, "JJJJJ", Toast.LENGTH_LONG).show();
+        //  Toast.makeText((Context) SettingsActivity.this, "JJJJJ", Toast.LENGTH_LONG).show();
 
         roomMembers = FirebaseDatabase.getInstance().getReference();
         roomMembers.runTransaction(new Transaction.Handler() {
@@ -178,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText((Context) SettingsActivity.this, "mmmmmffff", Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText((Context) SettingsActivity.this, (CharSequence) error, Toast.LENGTH_LONG).show();
+                    Toast.makeText((Context) SettingsActivity.this, (CharSequence) error.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -246,6 +253,69 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void reAuthenticateFireBaseUser() {
+        Button delete;
+        Button cancel;
+        EditText currenPassward;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.re_authenticate, null);
+        delete = (Button) view.findViewById(R.id.delete);
+        cancel = (Button) view.findViewById(R.id.cancel);
+        currenPassward = view.findViewById(R.id.currentPassward);
+
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!currenPassward.getText().toString().isEmpty()) {
+                    AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), String.valueOf(currenPassward.getText()));
+                    user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            deletImage();
+                            deletAccount();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                } else {
+                    showConfirmationDialoge("Current passward feild is required");
+                    currenPassward.requestFocus();
+                }
+            }
+        });
+    }
+
+    private void showConfirmationDialoge(String erorrMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.erorr_dialoge, null);
+        TextView alertMessage = view.findViewById(R.id.errorBody);
+        alertMessage.setText(erorrMessage);
+        Button dialogeOk = view.findViewById(R.id.ok);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialogeOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
+
     public void showConfirmationDialoge() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.delete_dialoge, null);
@@ -265,14 +335,29 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                progressBar.setVisibility(View.VISIBLE);
-                deletImage();
+                showConfirmationDialoge();
+                //  progressBar.setVisibility(View.VISIBLE);
+                //  deletImage();
 
-                deletAccount();
+                //  deletAccount();
+                reAuthenticateFireBaseUser();
                 //  printValues();
 
             }
         });
+    }
+
+    private void showProgreesBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.load_dialoge, null);
+        ProgressBar progressBar = view.findViewById(R.id.profilePbar);
+
+        builder.setView(view);
+        progressBarDialoge = builder.create();
+        progressBarDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBarDialoge.show();
+
+
     }
 
     private void decreaseRoomCapacity(String roomId) {
