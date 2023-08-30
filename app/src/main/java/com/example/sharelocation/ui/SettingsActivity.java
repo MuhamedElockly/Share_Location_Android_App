@@ -222,12 +222,12 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 //  Log.e("deletedRoom", "On Fire");
-                                fAuth.signOut();
+                              //  fAuth.signOut();
                                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-
+                                            fAuth.signOut();
                                             Toast.makeText(SettingsActivity.this, "User Deleted Successfly", Toast.LENGTH_SHORT).show();
                                             // progressBar.setVisibility(View.INVISIBLE);
                                             progressBarDialoge.cancel();
