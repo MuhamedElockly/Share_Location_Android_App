@@ -26,6 +26,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sharelocation.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -353,8 +355,15 @@ public class SettingsActivity extends AppCompatActivity {
                 //  deletImage();
 
                 //  deletAccount();
-                reAuthenticateFireBaseUser();
-                //  printValues();
+
+                if (signedByGoogle) {
+                    GoogleSignIn.getClient(SettingsActivity.this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
+                    showProgreesBar();
+                    deletImage();
+                    deletAccount();
+                } else {
+                    reAuthenticateFireBaseUser();
+                }
 
             }
         });
