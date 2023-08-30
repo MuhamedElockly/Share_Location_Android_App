@@ -3,6 +3,7 @@ package com.example.sharelocation.ui;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,6 +32,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -93,6 +97,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (locationSwitch.isChecked()) {
+                    deleteByTransaction();
+
                     //    Toast.makeText(SettingsActivity.this, "Share Location Switch Onnnn", Toast.LENGTH_SHORT).show();
                     ComponentName componentName = new ComponentName(getBaseContext(), LocationService.class);
                     JobInfo jobInfo;
@@ -151,6 +157,27 @@ public class SettingsActivity extends AppCompatActivity {
         }
         //  deleteUserRooms();
 
+    }
+
+    private void deleteByTransaction() {
+        Toast.makeText((Context) SettingsActivity.this, "JJJJJ", Toast.LENGTH_LONG).show();
+
+        roomMembers = FirebaseDatabase.getInstance().getReference("userRooms");
+        roomMembers.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+
+                Toast.makeText((Context) SettingsActivity.this, (int) currentData.child(userId).getChildrenCount(), Toast.LENGTH_LONG).show();
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+            }
+        });
     }
 
     public void printValues() {
