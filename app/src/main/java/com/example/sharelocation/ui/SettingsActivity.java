@@ -93,6 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
         locationSwitch = findViewById(R.id.shareLocationSwitch);
         shareLocation();
+        userRef=FirebaseDatabase.getInstance().getReference("users");
         userRef.child(userId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -414,7 +415,7 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
-        imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(user.getPhotoUrl()));
+        imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(oldeImageUrl));
         imageRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
