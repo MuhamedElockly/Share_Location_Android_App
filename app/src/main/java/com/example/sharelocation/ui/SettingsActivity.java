@@ -64,6 +64,10 @@ public class SettingsActivity extends AppCompatActivity {
     Switch locationSwitch;
     AlertDialog progressBarDialoge;
 
+    DatabaseReference userRef;
+    String photoUri = "";
+    boolean signedByGoogle = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
         locationSwitch = findViewById(R.id.shareLocationSwitch);
         shareLocation();
+        userRef.child(userId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
+                signedByGoogle = dataSnapshot.child("signedByGoogle").getValue(boolean.class);
+            }
+        });
     }
 
     @Override
@@ -384,6 +395,16 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void deletImage() {
+
+        String oldeImageUrl = photoUri;
+
+
+        StorageReference odlProfileImage = FirebaseStorage.getInstance().getReferenceFromUrl(oldeImageUrl);
+
+        if (oldeImageUrl == null && odlProfileImage.getName().equals("default.jpg")) {
+            return;
+        }
+
         imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(user.getPhotoUrl()));
         imageRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
