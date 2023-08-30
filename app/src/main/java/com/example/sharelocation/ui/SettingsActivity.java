@@ -222,7 +222,7 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 //  Log.e("deletedRoom", "On Fire");
-                              //  fAuth.signOut();
+                                //  fAuth.signOut();
                                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -278,6 +278,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!currenPassward.getText().toString().isEmpty()) {
+                    showProgreesBar();
                     AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), String.valueOf(currenPassward.getText()));
                     user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -336,7 +337,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                showConfirmationDialoge();
+
                 //  progressBar.setVisibility(View.VISIBLE);
                 //  deletImage();
 
