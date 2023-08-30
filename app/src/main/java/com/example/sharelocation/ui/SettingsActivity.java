@@ -229,7 +229,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
 
                                             Toast.makeText(SettingsActivity.this, "User Deleted Successfly", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.INVISIBLE);
+                                            // progressBar.setVisibility(View.INVISIBLE);
+                                            progressBarDialoge.cancel();
                                             Intent intent = new Intent(getApplicationContext(), Welcome.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             finish();
