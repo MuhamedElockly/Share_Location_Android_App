@@ -87,7 +87,8 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //     Toast.makeText(SignUp.this, "Image", Toast.LENGTH_SHORT).show();
-                showImage();
+                //  showImage();
+                imagePicker();
             }
         });
 
@@ -212,18 +213,21 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        //     if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (data.getData() != null) {
             uriProfileImage = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
                 binding.profilePhoto.setImageBitmap(bitmap);
-                //  uploadImage();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
         }
+
+        //  }
+
     }
 
     private void startNewActivity() {
