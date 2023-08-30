@@ -66,7 +66,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:src="@drawable/insert_photo" />
+                        android:src="@drawable/insert_photo"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        />
                 </androidx.cardview.widget.CardView>
 
 
