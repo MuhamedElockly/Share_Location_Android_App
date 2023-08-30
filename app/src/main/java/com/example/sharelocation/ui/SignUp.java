@@ -102,11 +102,12 @@ public class SignUp extends AppCompatActivity {
 
 
     }
+
     private void imagePicker() {
-        binding.editProfilePhoto.setOnClickListener(new View.OnClickListener() {
+        binding.profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.with(ProfileActivity.this).crop()                    //Crop image(Optional), Check Customization for more option
+                ImagePicker.with(SignUp.this).crop()                    //Crop image(Optional), Check Customization for more option
                         .compress(1024)            //Final image size will be less than 1 MB(Optional)
                         .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                         .start();
