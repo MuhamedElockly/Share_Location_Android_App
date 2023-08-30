@@ -162,20 +162,25 @@ public class SettingsActivity extends AppCompatActivity {
     private void deleteByTransaction() {
         Toast.makeText((Context) SettingsActivity.this, "JJJJJ", Toast.LENGTH_LONG).show();
 
-        roomMembers = FirebaseDatabase.getInstance().getReference("userRooms");
+        roomMembers = FirebaseDatabase.getInstance().getReference();
         roomMembers.runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
 
-                Toast.makeText((Context) SettingsActivity.this, (int) currentData.child(userId).getChildrenCount(), Toast.LENGTH_LONG).show();
-
+                currentData.child("userRooms").child(userId).setValue(null);
                 return Transaction.success(currentData);
             }
 
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (committed) {
+                    Toast.makeText((Context) SettingsActivity.this, "mmmmmffff", Toast.LENGTH_LONG).show();
 
+                } else {
+                    Toast.makeText((Context) SettingsActivity.this, (CharSequence) error, Toast.LENGTH_LONG).show();
+
+                }
             }
         });
     }
