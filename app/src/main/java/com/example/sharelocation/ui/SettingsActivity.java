@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sharelocation.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -335,7 +336,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (signedByGoogle) {
                     showProgreesBar();
-                    AuthCredential credential = GoogleAuthProvider.getCredential(String.valueOf(tokenId), null);
+                    GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+
+                    AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
                     user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
