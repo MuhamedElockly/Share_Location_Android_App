@@ -36,6 +36,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,6 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
     DatabaseReference userRef;
     String photoUri = "";
     boolean signedByGoogle = false;
+    private String tokenId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +95,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
         locationSwitch = findViewById(R.id.shareLocationSwitch);
         shareLocation();
-        userRef=FirebaseDatabase.getInstance().getReference("users");
+        userRef = FirebaseDatabase.getInstance().getReference("users");
         userRef.child(userId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 photoUri = dataSnapshot.child("profilePhoto").getValue(String.class);
                 signedByGoogle = dataSnapshot.child("signedByGoogle").getValue(boolean.class);
+                tokenId = dataSnapshot.child("tokenId").getValue(String.class);
             }
         });
     }
@@ -254,7 +257,7 @@ public class SettingsActivity extends AppCompatActivity {
                                             //   Log.e("deletedRoom", "Fail");
 
                                             Toast.makeText(SettingsActivity.this, "Please Try Again !", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.INVISIBLE);
+                                            progressBarDialoge.cancel();
                                         }
                                     }
                                 });
@@ -303,7 +306,8 @@ public class SettingsActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            dialog.cancel();
+                            showConfirmationDialoge(e.getMessage());
                         }
                     });
                 } else {
@@ -358,10 +362,24 @@ public class SettingsActivity extends AppCompatActivity {
                 //  deletAccount();
 
                 if (signedByGoogle) {
-                    GoogleSignIn.getClient(SettingsActivity.this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
                     showProgreesBar();
-                    deletImage();
-                    deletAccount();
+                    AuthCredential credential = GoogleAuthProvider.getCredential(tokenId, null);
+                    user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            GoogleSignIn.getClient(SettingsActivity.this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()).signOut();
+                            deletImage();
+                            deletAccount();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBarDialoge.cancel();
+                            showConfirmationDialoge(e.getMessage());
+                        }
+                    });
+
+
                 } else {
                     reAuthenticateFireBaseUser();
                 }
