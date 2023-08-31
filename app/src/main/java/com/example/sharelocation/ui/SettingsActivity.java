@@ -245,7 +245,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             fAuth.signOut();
-                                            Toast.makeText(SettingsActivity.this, "User Deleted Successfly", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SettingsActivity.this, "User deleted successfly", Toast.LENGTH_SHORT).show();
                                             // progressBar.setVisibility(View.INVISIBLE);
                                             progressBarDialoge.cancel();
                                             Intent intent = new Intent(getApplicationContext(), Welcome.class);
@@ -256,7 +256,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         } else {
                                             //   Log.e("deletedRoom", "Fail");
 
-                                            Toast.makeText(SettingsActivity.this, "Please Try Again !", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SettingsActivity.this, "Please try again !", Toast.LENGTH_SHORT).show();
                                             progressBarDialoge.cancel();
                                         }
                                     }
