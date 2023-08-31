@@ -3,7 +3,6 @@ package com.example.sharelocation.ui;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,8 +39,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -183,31 +179,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    private void deleteByTransaction() {
-        //  Toast.makeText((Context) SettingsActivity.this, "JJJJJ", Toast.LENGTH_LONG).show();
-
-        roomMembers = FirebaseDatabase.getInstance().getReference();
-        roomMembers.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-
-                currentData.child("userRooms").child(userId).setValue(null);
-                return Transaction.success(currentData);
-            }
-
-            @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                if (committed) {
-                    Toast.makeText((Context) SettingsActivity.this, "mmmmmffff", Toast.LENGTH_LONG).show();
-
-                } else {
-                    Toast.makeText((Context) SettingsActivity.this, (CharSequence) error.getMessage(), Toast.LENGTH_LONG).show();
-
-                }
-            }
-        });
-    }
 
     public void printValues() {
         userRoomsRef = FirebaseDatabase.getInstance().getReference("roomMembers");
@@ -307,6 +278,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             dialog.cancel();
+                            progressBarDialoge.cancel();
                             showConfirmationDialoge(e.getMessage());
                         }
                     });
