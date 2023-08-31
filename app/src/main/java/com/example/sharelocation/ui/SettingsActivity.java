@@ -335,7 +335,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (signedByGoogle) {
                     showProgreesBar();
-                    AuthCredential credential = GoogleAuthProvider.getCredential(tokenId, null);
+                    AuthCredential credential = GoogleAuthProvider.getCredential(String.valueOf(tokenId), null);
                     user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
