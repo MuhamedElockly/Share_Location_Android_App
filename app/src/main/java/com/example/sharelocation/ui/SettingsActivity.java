@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -350,7 +351,12 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressBarDialoge.cancel();
-                            showConfirmationDialoge(e.getMessage());
+                            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                                String sessionExpired = "Sorry ! session are expired ,You must logout and login again to be able to delete this account .";
+                                showConfirmationDialoge(sessionExpired);
+                            } else {
+                                showConfirmationDialoge(e.getMessage());
+                            }
                         }
                     });
 
