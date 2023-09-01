@@ -26,9 +26,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_weight="3"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,7 +91,7 @@
                                             app:cardUseCompatPadding="true">>
 
 
-                                            <EditText
+                                            <TextView
                                                 android:id="@+id/currentLocation"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
@@ -205,8 +204,8 @@
                                             app:cardUseCompatPadding="true">>
 
 
-                                            <EditText
-                                                android:id="@+id/currentLocation"
+                                            <TextView
+
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
@@ -237,7 +236,7 @@
                                         android:orientation="horizontal">
 
                                         <androidx.cardview.widget.CardView
-                                            android:id="@+id/currentLocationCard"
+
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_gravity="center"
@@ -250,7 +249,7 @@
                                             app:cardElevation="5dp">
 
                                             <Switch
-                                                android:id="@+id/shareLocationSwitch"
+                                                android:id="@+id/darkModeSwitch"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_gravity="center"
