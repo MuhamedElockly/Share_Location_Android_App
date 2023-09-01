@@ -74,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-        progressBar = findViewById(R.id.settingPBar);
+      //  progressBar = findViewById(R.id.settingPBar);
         toolbar = findViewById(R.id.settingToolbar);
 
         setSupportActionBar(toolbar);
