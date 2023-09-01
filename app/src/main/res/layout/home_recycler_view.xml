@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="150dp">
 
     <androidx.cardview.widget.CardView
 
         android:layout_width="match_parent"
 
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         android:layout_marginLeft="20dp"
 
@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
             android:background="@drawable/home_recycler_background"
             android:orientation="vertical">
@@ -42,14 +42,14 @@
                     android:layout_height="match_parent"
 
                     android:autoSizeMaxTextSize="30sp"
-                    android:autoSizeMinTextSize="15sp"
+                    android:autoSizeMinTextSize="10sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/archivo_black"
                     android:gravity="center"
-                    android:paddingStart="15dp"
+                    android:paddingStart="20dp"
                     android:paddingTop="15dp"
-                    android:paddingEnd="15dp"
+                    android:paddingEnd="20dp"
                     android:text="Name"
                     android:textColor="@color/majesty" />
 
@@ -70,11 +70,14 @@
 
                     android:fontFamily="@font/archivo_black"
                     android:gravity="center"
-                    android:padding="25dp"
+                android:paddingBottom="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
                     android:text="Members Numbers"
                     android:textColor="@color/heavy_red"
                     android:autoSizeMaxTextSize="30sp"
-                    android:autoSizeMinTextSize="20sp"
+                    android:autoSizeMinTextSize="10sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
 
