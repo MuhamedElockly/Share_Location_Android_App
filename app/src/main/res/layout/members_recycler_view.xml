@@ -57,20 +57,26 @@
 
                     <TextView
                         android:id="@+id/memberName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
 
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="22sp"
+                        android:autoSizeMinTextSize="10sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+
                         android:fontFamily="@font/archivo_black"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:paddingRight="5dp"
-
-                        android:text="Family"
+                        android:paddingBottom="5dp"
+                        android:text="Name"
                         android:textColor="@color/majesty"
-                        android:textSize="20sp" />
+
+                        />
 
                     <TextView
                         android:id="@+id/admin"
@@ -87,7 +93,7 @@
                         android:text="Admin"
                         android:textColor="@color/heavy_red"
                         android:textSize="18sp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
                 </LinearLayout>
 
 
