@@ -352,14 +352,13 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             progressBarDialoge.cancel();
                             if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                String sessionExpired = "Sorry ! session are expired ,You must logout and login again to be able to delete this account .";
+                                String sessionExpired = "Sorry ! session was expired ,You must logout and login again to be able to delete this account .";
                                 showConfirmationDialoge(sessionExpired);
                             } else {
                                 showConfirmationDialoge(e.getMessage());
                             }
                         }
                     });
-
 
                 } else {
                     reAuthenticateFireBaseUser();
