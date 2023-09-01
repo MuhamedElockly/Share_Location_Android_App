@@ -96,14 +96,15 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
 
-
                                                 android:background="@color/transparent"
                                                 android:editable="false"
                                                 android:gravity="center"
                                                 android:padding="10dp"
                                                 android:text="Share Location"
+
                                                 android:textColor="@color/majesty"
                                                 android:textSize="20sp"
+
                                                 android:textStyle="bold" />
 
 
