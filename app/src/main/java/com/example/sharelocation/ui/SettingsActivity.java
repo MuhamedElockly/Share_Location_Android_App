@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
     DatabaseReference userRoomsRef;
     DatabaseReference roomMembers;
     StorageReference imageRef;
-    Button deleteButton;
+    TextView deleteButton;
     ArrayList<String> deletedRooms;
     int roomdeleted = 0;
     ProgressBar progressBar;
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
         userId = user.getUid();
         deletedRooms = new ArrayList<>();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        deleteButton = findViewById(R.id.deletAccount);
+        deleteButton = findViewById(R.id.deleteAccount);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -94,10 +94,7 @@
 
                             android:text="DELETE ACCOUNT"
                             android:textColor="@color/white"
-                            android:autoSizeTextType="uniform"
-                            android:autoSizeMinTextSize="17sp"
-                            android:autoSizeMaxTextSize="100sp"
-                            android:autoSizeStepGranularity="1sp"
+                         android:textSize="20sp"
                             android:textStyle="bold"
                             android:background="@color/heavy_red"
                             />
