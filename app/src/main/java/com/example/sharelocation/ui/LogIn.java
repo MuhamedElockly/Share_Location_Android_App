@@ -419,6 +419,7 @@ public class LogIn extends AppCompatActivity {
                         if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
                             //  Toast.makeText(LogIn.this, "This email not exist", Toast.LENGTH_LONG).show();
                             showConfirmationDialoge("This email is not exist");
+                            return;
                         }
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         // Toast.makeText(LogIn.this, "Please check internet connection !", Toast.LENGTH_LONG).show();
