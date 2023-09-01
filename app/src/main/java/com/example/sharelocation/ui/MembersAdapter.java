@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
         }
         if (member.getId().equals(roomAdmin)) {
             holder.admin.setVisibility(View.VISIBLE);
+            holder.memberName.setGravity(Gravity.BOTTOM);
         } else {
             holder.admin.setVisibility(View.GONE);
         }

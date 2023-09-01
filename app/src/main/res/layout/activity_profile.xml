@@ -82,11 +82,10 @@
                                         android:layout_marginTop="10dp"
                                         android:layout_marginRight="5dp"
                                         android:layout_marginBottom="10dp"
+                                        android:layout_weight="2"
                                         android:elevation="30dp"
                                         app:cardCornerRadius="10dp"
-                                        app:cardElevation="10dp"
-                                        android:layout_weight="2"
-                                        >
+                                        app:cardElevation="10dp">
 
                                         <RelativeLayout
                                             android:layout_width="match_parent"
@@ -100,10 +99,9 @@
                                                 android:id="@+id/profilePhoto"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
-                                                android:src="@drawable/locationicon"
                                                 android:adjustViewBounds="true"
                                                 android:scaleType="centerCrop"
-                                                />
+                                                android:src="@drawable/locationicon" />
 
 
                                             <ImageButton
@@ -152,15 +150,18 @@
                                                     android:layout_height="match_parent"
 
 
+                                                    android:autoSizeMaxTextSize="22sp"
+                                                    android:autoSizeMinTextSize="5sp"
+
+
+                                                    android:autoSizeStepGranularity="2sp"
+                                                    android:autoSizeTextType="uniform"
                                                     android:background="@color/transparent"
                                                     android:enabled="false"
-
-
                                                     android:gravity="center"
                                                     android:padding="10dp"
                                                     android:text="Name"
                                                     android:textColor="@color/majesty"
-                                                    android:textSize="20sp"
                                                     android:textStyle="bold" />
 
 
