@@ -26,14 +26,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -41,128 +39,136 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:elevation="10dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                            app:cardCornerRadius="10dp"
-                            app:cardUseCompatPadding="true">>
-
-                            <LinearLayout
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:elevation="10dp"
 
-                                android:orientation="horizontal">
+                                app:cardCornerRadius="10dp"
+                                app:cardUseCompatPadding="true">>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="3"
-                                    android:gravity="center"
+
                                     android:orientation="horizontal">
 
-                                    <androidx.cardview.widget.CardView
-                                        android:id="@+id/currentLocationCard"
+                                    <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_gravity="center"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginRight="5dp"
-                                        android:layout_marginBottom="10dp"
-                                        app:cardCornerRadius="15dp"
+                                        android:layout_weight="3"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
 
-                                        app:cardElevation="5dp">
-
-                                        <TextView
+                                        <androidx.cardview.widget.CardView
+                                            android:id="@+id/currentLocationCard"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_gravity="center"
+                                            android:layout_marginLeft="10dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_marginRight="5dp"
+                                            android:layout_marginBottom="10dp"
+                                            app:cardCornerRadius="15dp"
 
-                                            android:gravity="center"
+                                            app:cardElevation="5dp">
 
-                                            android:padding="10dp"
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
 
-                                            android:text="Currnet Location  "
-                                            android:textColor="@color/heavy_red"
-                                            android:textSize="18sp"
-                                            android:textStyle="bold" />
+                                                android:gravity="center"
 
-                                    </androidx.cardview.widget.CardView>
+                                                android:padding="10dp"
 
+                                                android:text="Currnet Location  "
+                                                android:textColor="@color/heavy_red"
+                                                android:textSize="18sp"
+                                                android:textStyle="bold" />
 
-                                </LinearLayout>
-
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                        </androidx.cardview.widget.CardView>
 
 
-                                    android:layout_weight="2"
+                                    </LinearLayout>
 
-                                    android:orientation="horizontal">
 
-                                    <androidx.cardview.widget.CardView
-
+                                    <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
 
-                                        app:cardCornerRadius="15dp"
 
-                                        app:cardElevation="5dp"
-                                        app:cardUseCompatPadding="true">>
+                                        android:layout_weight="2"
 
+                                        android:orientation="horizontal">
 
-                                        <EditText
-                                            android:id="@+id/currentLocation"
+                                        <androidx.cardview.widget.CardView
+
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
 
+                                            app:cardCornerRadius="15dp"
 
-                                            android:background="@color/transparent"
-                                            android:editable="false"
-                                            android:gravity="center"
-                                            android:padding="10dp"
-                                            android:text="Current Location"
-                                            android:textColor="@color/majesty"
-                                            android:textSize="18dp"
-                                            android:textStyle="bold" />
+                                            app:cardElevation="5dp"
+                                            app:cardUseCompatPadding="true">>
 
 
-                                    </androidx.cardview.widget.CardView>
+                                            <EditText
+                                                android:id="@+id/currentLocation"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
 
 
+                                                android:background="@color/transparent"
+                                                android:editable="false"
+                                                android:gravity="center"
+                                                android:padding="10dp"
+                                                android:text="Current Location"
+                                                android:textColor="@color/majesty"
+                                                android:textSize="18dp"
+                                                android:textStyle="bold" />
+
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                    </LinearLayout>
                                 </LinearLayout>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/shareLocationSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Share Location"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switch2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Dark Mode"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
-
-                    <Switch
-                        android:id="@+id/shareLocationSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Share Location"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <Switch
-                        android:id="@+id/switch2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Dark Mode"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <LinearLayout
