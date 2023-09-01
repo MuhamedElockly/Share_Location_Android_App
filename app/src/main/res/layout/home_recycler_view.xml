@@ -47,9 +47,9 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/archivo_black"
                     android:gravity="center"
-                    android:paddingStart="20dp"
+                    android:paddingStart="25dp"
                     android:paddingTop="15dp"
-                    android:paddingEnd="20dp"
+                    android:paddingEnd="25dp"
                     android:text="Name"
                     android:textColor="@color/majesty" />
 
