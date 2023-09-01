@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
 
                     android:autoSizeMaxTextSize="30sp"
-                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeMinTextSize="13sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/archivo_black"
