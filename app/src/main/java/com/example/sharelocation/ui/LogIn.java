@@ -1,7 +1,6 @@
 package com.example.sharelocation.ui;
 
 import android.accounts.NetworkErrorException;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -94,9 +93,7 @@ public class LogIn extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         user = mAuth.getCurrentUser();
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com")
-
-                .requestEmail().build();
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("15264368424-a9dj1bndgfosdkc3vh1fhv6q74p4c16b.apps.googleusercontent.com").requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
 
