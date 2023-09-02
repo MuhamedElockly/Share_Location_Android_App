@@ -1,5 +1,6 @@
 package com.example.sharelocation.ui;
 
+import android.app.Activity;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -27,6 +28,8 @@ import com.example.sharelocation.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-      //  progressBar = findViewById(R.id.settingPBar);
+        //  progressBar = findViewById(R.id.settingPBar);
         toolbar = findViewById(R.id.settingToolbar);
 
         setSupportActionBar(toolbar);
@@ -102,6 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
                 tokenId = dataSnapshot.child("tokenId").getValue(String.class);
             }
         });
+     //  requestPhoneNumber();
     }
 
     @Override
@@ -112,6 +116,22 @@ public class SettingsActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestPhoneNumber() {
+
+        GoogleSignIn.requestPermissions(this, 20, GoogleSignIn.getLastSignedInAccount(SettingsActivity.this), new Scope(Scopes.DRIVE_FILE));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (20 == requestCode) {
+                //   saveToDriveAppFolder();
+                Toast.makeText(this, "Phooooneee ", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void shareLocation() {

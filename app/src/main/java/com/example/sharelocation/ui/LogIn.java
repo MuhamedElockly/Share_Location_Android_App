@@ -1,6 +1,7 @@
 package com.example.sharelocation.ui;
 
 import android.accounts.NetworkErrorException;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,7 +36,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -98,6 +101,12 @@ public class LogIn extends AppCompatActivity {
 
 
         forgetPassward();
+
+    }
+
+    private void requestPhoneNumber() {
+
+        GoogleSignIn.requestPermissions(this, 20, GoogleSignIn.getLastSignedInAccount(LogIn.this), new Scope(Scopes.PLUS_ME));
     }
 
     @Override
